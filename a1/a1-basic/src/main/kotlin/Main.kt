@@ -25,7 +25,6 @@ class Main : Application() {
 //        val sourcePath = "${System.getProperty("user.dir")}/src/main/resources/"
 
         val addButn = Button("Add")
-        addButn.font = Font("Helvetica", 14.0)
         val randomButn = Button("Random")
         val deleteButn= Button("Delete")
 //        val importantButn = Button()
