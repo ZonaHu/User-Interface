@@ -1,14 +1,16 @@
 import javafx.application.Application
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import javafx.scene.text.TextAlignment
 
 import javafx.stage.Stage
+import kotlin.random.Random
 
 class Main : Application() {
     private val layout = BorderPane()
@@ -26,7 +28,7 @@ class Main : Application() {
         // make the stage resizable
         stage.isResizable = true
 
-        //============ add the buttons and then set button width to 100 ===========
+        //============ add the buttons and then set button width to 100 ======================
         val addButn = Button("Add")
         addButn.prefWidth = (100.0)
         val randomButn = Button("Random")
@@ -44,27 +46,33 @@ class Main : Application() {
         // set spacing and padding
         toolBar.padding = Insets(10.0)
         toolBar.spacing = 10.0
-
-
+        // =========== set up the centered scroll pane ======================================
         val scrollPane = ScrollPane(flowPane)
         // hide the horizontal scroll bar for smaller size windows
         scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER;
         // make sure the scroll pane is fit to width
         scrollPane.isFitToWidth = true
 
-        addNotes(false)
-        addNotes(false)
-        addNotes(true)
-        addNotes(false)
-        addNotes(true)
-        addNotes(false)
-        addNotes(false)
-        addNotes(false)
-        addNotes(false)
+        // set function onclick for the buttons
+        // function to handle click on Random button
+        // implement the add random function
+        randomButn.setOnAction {
+            // there’s about a 1 in 5 chance that the note is flagged as important
+            val imp = (Random.nextInt(5) == 0 )
+            addNotes(imp)
+        }
+
+        clearButn.setOnAction {
+            // clear all notes
+            clearNotes()
+        }
+
+
+
 
         // 全局变量是个数组（所有notes 数据结构 no ui）
         // 刷新 函数 把Flowpane children clear掉再根据数组创建
-        // background ， margin, spacing
+        // background, margin, spacing
         // 弹出框
 
         // the text in the status bar is initialized to 0
@@ -79,14 +87,15 @@ class Main : Application() {
 
 
 
-        // set function onclick for the buttons
-        // function to handle click on Random button
-
         // show the scene
         stage.scene = scene
         stage.minWidth = 400.0
         stage.minHeight = 400.0
         stage.show()
+    }
+
+    private fun clearNotes(){
+        flowPane.children.clear()
     }
 
     // function to add the notes
@@ -105,7 +114,9 @@ class Main : Application() {
         // set the sizes
         notes.prefWidth = 150.0
         notes.prefHeight = 200.0
+        // 10 unit space between the title and body.
         notes.spacing = 10.0
+        // There’s a 10-unit margin inside the note rectangle
         notes.padding = Insets(10.0)
 
         notes.children.addAll(title, body)
