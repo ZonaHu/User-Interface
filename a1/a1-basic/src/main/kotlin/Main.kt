@@ -1,9 +1,7 @@
 import javafx.application.Application
-import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.*
-import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
@@ -18,7 +16,7 @@ class Main : Application() {
     private val toolBar = HBox()
     // bottom status bar
     private val statusBar = HBox()
-    // scroll pane + flow pane in the center to display notes
+    // scroll pane + flow pane in the center to display notes since notes flow left to right
     private val flowPane = FlowPane()
 
     override fun start(stage: Stage) {
@@ -46,29 +44,28 @@ class Main : Application() {
         // set spacing and padding
         toolBar.padding = Insets(10.0)
         toolBar.spacing = 10.0
+
         // =========== set up the centered scroll pane ======================================
+        // use scroll pane since we want to show a scroll bar when there are too many notes to fit height-wise
         val scrollPane = ScrollPane(flowPane)
         // hide the horizontal scroll bar for smaller size windows
         scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER;
         // make sure the scroll pane is fit to width
         scrollPane.isFitToWidth = true
 
-        // set function onclick for the buttons
+        // ==========  handle the actions with the buttons =====================================
         // function to handle click on Random button
         // implement the add random function
         randomButn.setOnAction {
             // there’s about a 1 in 5 chance that the note is flagged as important
             val imp = (Random.nextInt(5) == 0 )
-            addNotes(imp)
+            addRandomNotes(imp)
         }
 
         clearButn.setOnAction {
             // clear all notes
             clearNotes()
         }
-
-
-
 
         // 全局变量是个数组（所有notes 数据结构 no ui）
         // 刷新 函数 把Flowpane children clear掉再根据数组创建
@@ -85,8 +82,6 @@ class Main : Application() {
 //        val stackPane = StackPane(layout)
         // 弹出框 VBox 是第二个元素在stack Pane
 
-
-
         // show the scene
         stage.scene = scene
         stage.minWidth = 400.0
@@ -99,19 +94,17 @@ class Main : Application() {
     }
 
     // function to add the notes
-    private fun addNotes(importantFlg: Boolean){
+    private fun addRandomNotes(importantFlg: Boolean){
         val title = Label(genParagraph().first)
         val body = Label(genParagraph().second).apply { this.isWrapText = true}
-
         val notes = VBox()
-
         // set the background colors for the notes
         if (!importantFlg){
             notes.style = "-fx-background-color:WHITE"
         }else{
             notes.style = "-fx-background-color:LIGHTYELLOW"
         }
-        // set the sizes
+        // set the sizes as 150 by 200 unit rectangular areas
         notes.prefWidth = 150.0
         notes.prefHeight = 200.0
         // 10 unit space between the title and body.
@@ -120,7 +113,6 @@ class Main : Application() {
         notes.padding = Insets(10.0)
 
         notes.children.addAll(title, body)
-
         // TODO: save current notes to a data structure
         addToFlowPane(notes)
     }
