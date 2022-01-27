@@ -31,8 +31,10 @@ class Main : Application() {
         addButn.prefWidth = (100.0)
         val randomButn = Button("Random")
         randomButn.prefWidth = (100.0)
+        // TODO: delete is only valid if there is some selected
         val deleteButn= Button("Delete")
         deleteButn.prefWidth = (100.0)
+        // TODO: clear is only valid if there is at least one note
         val clearButn= Button("Clear")
         clearButn.prefWidth = (100.0)
         val importantButn = ToggleButton("!")
@@ -55,10 +57,14 @@ class Main : Application() {
 
         // ==========  handle the actions with the buttons =====================================
         // function to handle click on Random button
+        addButn.setOnAction {
+            addNotes()
+        }
+
         // implement the add random function
         randomButn.setOnAction {
             // there’s about a 1 in 5 chance that the note is flagged as important
-            val imp = (Random.nextInt(5) == 0 )
+            val imp = (Random.nextInt(5) == 0)
             addRandomNotes(imp)
         }
 
@@ -87,6 +93,11 @@ class Main : Application() {
         stage.minWidth = 400.0
         stage.minHeight = 400.0
         stage.show()
+    }
+
+    private fun addNotes(){
+
+
     }
 
     private fun clearNotes(){
