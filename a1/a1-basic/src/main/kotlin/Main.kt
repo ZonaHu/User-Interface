@@ -39,7 +39,6 @@ class Main : Application() {
         notes.prefHeight = 200.0
         notes.spacing = 10.0
 
-
         // 全局变量是个数组（所有notes 数据结构 no ui）
         // 刷新 函数 把Flowpane children clear掉再根据数组创建
         // background ， margin, spacing
@@ -69,7 +68,6 @@ class Main : Application() {
         // 弹出框 VBox 是第二个元素在stack Pane
 
         // set. onclick for the buttons
-
 
         // show the scene
         stage.scene = scene
