@@ -39,23 +39,28 @@ class Main : Application() {
 
         // =========== create the scene with initialized size of 800 by 600 units ===========
         val scene = Scene((layout), 800.0, 600.0)
+        // TODO: text field can be wider
         toolBar.children.addAll(addButn, randomButn, deleteButn, clearButn, importantButn, TextField())
         // set spacing and padding
         toolBar.padding = Insets(10.0)
         toolBar.spacing = 10.0
 
-        // press the random button
-        // adds a new note with a random title,
-        // random body, and random chance of it
-        // being marked as “important”.
 
         val scrollPane = ScrollPane(flowPane)
         // hide the horizontal scroll bar for smaller size windows
         scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER;
+        // make sure the scroll pane is fit to width
+        scrollPane.isFitToWidth = true
 
         addNotes(false)
         addNotes(false)
         addNotes(true)
+        addNotes(false)
+        addNotes(true)
+        addNotes(false)
+        addNotes(false)
+        addNotes(false)
+        addNotes(false)
 
         // 全局变量是个数组（所有notes 数据结构 no ui）
         // 刷新 函数 把Flowpane children clear掉再根据数组创建
@@ -72,7 +77,10 @@ class Main : Application() {
 //        val stackPane = StackPane(layout)
         // 弹出框 VBox 是第二个元素在stack Pane
 
-        // set. onclick for the buttons
+
+
+        // set function onclick for the buttons
+        // function to handle click on Random button
 
         // show the scene
         stage.scene = scene
@@ -81,7 +89,8 @@ class Main : Application() {
         stage.show()
     }
 
-    fun addNotes(importantFlg: Boolean){
+    // function to add the notes
+    private fun addNotes(importantFlg: Boolean){
         val title = Label(genParagraph().first)
         val body = Label(genParagraph().second).apply { this.isWrapText = true}
 
@@ -97,6 +106,7 @@ class Main : Application() {
         notes.prefWidth = 150.0
         notes.prefHeight = 200.0
         notes.spacing = 10.0
+        notes.padding = Insets(10.0)
 
         notes.children.addAll(title, body)
 
@@ -104,7 +114,7 @@ class Main : Application() {
         addToFlowPane(notes)
     }
 
-    fun addToFlowPane(notes: VBox) {
+    private fun addToFlowPane(notes: VBox) {
         flowPane.padding = Insets(10.0)
         flowPane.vgap = 10.0
         flowPane.hgap = 10.0
@@ -113,9 +123,10 @@ class Main : Application() {
 
     // function to update the status bar
     // 全局变量 unclick 的时候handel
-    fun updateStatus(statusText: String){
+    private fun updateStatus(statusText: String){
         statusBar.children.clear()
         statusBar.children.add(Label(statusText))
     }
 
 }
+
