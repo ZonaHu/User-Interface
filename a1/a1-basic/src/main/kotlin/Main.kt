@@ -3,24 +3,30 @@ import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font
+import javafx.scene.text.TextAlignment
 
 import javafx.stage.Stage
 
 class Main : Application() {
     private val layout = BorderPane()
+    // create the tool bar
+    private val toolBar = HBox()
+    // bottom status bar
+    private val statusBar = HBox()
+    // scroll pane + flow pane in the center to display notes
+    private val flowPane = FlowPane()
 
     override fun start(stage: Stage) {
 
-        // set the title
+        // ============ set the title =======================
         stage.title = "A1 Notes (z228hu)"
+        // make the stage resizable
         stage.isResizable = true
 
-        // create the tool bar
-        val toolBar = HBox()
-        // set button length
+        //============ add the buttons and then set button width to 100 ===========
         val addButn = Button("Add")
         addButn.prefWidth = (100.0)
         val randomButn = Button("Random")
@@ -31,43 +37,38 @@ class Main : Application() {
         clearButn.prefWidth = (100.0)
         val importantButn = ToggleButton("!")
 
+        // =========== create the scene with initialized size of 800 by 600 units ===========
         val scene = Scene((layout), 800.0, 600.0)
         toolBar.children.addAll(addButn, randomButn, deleteButn, clearButn, importantButn, TextField())
+        // set spacing and padding
         toolBar.padding = Insets(10.0)
         toolBar.spacing = 10.0
 
-        // scroll pane + flow pane in the center to display notes
-        val flowPane = FlowPane()
-        val notes = VBox()
-        notes.prefWidth = 150.0
-        notes.prefHeight = 200.0
-        notes.spacing = 10.0
+        // press the random button
+        // adds a new note with a random title,
+        // random body, and random chance of it
+        // being marked as “important”.
+
+        val scrollPane = ScrollPane(flowPane)
+        // hide the horizontal scroll bar for smaller size windows
+        scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER;
+
+        addNotes(false)
+        addNotes(false)
+        addNotes(true)
 
         // 全局变量是个数组（所有notes 数据结构 no ui）
         // 刷新 函数 把Flowpane children clear掉再根据数组创建
         // background ， margin, spacing
         // 弹出框
 
-        // press the random button
-        // adds a new note with a random title,
-        // random body, and random chance of it
-        // being marked as “important”.
-        notes.children.add(Label(genParagraph().first))
-        notes.children.add(Label(genParagraph().second).apply { this.isWrapText = true})
-
-        flowPane.children.add(notes)
-
-        val scrollPane = ScrollPane(flowPane)
-        // bottom status bar
-        val bottomPart = HBox()
-        // 全局变量 unclick 的时候handel
-        bottomPart.children.add(Label("Hi"))
+        // the text in the status bar is initialized to 0
+        statusBar.children.add(Label("0"))
 
         // set up the layout and the scene
         layout.top = toolBar
         layout.center = scrollPane
-        layout.bottom = bottomPart
-
+        layout.bottom = statusBar
 //        val stackPane = StackPane(layout)
         // 弹出框 VBox 是第二个元素在stack Pane
 
@@ -79,4 +80,42 @@ class Main : Application() {
         stage.minHeight = 400.0
         stage.show()
     }
+
+    fun addNotes(importantFlg: Boolean){
+        val title = Label(genParagraph().first)
+        val body = Label(genParagraph().second).apply { this.isWrapText = true}
+
+        val notes = VBox()
+
+        // set the background colors for the notes
+        if (!importantFlg){
+            notes.style = "-fx-background-color:WHITE"
+        }else{
+            notes.style = "-fx-background-color:LIGHTYELLOW"
+        }
+        // set the sizes
+        notes.prefWidth = 150.0
+        notes.prefHeight = 200.0
+        notes.spacing = 10.0
+
+        notes.children.addAll(title, body)
+
+        // TODO: save current notes to a data structure
+        addToFlowPane(notes)
+    }
+
+    fun addToFlowPane(notes: VBox) {
+        flowPane.padding = Insets(10.0)
+        flowPane.vgap = 10.0
+        flowPane.hgap = 10.0
+        flowPane.children.add(notes)
+    }
+
+    // function to update the status bar
+    // 全局变量 unclick 的时候handel
+    fun updateStatus(statusText: String){
+        statusBar.children.clear()
+        statusBar.children.add(Label(statusText))
+    }
+
 }
