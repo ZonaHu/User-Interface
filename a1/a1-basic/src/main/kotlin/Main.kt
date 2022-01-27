@@ -3,6 +3,7 @@ import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.stage.Stage
 
@@ -22,21 +23,24 @@ class Main : Application() {
 
 //         create the tool bar
         val toolBar = ToolBar()
-//        val sourcePath = "${System.getProperty("user.dir")}/src/main/resources/"
-
         val addButn = Button("Add")
         val randomButn = Button("Random")
         val deleteButn= Button("Delete")
-//        val importantButn = Button()
+        val clearButn= Button("Clear")
+        val importantButn = Button("!")
 
         val scene = Scene((layout), 800.0, 600.0)
-        toolBar.items.addAll(addButn, randomButn, deleteButn)
+        toolBar.items.addAll(addButn, randomButn, deleteButn, clearButn, importantButn)
 
-        val topPart = HBox()
-        topPart.children.add(toolBar)
+        val topPart = HBox(toolBar)  //        topPart.children.add(toolBar)
 
+
+//        val statusBar
+//        val bottomPart = HBox()
+//        bottomPart.children.add()
 
         layout.top = topPart
+//        layout.bottom = bottomPart
         // show the scene
         stage.scene = scene
         stage.show()
