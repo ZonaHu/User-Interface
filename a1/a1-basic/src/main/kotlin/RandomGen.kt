@@ -22,7 +22,7 @@ fun genParagraph( ): Pair<String, String> {
         for (i in 1..bodySentNum) {
             var tmp = strDictionary.random()
             if (i == 1){
-                tmp = tmp.capitalize()
+                tmp = tmp.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
             }else if (i == bodySentNum){
                 tmp += "."
             }
