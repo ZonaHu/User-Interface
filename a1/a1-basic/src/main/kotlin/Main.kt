@@ -438,7 +438,7 @@ class Main : Application() {
                 statusText2 = "Cleared $clearedNum notes"
             }
             "edited" -> {
-                statusText2 = "Edited Note #$editedId"
+                statusText2 = "Edited Note #${editedId-1}"
             }
         }
         updateStatus(statusText, statusText2)
