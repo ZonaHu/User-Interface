@@ -13,15 +13,17 @@ class Main : Application() {
 
     // ======================================== initialization =========================================
     private val layout = BorderPane()
+
     // create the toolbar
     private val toolBar = HBox()
+
     // bottom status bar
     private val statusBar = HBox()
+
     // scroll pane + flow pane in the center to display notes since notes flow left to right
     private val flowPane = FlowPane()
-    private var addRectangle = Region()
-    private var popUp = GridPane()
     private val stackPane = StackPane(layout)
+
     // use scroll pane since we want to show a scroll bar when there are too many notes to fit height-wise
     private val scrollPane = ScrollPane(flowPane)
 
@@ -36,20 +38,26 @@ class Main : Application() {
     // ==================== initialize the counters, status strings, flags and notes list==================
     // list contains all the notes currently available
     private var notesList = mutableListOf<Note>()
+
     // counter for the number of notes existed
     private var noteCounter = 0
+
     // an id that denotes the current note's id that is clicked
     private var clickedId = -1
+
     //  an id that denotes the last note's id that is edited
     private var editedId = 0
+
     // displayed number of notes
     private var numDisplayed = 0
     private var isCleared = false
     private var selectedIsCleared = false
     private var clearedNum = 0
     private var targetId = 0
+
     // the string denotes current status of the status bar
     private var curStatus = ""
+
     // determine the text that status bar should display
     private var statusText = ""
     private var statusText2 = ""
@@ -144,16 +152,26 @@ class Main : Application() {
         val note = Note(noteCounter, title, body, importantFlg)
         notesList.add(note)
         curStatus = "add"
-        stackPane.children.removeAll(addRectangle, popUp)
     }
 
-    private fun createNotes(importantFlg: Boolean, messg: String, text: String ){
+    private fun createNotes(
+        importantFlg: Boolean,
+        messg: String,
+        text: String,
+        id: Int,
+        title: String,
+        body: String,
+        important: Boolean
+    ) {
+        val addRectangle = Region()
+        val popUp = GridPane()
+
         addRectangle.style = "-fx-background-color:GRAY"
         addRectangle.opacity = 0.5
         addRectangle.isVisible = true;
 
         popUp.setMaxSize(400.0, 300.0)
-        popUp.style =  "-fx-background-color:LIGHTGRAY"
+        popUp.style = "-fx-background-color:LIGHTGRAY"
         popUp.vgap = 10.0
         popUp.hgap = 10.0
         popUp.isDisable = false
@@ -162,7 +180,7 @@ class Main : Application() {
         val paneTitle = Label(messg)
         val noteTitle = Label("Title")
         val noteBody = Label("Body")
-        val important = Label("Important")
+        val importantText = Label("Important")
         val checkBox = CheckBox()
         val saveButn = Button("Save")
         val cancelButn = Button("Cancel")
@@ -171,29 +189,32 @@ class Main : Application() {
         val titleTextField = TextField()
         val bodyTextField = TextArea()
         bodyTextField.isWrapText = true
+        if (messg != "Add New Note"){
+            editedId = id;
+            titleTextField.text = title
+            bodyTextField.text = body
+            checkBox.isSelected = important
+        }
         popUp.padding = Insets(10.0)
-        popUp.add(paneTitle, 0,0,6,1)
-        popUp.add(noteTitle, 0, 2,1,1)
-        popUp.add(titleTextField, 1, 2,20,1)
-        popUp.add(noteBody, 0, 3,1,1)
-        popUp.add(bodyTextField, 1, 3,20,1)
-        popUp.add(checkBox, 1, 4,3,1)
-        popUp.add(important, 3, 4,5,1)
-        popUp.add(saveButn, 8, 6,6,3)
-        popUp.add(cancelButn, 15, 6,6,3)
+        popUp.add(paneTitle, 0, 0, 6, 1)
+        popUp.add(noteTitle, 0, 2, 1, 1)
+        popUp.add(titleTextField, 1, 2, 20, 1)
+        popUp.add(noteBody, 0, 3, 1, 1)
+        popUp.add(bodyTextField, 1, 3, 20, 1)
+        popUp.add(checkBox, 1, 4, 3, 1)
+        popUp.add(importantText, 3, 4, 5, 1)
+        popUp.add(saveButn, 8, 6, 6, 3)
+        popUp.add(cancelButn, 15, 6, 6, 3)
 
         stackPane.children.addAll(addRectangle, popUp)
         // function to delete a note
         saveButn.setOnAction {
             // in save, information are saved and noteCounter += 1
-            val title = titleTextField.text
-            val body = bodyTextField.text
-            if (messg == "Add New Note"){
-                val imp = checkBox.isSelected
-                saveFunc(title, body, imp)
-            }else{
-                saveFunc(title, body, false)
-            }
+            val curTitle = titleTextField.text
+            val curBody = bodyTextField.text
+            val imp = checkBox.isSelected
+            saveFunc(curTitle, curBody, imp)
+            stackPane.children.removeAll(addRectangle, popUp)
             refreshDisplay(importantFlg, text) // reprint the UI
         }
         // function to delete a note
@@ -204,7 +225,12 @@ class Main : Application() {
     }
 
     private fun addNotes(selected: Boolean, text: String) {
-        createNotes(selected, "Add New Note", text)
+        createNotes(selected, "Add New Note", text, -1, "", "", false)
+    }
+
+    private fun editNotes(selected: Boolean, text: String, aNote: Note) {
+        val message = "Edit Note" + aNote.id.toString()
+        createNotes(selected, message, text, aNote.id, aNote.title, aNote.body, aNote.isImportant)
     }
 
     // function to add the notes
@@ -244,7 +270,7 @@ class Main : Application() {
             }
         }
         val result = notesList.map { it.id == clickedId }
-        if (result.isEmpty()){
+        if (result.isEmpty()) {
             selectedIsCleared = true
             clickedId = 0
         }
@@ -320,30 +346,34 @@ class Main : Application() {
             notes.children.addAll(title, body)
             //  notes can be selected with a single click
             notes.setOnMouseClicked {
-                // reset the borders for all notes
-                for (tmp in flowPane.children) {
-                    val oneNote = tmp as VBox
-                    oneNote.border = null
-                }
-                if ((clickedId == aNote.id)) {
-                    // unselect only if the note is already selected in CURRENT filter
-                    clickedId = 0
-                    curStatus = "notSelected"
-                    deleteButn.isDisable = true // reset the delete button to be disabled
-                } else {
-                    // select and add a border
-                    clickedId = aNote.id
-                    selectedIsCleared = false
-                    deleteButn.isDisable = false
-                    curStatus = "selected"
-                    notes.border = Border(
-                        BorderStroke( // from paint
-                            Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
+                if (it.clickCount == 1) {
+                    // reset the borders for all notes
+                    for (tmp in flowPane.children) {
+                        val oneNote = tmp as VBox
+                        oneNote.border = null
+                    }
+                    if ((clickedId == aNote.id)) {
+                        // unselect only if the note is already selected in CURRENT filter
+                        clickedId = 0
+                        curStatus = "notSelected"
+                        deleteButn.isDisable = true // reset the delete button to be disabled
+                    } else {
+                        // select and add a border
+                        clickedId = aNote.id
+                        selectedIsCleared = false
+                        deleteButn.isDisable = false
+                        curStatus = "selected"
+                        notes.border = Border(
+                            BorderStroke( // from paint
+                                Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
+                            )
                         )
-                    )
+                    }
+                    // pass in the number of notes we displayed
+                    updateStatusBar(numDisplayed, isFiltered)
+                } else {// double click
+                    editNotes(impFilterSelected, text, aNote)
                 }
-                // pass in the number of notes we displayed
-                updateStatusBar(numDisplayed, isFiltered)
             }
             if (isFiltered) {
                 numDisplayed++ // increment the displayed counter
@@ -351,12 +381,18 @@ class Main : Application() {
             flowPane.children.add(notes)
         }
         // if size = 0 deleteButn must be disabled
-        if ((notesList.size == 0)) { clickedId = 0 }
+        if ((notesList.size == 0)) {
+            clickedId = 0
+        }
         // if no note is selected or the selected one is deleted, delete button is disabled
-        if ( (curStatus == "delete") or  (clickedId==0)){  deleteButn.isDisable = true }
+        if ((curStatus == "delete") or (clickedId == 0)) {
+            deleteButn.isDisable = true
+        }
 
         // clear is only valid if there is at least one note being displayed
-        if (!impFilterSelected) { clearButn.isDisable = notesList.size < 1 } // if important filter is not on
+        if (!impFilterSelected) {
+            clearButn.isDisable = notesList.size < 1
+        } // if important filter is not on
         // if important filter is on:
         else { //the button is not valid if important filter is on and there is no important note
             clearButn.isDisable = (numImportant == 0)
@@ -368,11 +404,11 @@ class Main : Application() {
     private fun updateStatusBar(numDisplayed: Int, isFiltered: Boolean) {
         // the first portion of the status bar
         statusText = if ((curStatus == "selected") and (!isFiltered)) {
-            "#${clickedId-1} | " + notesList.size.toString()
+            "#${clickedId - 1} | " + notesList.size.toString()
         } else if (isFiltered) {
-            if (curStatus == "selected"){
-                "#${clickedId-1} | " + "$numDisplayed (of " + notesList.size.toString() + ")"
-            }else{
+            if (curStatus == "selected") {
+                "#${clickedId - 1} | " + "$numDisplayed (of " + notesList.size.toString() + ")"
+            } else {
                 "$numDisplayed (of " + notesList.size.toString() + ")"
             }
         } else {
@@ -387,7 +423,7 @@ class Main : Application() {
                 statusText2 += num.toString()
             }
             "delete" -> {
-                statusText2 = "Deleted Note #${targetId-1}"
+                statusText2 = "Deleted Note #${targetId - 1}"
             }
             "clear" -> {
                 // cleared number displayed notes
