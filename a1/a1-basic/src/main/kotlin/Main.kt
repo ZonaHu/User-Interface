@@ -42,11 +42,11 @@ class Main : Application() {
         // delete is only valid if there is some selected
         val deleteButn= Button("Delete")
         deleteButn.prefWidth = (100.0)
-//        deleteButn.isDisable = true
+        deleteButn.isDisable = true
         // clear is only valid if there is at least one note
         val clearButn= Button("Clear")
         clearButn.prefWidth = (100.0)
-//        clearButn.isDisable = true
+        clearButn.isDisable = true
         val importantButn = ToggleButton("!")
 
         // TODO: text field can be wider
@@ -67,16 +67,16 @@ class Main : Application() {
             addNotes(importantButn.isSelected)
         }
 
-        // function to delete a note
-        deleteButn.setOnAction {
-            deleteNotes(importantButn.isSelected)
-        }
-
         // function to handle click on Random button
         randomButn.setOnAction {
             // there’s about a 1 in 5 chance that the note is flagged as important
             val imp = (Random.nextInt(5) == 0)
             addRandomNotes(imp, importantButn.isSelected)
+        }
+
+        // function to delete a note
+        deleteButn.setOnAction {
+            deleteNotes(importantButn.isSelected)
         }
 
         // implement the clear all notes
@@ -86,7 +86,7 @@ class Main : Application() {
         }
 
         importantButn.setOnAction{
-            impFilter(importantButn.isSelected)
+            refreshUI(importantButn.isSelected)
         }
 
         // ========================================================================================
@@ -130,14 +130,9 @@ class Main : Application() {
         refreshUI(selected)
     }
 
-    private fun impFilter(selected: Boolean) {
-        refreshUI(selected)
-    }
-
     private fun clearNotes(selected: Boolean) {
         // TODO: When 1 or more notes are displayed, the “Clear” button is enabled.
-        //  Pressing “Clear” removes all notes that are displayed
-        //  (i.e. only those visible due to active filters, or all notes if no filters are active).
+        //  removes all notes that are displayed according to the filter
         if (selected){ // under important filter, only remove all the important notes
             notesList.removeIf { it.isImportant }
         }else{
