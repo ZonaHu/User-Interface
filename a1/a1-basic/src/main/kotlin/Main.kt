@@ -7,6 +7,7 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.stage.Stage
 import kotlin.random.Random
+import RandomGen
 
 class Main : Application() {
     // basic idea: I use an array to store all the notes, and update each time when buttons are clicked
@@ -146,8 +147,8 @@ class Main : Application() {
 
     // function to add the notes
     private fun addRandomNotes(importantFlg: Boolean, selected: Boolean, text: String) {
-        val titleStr = genParagraph().first
-        val bodyStr = genParagraph().second
+        val titleStr = RandomGen().getTitle()
+        val bodyStr = RandomGen().getBody()
         // save current notes to our list for all lists
         noteCounter += 1
         val note = Note(noteCounter, titleStr, bodyStr, importantFlg)
