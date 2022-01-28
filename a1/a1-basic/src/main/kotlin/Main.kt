@@ -309,7 +309,11 @@ class Main : Application() {
         statusText = if ((curStatus == "selected") and (!isFiltered)) {
             "#$clickedId | " + notesList.size.toString()
         } else if (isFiltered) {
-            "$numDisplayed (of " + notesList.size.toString() + ")"
+            if (curStatus == "selected"){
+                "#$clickedId | " + "$numDisplayed (of " + notesList.size.toString() + ")"
+            }else{
+                "$numDisplayed (of " + notesList.size.toString() + ")"
+            }
         } else {
             notesList.size.toString()
         }
