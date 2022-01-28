@@ -352,13 +352,23 @@ class Main : Application() {
             title.alignment = Pos.TOP_LEFT
             body.alignment = Pos.TOP_LEFT
             notes.children.addAll(title, body)
+            // add an invisible border to prevent border slight changes when switch to blue border
+            notes.border = Border(
+                BorderStroke( // from paint
+                    Color.gray(0.0, 0.0), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
+                )
+            )
             //  notes can be selected with a single click
             notes.setOnMouseClicked {
                 if (it.clickCount == 1) {
                     // reset the borders for all notes
                     for (tmp in flowPane.children) {
                         val oneNote = tmp as VBox
-                        oneNote.border = null
+                        oneNote.border = Border(
+                            BorderStroke( // from paint
+                                Color.gray(0.0, 0.0), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
+                            )
+                        )
                     }
                     if ((clickedId == aNote.id)) {
                         // unselect only if the note is already selected in CURRENT filter
