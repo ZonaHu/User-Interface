@@ -37,13 +37,15 @@ class Main : Application() {
     // counter for the number of notes existed
     private var noteCounter = 0
     // an id that denotes the current note's id that is clicked
-    private var clickedId = 0
+    private var clickedId = -1
     //  an id that denotes the last note's id that is edited
     private var editedId = 0
-    private var numDisplayed = 0
     // displayed number of notes
+    private var numDisplayed = 0
     private var isCleared = false
+    private var selectedIsCleared = false
     private var clearedNum = 0
+    private var targetId = 0
     // the string denotes current status of the status bar
     private var curStatus = ""
     // determine the text that status bar should display
@@ -94,7 +96,7 @@ class Main : Application() {
 
         // function to delete a note
         deleteButn.setOnAction {
-            deleteNotes(importantButn.isSelected, clickedId, inputBox.text)
+            deleteNotes(importantButn.isSelected, inputBox.text)
         }
 
         // implement the clear all notes
@@ -154,9 +156,11 @@ class Main : Application() {
         refreshDisplay(selected, text)
     }
 
-    private fun deleteNotes(selected: Boolean, targetId: Int, text: String) {
-        notesList.removeIf { it.id == targetId }
+    private fun deleteNotes(selected: Boolean, text: String) {
+        notesList.removeIf { it.id == clickedId }
         curStatus = "delete"
+        targetId = clickedId
+        clickedId = 0
         refreshDisplay(selected, text)
     }
 
@@ -176,6 +180,13 @@ class Main : Application() {
                 notesList.clear()
             }
         }
+        val result = notesList.map { it.id == clickedId }
+        if (result.isEmpty()){
+            selectedIsCleared = true
+        }
+        if (selectedIsCleared){
+            clickedId = 0
+        }
         curStatus = "clear"
         refreshDisplay(selected, text)
     }
@@ -188,7 +199,7 @@ class Main : Application() {
         flowPane.hgap = 10.0
     }
 
-    private fun refreshDisplay(selected: Boolean, text: String) {
+    private fun refreshDisplay(impFilterSelected: Boolean, text: String) {
         setUpFlowPane()
         var numImportant = 0
         var isFiltered = true
@@ -200,7 +211,7 @@ class Main : Application() {
             isCleared = false
         }
         numDisplayed = 0
-        if (!selected and (text == "")) {
+        if (!impFilterSelected and (text == "")) {
             numDisplayed = notesList.size
             isFiltered = false
         }
@@ -211,7 +222,7 @@ class Main : Application() {
                 }
                 isFiltered = true
             }
-            if (selected) {
+            if (impFilterSelected) {
                 if (!aNote.isImportant) {
                     continue
                 }
@@ -261,6 +272,7 @@ class Main : Application() {
                 } else {
                     // select and add a border
                     clickedId = aNote.id
+                    selectedIsCleared = false
                     deleteButn.isDisable = false
                     curStatus = "selected"
                     notes.border = Border(
@@ -272,19 +284,22 @@ class Main : Application() {
                 // pass in the number of notes we displayed
                 updateStatusBar(numDisplayed, isFiltered)
             }
-//            deleteButn.isDisable = true // if no note is selected, delete button is false
             if (isFiltered) {
                 numDisplayed++ // increment the displayed counter
-
             }
             flowPane.children.add(notes)
         }
+        // if size = 0 deleteButn must be disabled
+        if ((notesList.size == 0)) {
+            clickedId = 0
+        }
         // if no note is selected or the selected one is deleted, delete button is disabled
-        if ((numDisplayed == 0) or (curStatus == "delete")){
+        if ( (curStatus == "delete") or  (clickedId==0)){
             deleteButn.isDisable = true
         }
+
         // clear is only valid if there is at least one note being displayed
-        if (!selected) {
+        if (!impFilterSelected) {
             clearButn.isDisable = notesList.size < 1
         } // if important filter is not on
         // if important filter is on:
@@ -299,10 +314,10 @@ class Main : Application() {
     private fun updateStatusBar(numDisplayed: Int, isFiltered: Boolean) {
         // the first portion of the status bar
         statusText = if ((curStatus == "selected") and (!isFiltered)) {
-            "#$clickedId | " + notesList.size.toString()
+            "#${clickedId-1} | " + notesList.size.toString()
         } else if (isFiltered) {
             if (curStatus == "selected"){
-                "#$clickedId | " + "$numDisplayed (of " + notesList.size.toString() + ")"
+                "#${clickedId-1} | " + "$numDisplayed (of " + notesList.size.toString() + ")"
             }else{
                 "$numDisplayed (of " + notesList.size.toString() + ")"
             }
@@ -318,7 +333,7 @@ class Main : Application() {
                 statusText2 += num.toString()
             }
             "delete" -> {
-                statusText2 = "Deleted Note #$clickedId"
+                statusText2 = "Deleted Note #${targetId-1}"
             }
             "clear" -> {
                 // cleared number displayed notes
