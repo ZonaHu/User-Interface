@@ -10,6 +10,5 @@ Zuomiao Hu (z228hu 20815304)
 * JavaFX 17.0.1
 
 ## Enhancement 
-I added a time travel user interface: 
-* press P to open a portal to another dimension in time
-* …
+* added right click also select notes 
+* right click gives red border

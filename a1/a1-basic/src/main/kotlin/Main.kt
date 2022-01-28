@@ -258,7 +258,7 @@ class Main : Application() {
         notesList.removeIf { it.id == clickedId }
         curStatus = "delete"
         targetId = clickedId
-        clickedId = 0
+        clickedId = -1
         refreshDisplay(selected, text)
     }
 
@@ -278,11 +278,11 @@ class Main : Application() {
                 notesList.clear()
             }
         }
-        // create a list to store note if it has the same id as the selected one
+        // clickedId = -1 if selected one is cleared
         val result = notesList.map { it.id == clickedId }
-        if (result.isEmpty()) {
+        if (result.isEmpty()){
             selectedIsCleared = true
-            clickedId = 0
+            clickedId = -1
         }
         curStatus = "clear"
         // update the UI
@@ -338,7 +338,6 @@ class Main : Application() {
             val body = Label(aNote.body).apply { this.isWrapText = true }
             // Filtering does not affect the selected note.
             if (aNote.id == clickedId) {
-                deleteButn.isDisable = false
                 notes.border = Border(
                     BorderStroke( // from paint
                         Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
@@ -375,9 +374,9 @@ class Main : Application() {
                             )
                         )
                     }
-                    if ((clickedId == aNote.id)) {
+                    if (clickedId == aNote.id) {
                         // unselect only if the note is already selected in CURRENT filter
-                        clickedId = 0
+                        clickedId = -1
                         curStatus = "notSelected"
                         deleteButn.isDisable = true // reset the delete button to be disabled
                     } else {
@@ -394,7 +393,7 @@ class Main : Application() {
                     }
                     // pass in the number of notes we displayed
                     updateStatusBar(numDisplayed, isFiltered)
-                } else {// double click
+                } else if (it.clickCount == 2) {// double click
                     editNotes(impFilterSelected, text, aNote)
                 }
             }
@@ -405,10 +404,10 @@ class Main : Application() {
         }
         // if size = 0 deleteButn must be disabled
         if ((notesList.size == 0)) {
-            clickedId = 0
+            clickedId = -1
         }
         // if no note is selected or the selected one is deleted, delete button is disabled
-        if ((curStatus == "delete") or (clickedId == 0)) {
+        if ((curStatus == "delete") or (clickedId == -1)) {
             deleteButn.isDisable = true
         }
 
