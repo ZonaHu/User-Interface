@@ -194,7 +194,7 @@ class Main : Application() {
             }else{
                 saveFunc(title, body, false)
             }
-            refreshDisplay(importantFlg, text)
+            refreshDisplay(importantFlg, text) // reprint the UI
         }
         // function to delete a note
         cancelButn.setOnAction {
