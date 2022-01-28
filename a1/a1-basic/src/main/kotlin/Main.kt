@@ -147,11 +147,19 @@ class Main : Application() {
         stage.show()
     }
 
-    private fun saveFunc(title: String, body: String, importantFlg: Boolean) {
-        noteCounter += 1
-        val note = Note(noteCounter, title, body, importantFlg)
-        notesList.add(note)
-        curStatus = "add"
+    private fun saveFunc(messg: String, title: String, body: String, importantFlg: Boolean) {
+        // if it's an add:
+        if (messg == "Add New Note"){
+            noteCounter += 1
+            val note = Note(noteCounter, title, body, importantFlg)
+            notesList.add(note)
+            curStatus = "add"
+        }else{ // it's edit, find the editId and change its title and content
+            notesList.removeIf { it.id == editedId }
+            val note = Note(editedId, title, body, importantFlg)
+            notesList.add(note)
+            curStatus = "edited"
+        }
     }
 
     private fun createNotes(
@@ -213,7 +221,7 @@ class Main : Application() {
             val curTitle = titleTextField.text
             val curBody = bodyTextField.text
             val imp = checkBox.isSelected
-            saveFunc(curTitle, curBody, imp)
+            saveFunc(messg, curTitle, curBody, imp)
             stackPane.children.removeAll(addRectangle, popUp)
             refreshDisplay(importantFlg, text) // reprint the UI
         }
