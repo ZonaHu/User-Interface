@@ -7,7 +7,6 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.stage.Stage
 import kotlin.random.Random
-import RandomGen
 
 class Main : Application() {
     // basic idea: I use an array to store all the notes, and update each time when buttons are clicked
@@ -20,6 +19,8 @@ class Main : Application() {
     private val statusBar = HBox()
     // scroll pane + flow pane in the center to display notes since notes flow left to right
     private val flowPane = FlowPane()
+    private var addRectangle = Region()
+    private var popUp = GridPane()
     private val stackPane = StackPane(layout)
     // use scroll pane since we want to show a scroll bar when there are too many notes to fit height-wise
     private val scrollPane = ScrollPane(flowPane)
@@ -138,11 +139,72 @@ class Main : Application() {
         stage.show()
     }
 
-    private fun addNotes(selected: Boolean, text: String) {
-        // TODO:
-
+    private fun saveFunc(title: String, body: String, importantFlg: Boolean) {
+        noteCounter += 1
+        val note = Note(noteCounter, title, body, importantFlg)
+        notesList.add(note)
         curStatus = "add"
-        refreshDisplay(selected, text)
+        stackPane.children.removeAll(addRectangle, popUp)
+    }
+
+    private fun createNotes(importantFlg: Boolean, messg: String, text: String ){
+        addRectangle.style = "-fx-background-color:GRAY"
+        addRectangle.opacity = 0.5
+        addRectangle.isVisible = true;
+
+        popUp.setMaxSize(400.0, 300.0)
+        popUp.style =  "-fx-background-color:LIGHTGRAY"
+        popUp.vgap = 10.0
+        popUp.hgap = 10.0
+        popUp.isDisable = false
+        popUp.isVisible = true
+
+        val paneTitle = Label(messg)
+        val noteTitle = Label("Title")
+        val noteBody = Label("Body")
+        val important = Label("Important")
+        val checkBox = CheckBox()
+        val saveButn = Button("Save")
+        val cancelButn = Button("Cancel")
+        saveButn.prefWidth = (100.0)
+        cancelButn.prefWidth = (100.0)
+        val titleTextField = TextField()
+        val bodyTextField = TextArea()
+        bodyTextField.isWrapText = true
+        popUp.padding = Insets(10.0)
+        popUp.add(paneTitle, 0,0,6,1)
+        popUp.add(noteTitle, 0, 2,1,1)
+        popUp.add(titleTextField, 1, 2,20,1)
+        popUp.add(noteBody, 0, 3,1,1)
+        popUp.add(bodyTextField, 1, 3,20,1)
+        popUp.add(checkBox, 1, 4,3,1)
+        popUp.add(important, 3, 4,5,1)
+        popUp.add(saveButn, 8, 6,6,3)
+        popUp.add(cancelButn, 15, 6,6,3)
+
+        stackPane.children.addAll(addRectangle, popUp)
+        // function to delete a note
+        saveButn.setOnAction {
+            // in save, information are saved and noteCounter += 1
+            val title = titleTextField.text
+            val body = bodyTextField.text
+            if (messg == "Add New Note"){
+                val imp = checkBox.isSelected
+                saveFunc(title, body, imp)
+            }else{
+                saveFunc(title, body, false)
+            }
+            refreshDisplay(importantFlg, text)
+        }
+        // function to delete a note
+        cancelButn.setOnAction {
+            // make no change
+            stackPane.children.removeAll(addRectangle, popUp)
+        }
+    }
+
+    private fun addNotes(selected: Boolean, text: String) {
+        createNotes(selected, "Add New Note", text)
     }
 
     // function to add the notes
