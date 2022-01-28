@@ -37,6 +37,7 @@ class Main : Application() {
     private val deleteButn= Button("Delete")
     private val clearButn= Button("Clear")
     private val importantButn = ToggleButton("!")
+    private val inputBox = TextField()
 
     override fun start(stage: Stage) {
         // ============ set the title =======================
@@ -53,9 +54,10 @@ class Main : Application() {
         // clear is only valid if there is at least one note
         clearButn.prefWidth = (100.0)
         clearButn.isDisable = true
-
         // TODO: text field can be wider
-        toolBar.children.addAll(addButn, randomButn, deleteButn, clearButn, importantButn, TextField())
+        inputBox.prefWidth = (200.0)
+
+        toolBar.children.addAll(addButn, randomButn, deleteButn, clearButn, importantButn, inputBox)
         // set spacing and padding
         toolBar.padding = Insets(10.0)
         toolBar.spacing = 10.0
@@ -69,30 +71,33 @@ class Main : Application() {
         // ============== handle the actions with the buttons =====================================
         // implement the add function
         addButn.setOnAction {
-            addNotes(importantButn.isSelected)
+            addNotes(importantButn.isSelected, inputBox.text)
         }
 
         // function to handle click on Random button
         randomButn.setOnAction {
             // there’s about a 1 in 5 chance that the note is flagged as important
             val imp = (Random.nextInt(5) == 0)
-            addRandomNotes(imp, importantButn.isSelected)
+            addRandomNotes(imp, importantButn.isSelected, inputBox.text)
         }
 
         // function to delete a note
         deleteButn.setOnAction {
-            deleteNotes(importantButn.isSelected, clickedId)
+            deleteNotes(importantButn.isSelected, clickedId, inputBox.text)
         }
 
         // implement the clear all notes
         clearButn.setOnAction {
             // clear all notes
-            clearNotes(importantButn.isSelected)
+            clearNotes(importantButn.isSelected, inputBox.text)
         }
 
         importantButn.setOnAction{
-            refreshDisplay(importantButn.isSelected)
+            refreshDisplay(importantButn.isSelected, inputBox.text)
         }
+
+        // immediate text search is case-insensitive according to the description
+        inputBox.textProperty().addListener{ _, _, inputText -> refreshDisplay(importantButn.isSelected, inputText.lowercase())}
 
         // ============== handle the click actions with the notes =====================================
 
@@ -118,39 +123,47 @@ class Main : Application() {
         stage.show()
     }
 
-    private fun addNotes(selected: Boolean) {
+    private fun addNotes(selected: Boolean, text: String) {
 
-        refreshDisplay(selected)
+        refreshDisplay(selected, text)
     }
 
     // function to add the notes
-    private fun addRandomNotes(importantFlg: Boolean, selected: Boolean){
+    private fun addRandomNotes(importantFlg: Boolean, selected: Boolean, text: String){
         val titleStr = genParagraph().first
         val bodyStr = genParagraph().second
         // save current notes to our list for all lists
         noteCounter += 1
         val note = Note(noteCounter, titleStr, bodyStr, importantFlg)
         notesList.add(note)
-        refreshDisplay(selected)
+        refreshDisplay(selected, text)
     }
 
-    private fun deleteNotes(selected: Boolean, targetId: Int) {
+    private fun deleteNotes(selected: Boolean, targetId: Int, text: String) {
         notesList.removeIf{it.id == targetId}
-        refreshDisplay(selected)
+        refreshDisplay(selected, text)
     }
 
-    private fun clearNotes(selected: Boolean) {
+    private fun clearNotes(selected: Boolean, text: String) {
         //  the “Clear” button is enabled when 1 or more notes are displayed
-        //  removes all notes that are displayed according to the filter
-        if (selected){ // under important filter, only remove all the important notes
-            notesList.removeIf { it.isImportant }
-        }else{ // remove everything from the list since no filter for importance on
-            notesList.clear()
+        //  removes all notes that are displayed (might be under the text filter) according to the filter
+        if (text != ""){
+            notesList.removeIf {it.title.lowercase().contains(text) or it.body.lowercase().contains(text) }
         }
-        refreshDisplay(selected)
+        if (selected){ // under important filter, only remove all the important notes
+            if (text == ""){
+                notesList.removeIf { it.isImportant }
+            }
+        }else{ //  no filter for importance on
+            if (text == ""){
+                // remove everything from the list
+                notesList.clear()
+            }
+        }
+        refreshDisplay(selected, text)
     }
 
-    private fun refreshDisplay(selected: Boolean){
+    private fun refreshDisplay(selected: Boolean, text: String){
         // clear the current UI and show all the notes exist in the list
         flowPane.children.clear()
         flowPane.padding = Insets(10.0)
@@ -158,6 +171,11 @@ class Main : Application() {
         flowPane.hgap = 10.0
         var numImportant = 0
         for (aNote in notesList) {
+            if (text!=""){ // text filter is on
+                if (!aNote.title.lowercase().contains(text) and !aNote.body.lowercase().contains(text)){
+                    continue
+                }
+            }
             if (selected){
                 if (!aNote.isImportant){
                     continue
@@ -223,6 +241,5 @@ class Main : Application() {
         statusBar.children.clear()
         statusBar.children.add(Label(statusText))
     }
-
 }
 
