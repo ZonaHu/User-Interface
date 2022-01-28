@@ -123,9 +123,6 @@ class Main : Application() {
         inputBox.textProperty()
             .addListener { _, _, inputText -> refreshDisplay(importantButn.isSelected, inputText.lowercase()) }
 
-        // ============== handle the click actions with the notes ============================================
-
-
         // ===============================set up the default status bar =========================================
         // the text in the status bar is initialized to 0
         statusBar.children.add(Label("0"))
@@ -149,15 +146,15 @@ class Main : Application() {
 
     private fun saveFunc(messg: String, title: String, body: String, importantFlg: Boolean) {
         // if it's an add:
-        if (messg == "Add New Note"){
+        if (messg == "Add New Note") {
             noteCounter += 1
             val note = Note(noteCounter, title, body, importantFlg)
             notesList.add(note)
             curStatus = "add"
-        }else{ // it's edit, find the editId and change its title and content
-            notesList.single {it.id == editedId}.body = body
-            notesList.single {it.id == editedId}.title = title
-            notesList.single {it.id == editedId}.isImportant = importantFlg
+        } else { // it's edit, find the editId and change its title and content
+            notesList.single { it.id == editedId }.body = body
+            notesList.single { it.id == editedId }.title = title
+            notesList.single { it.id == editedId }.isImportant = importantFlg
             curStatus = "edited"
         }
     }
@@ -171,20 +168,20 @@ class Main : Application() {
         body: String,
         important: Boolean
     ) {
+        // initialize layouts for the pop-up  form and dark background
         val addRectangle = Region()
         val popUp = GridPane()
-
+        // set the sizes, padding, and colors
         addRectangle.style = "-fx-background-color:GRAY"
         addRectangle.opacity = 0.5
         addRectangle.isVisible = true;
-
         popUp.setMaxSize(400.0, 300.0)
         popUp.style = "-fx-background-color:LIGHTGRAY"
         popUp.vgap = 10.0
         popUp.hgap = 10.0
         popUp.isDisable = false
         popUp.isVisible = true
-
+        // initialize the elements that need to show in the pop-up form
         val paneTitle = Label(messg)
         val noteTitle = Label("Title")
         val noteBody = Label("Body")
@@ -197,12 +194,13 @@ class Main : Application() {
         val titleTextField = TextField()
         val bodyTextField = TextArea()
         bodyTextField.isWrapText = true
-        if (messg != "Add New Note"){
+        if (messg != "Add New Note") {
             editedId = id;
             titleTextField.text = title
             bodyTextField.text = body
             checkBox.isSelected = important
         }
+        // Grid Pane layout
         popUp.padding = Insets(10.0)
         popUp.add(paneTitle, 0, 0, 6, 1)
         popUp.add(noteTitle, 0, 2, 1, 1)
@@ -213,7 +211,7 @@ class Main : Application() {
         popUp.add(importantText, 3, 4, 5, 1)
         popUp.add(saveButn, 8, 6, 6, 3)
         popUp.add(cancelButn, 15, 6, 6, 3)
-
+        // add to our stack pane
         stackPane.children.addAll(addRectangle, popUp)
         // function to delete a note
         saveButn.setOnAction {
@@ -233,16 +231,18 @@ class Main : Application() {
     }
 
     private fun addNotes(selected: Boolean, text: String) {
+        // function to add new notes
         createNotes(selected, "Add New Note", text, -1, "", "", false)
     }
 
     private fun editNotes(selected: Boolean, text: String, aNote: Note) {
+        // function to edit the current notes
         val message = "Edit Note " + aNote.id.toString()
         createNotes(selected, message, text, aNote.id, aNote.title, aNote.body, aNote.isImportant)
     }
 
-    // function to add the notes
     private fun addRandomNotes(importantFlg: Boolean, selected: Boolean, text: String) {
+        // function to add the random notes
         val titleStr = RandomGen().getTitle()
         val bodyStr = RandomGen().getBody()
         // save current notes to our list for all lists
@@ -254,6 +254,7 @@ class Main : Application() {
     }
 
     private fun deleteNotes(selected: Boolean, text: String) {
+        // function to delete notes
         notesList.removeIf { it.id == clickedId }
         curStatus = "delete"
         targetId = clickedId
@@ -277,12 +278,14 @@ class Main : Application() {
                 notesList.clear()
             }
         }
+        // create a list to store note if it has the same id as the selected one
         val result = notesList.map { it.id == clickedId }
         if (result.isEmpty()) {
             selectedIsCleared = true
             clickedId = 0
         }
         curStatus = "clear"
+        // update the UI
         refreshDisplay(selected, text)
     }
 
@@ -448,7 +451,7 @@ class Main : Application() {
                 statusText2 = "Cleared $clearedNum notes"
             }
             "edited" -> {
-                statusText2 = "Edited Note #${editedId-1}"
+                statusText2 = "Edited Note #${editedId - 1}"
             }
         }
         updateStatus(statusText, statusText2)
