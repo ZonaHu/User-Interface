@@ -344,6 +344,13 @@ class Main : Application() {
                         Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
                     )
                 )
+            }else{
+                // add an invisible border to prevent border slight changes when switch to blue border
+                notes.border = Border(
+                    BorderStroke( // from paint
+                        Color.gray(0.0, 0.0), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
+                    )
+                )
             }
             // set the sizes as 150 by 200 unit rectangular areas
             notes.prefWidth = 150.0
@@ -355,12 +362,7 @@ class Main : Application() {
             title.alignment = Pos.TOP_LEFT
             body.alignment = Pos.TOP_LEFT
             notes.children.addAll(title, body)
-            // add an invisible border to prevent border slight changes when switch to blue border
-            notes.border = Border(
-                BorderStroke( // from paint
-                    Color.gray(0.0, 0.0), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
-                )
-            )
+
             //  notes can be selected with a single click
             notes.setOnMouseClicked {
                 if (it.clickCount == 1) {
