@@ -24,12 +24,6 @@ class Main : Application() {
     private val stackPane = StackPane(layout)
     // use scroll pane since we want to show a scroll bar when there are too many notes to fit height-wise
     private val scrollPane = ScrollPane(flowPane)
-    // list 存所有notes， 通过size()
-    private var notesList = mutableListOf<Note> ()
-    // counter for the number of notes existed
-    private var noteCounter = 0
-    // an id that denotes the current note's id that is clicked
-    private var clickedId = 0
 
     // set up the buttons
     private val addButn = Button("Add")
@@ -38,6 +32,13 @@ class Main : Application() {
     private val clearButn= Button("Clear")
     private val importantButn = ToggleButton("!")
     private val inputBox = TextField()
+
+    // list 存所有notes， 通过size()
+    private var notesList = mutableListOf<Note> ()
+    // counter for the number of notes existed
+    private var noteCounter = 0
+    // an id that denotes the current note's id that is clicked
+    private var clickedId = 0
 
     override fun start(stage: Stage) {
         // ============ set the title =======================
@@ -163,12 +164,16 @@ class Main : Application() {
         refreshDisplay(selected, text)
     }
 
-    private fun refreshDisplay(selected: Boolean, text: String){
+    private fun setUpFlowPane(){
         // clear the current UI and show all the notes exist in the list
         flowPane.children.clear()
         flowPane.padding = Insets(10.0)
         flowPane.vgap = 10.0
         flowPane.hgap = 10.0
+    }
+
+    private fun refreshDisplay(selected: Boolean, text: String){
+        setUpFlowPane()
         var numImportant = 0
         for (aNote in notesList) {
             if (text!=""){ // text filter is on
@@ -208,8 +213,9 @@ class Main : Application() {
                     val oneNote = tmp as VBox
                     oneNote.border = null
                 }
-                if ( clickedId == aNote.id){
-                    // unselect if already selected
+                // TODO: Filtering does not affect the selected note.
+                if (( clickedId == aNote.id)){
+                    // unselect only if the note is already selected in CURRENT filter
                     clickedId = 0
                     deleteButn.isDisable = true // reset the delete button to be disabled
                 }else{
