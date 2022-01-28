@@ -9,11 +9,9 @@ import javafx.stage.Stage
 import kotlin.random.Random
 
 class Main : Application() {
-    // 全局变量是个数组（所有notes 数据结构 no ui）
-    // 刷新 函数 把Flow pane children clear掉再根据数组创建
-    // background, margin, spacing
-    // 弹出框 VBox 是第二个元素在stack Pane
+    // basic idea: I use an array to store all the notes, and update each time when buttons are clicked
 
+    // ======================================== initialization =========================================
     private val layout = BorderPane()
     // create the toolbar
     private val toolBar = HBox()
@@ -25,7 +23,7 @@ class Main : Application() {
     // use scroll pane since we want to show a scroll bar when there are too many notes to fit height-wise
     private val scrollPane = ScrollPane(flowPane)
 
-    // set up the buttons
+    // ================================= set up the buttons============================================
     private val addButn = Button("Add")
     private val randomButn = Button("Random")
     private val deleteButn = Button("Delete")
@@ -33,22 +31,19 @@ class Main : Application() {
     private val importantButn = ToggleButton("!")
     private val inputBox = TextField()
 
+    // ==================== initialize the counters, status strings, flags and notes list==================
     // list contains all the notes currently available
     private var notesList = mutableListOf<Note>()
-
     // counter for the number of notes existed
     private var noteCounter = 0
     // an id that denotes the current note's id that is clicked
     private var clickedId = 0
-
     //  an id that denotes the last note's id that is edited
     private var editedId = 0
     private var numDisplayed = 0
-
     // displayed number of notes
     private var isCleared = false
     private var clearedNum = 0
-
     // the string denotes current status of the status bar
     private var curStatus = ""
     // determine the text that status bar should display
@@ -80,7 +75,7 @@ class Main : Application() {
 
         // ================ set up the centered scroll pane ======================================
         // hide the horizontal scroll bar for smaller size windows
-        scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER;
+        scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
         // make sure the scroll pane is fit to width
         scrollPane.isFitToWidth = true
 
@@ -141,7 +136,7 @@ class Main : Application() {
     }
 
     private fun addNotes(selected: Boolean, text: String) {
-
+        // TODO:
 
         curStatus = "add"
         refreshDisplay(selected, text)
