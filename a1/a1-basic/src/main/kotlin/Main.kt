@@ -237,7 +237,7 @@ class Main : Application() {
     }
 
     private fun editNotes(selected: Boolean, text: String, aNote: Note) {
-        val message = "Edit Note" + aNote.id.toString()
+        val message = "Edit Note " + aNote.id.toString()
         createNotes(selected, message, text, aNote.id, aNote.title, aNote.body, aNote.isImportant)
     }
 
