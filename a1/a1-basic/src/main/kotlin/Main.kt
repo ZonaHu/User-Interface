@@ -64,25 +64,29 @@ class Main : Application() {
         // ==========  handle the actions with the buttons =====================================
         // implement the add function
         addButn.setOnAction {
-            addNotes()
+            addNotes(importantButn.isSelected)
         }
 
         // function to delete a note
         deleteButn.setOnAction {
-            deleteNotes()
+            deleteNotes(importantButn.isSelected)
         }
 
         // function to handle click on Random button
         randomButn.setOnAction {
             // there’s about a 1 in 5 chance that the note is flagged as important
             val imp = (Random.nextInt(5) == 0)
-            addRandomNotes(imp)
+            addRandomNotes(imp, importantButn.isSelected)
         }
 
         // implement the clear all notes
         clearButn.setOnAction {
             // clear all notes
-            clearNotes()
+            clearNotes(importantButn.isSelected)
+        }
+
+        importantButn.setOnAction{
+            impFilter(importantButn.isSelected)
         }
 
         // ========================================================================================
@@ -106,32 +110,54 @@ class Main : Application() {
         stage.show()
     }
 
-    private fun addNotes(){
+    private fun addNotes(selected: Boolean) {
 
+        refreshUI(selected)
     }
 
     // function to add the notes
-    private fun addRandomNotes(importantFlg: Boolean){
+    private fun addRandomNotes(importantFlg: Boolean, selected: Boolean){
         val titleStr = genParagraph().first
         val bodyStr = genParagraph().second
         // save current notes to our list for all lists
         noteCounter += 1
         val note = Note(noteCounter, titleStr, bodyStr, importantFlg)
         notesList.add(note)
-        refreshUI()
+        refreshUI(selected)
     }
 
-    private fun deleteNotes(){
-        refreshUI()
+    private fun deleteNotes(selected: Boolean) {
+        refreshUI(selected)
     }
 
-    private fun refreshUI(){
+    private fun impFilter(selected: Boolean) {
+        refreshUI(selected)
+    }
+
+    private fun clearNotes(selected: Boolean) {
+        // TODO: When 1 or more notes are displayed, the “Clear” button is enabled.
+        //  Pressing “Clear” removes all notes that are displayed
+        //  (i.e. only those visible due to active filters, or all notes if no filters are active).
+        if (selected){ // under important filter, only remove all the important notes
+            notesList.removeIf { it.isImportant }
+        }else{
+            notesList.clear()
+        }
+        refreshUI(selected)
+    }
+
+    private fun refreshUI(selected: Boolean){
         // clear the current UI and show all the notes exist in the list
         flowPane.children.clear()
         flowPane.padding = Insets(10.0)
         flowPane.vgap = 10.0
         flowPane.hgap = 10.0
         for (aNote in notesList) {
+            if (selected){
+                if (!aNote.isImportant){
+                    continue
+                }
+            }
             val notes = VBox()
             // set the background colors for the notes
             if (!aNote.isImportant){
@@ -151,14 +177,6 @@ class Main : Application() {
             notes.children.addAll(title, body)
             flowPane.children.add(notes)
         }
-    }
-
-    private fun clearNotes(){
-        // TODO: When 1 or more notes are displayed, the “Clear” button is enabled.
-        //  Pressing “Clear” removes all notes that are displayed
-        //  (i.e. only those visible due to active filters, or all notes if no filters are active).
-//        notesList.removeIf {it.isImportant==true} // remove all the important ones
-        flowPane.children.clear()
     }
 
     // function to update the status bar
