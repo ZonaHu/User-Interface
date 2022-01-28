@@ -196,6 +196,14 @@ class Main : Application() {
             }
             val title = Label(aNote.title)
             val body = Label(aNote.body).apply { this.isWrapText = true}
+            // Filtering does not affect the selected note.
+            if (aNote.id == clickedId){
+                deleteButn.isDisable = false
+                notes.border = Border(
+                    BorderStroke( // from paint
+                        Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
+                    ))
+            }
             // set the sizes as 150 by 200 unit rectangular areas
             notes.prefWidth = 150.0
             notes.prefHeight = 200.0
@@ -213,7 +221,6 @@ class Main : Application() {
                     val oneNote = tmp as VBox
                     oneNote.border = null
                 }
-                // TODO: Filtering does not affect the selected note.
                 if (( clickedId == aNote.id)){
                     // unselect only if the note is already selected in CURRENT filter
                     clickedId = 0
