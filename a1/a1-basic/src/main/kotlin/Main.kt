@@ -272,12 +272,16 @@ class Main : Application() {
                 // pass in the number of notes we displayed
                 updateStatusBar(numDisplayed, isFiltered)
             }
-            deleteButn.isDisable = true // if no note is selected, delete button is false
+//            deleteButn.isDisable = true // if no note is selected, delete button is false
             if (isFiltered) {
                 numDisplayed++ // increment the displayed counter
 
             }
             flowPane.children.add(notes)
+        }
+        // if no note is selected or the selected one is deleted, delete button is disabled
+        if ((numDisplayed == 0) or (curStatus == "delete")){
+            deleteButn.isDisable = true
         }
         // clear is only valid if there is at least one note being displayed
         if (!selected) {
@@ -333,4 +337,3 @@ class Main : Application() {
         statusBar.children.addAll(Label(statusText), Label(statusText2))
     }
 }
-
