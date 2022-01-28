@@ -67,7 +67,7 @@ class Main : Application() {
         // clear is only valid if there is at least one note
         clearButn.prefWidth = (100.0)
         clearButn.isDisable = true
-        // TODO: text field can be wider
+        // text field can be wider
         inputBox.prefWidth = (200.0)
 
         toolBar.children.addAll(addButn, randomButn, deleteButn, clearButn, importantButn, inputBox)
