@@ -155,9 +155,9 @@ class Main : Application() {
             notesList.add(note)
             curStatus = "add"
         }else{ // it's edit, find the editId and change its title and content
-            notesList.removeIf { it.id == editedId }
-            val note = Note(editedId, title, body, importantFlg)
-            notesList.add(note)
+            notesList.single {it.id == editedId}.body = body
+            notesList.single {it.id == editedId}.title = title
+            notesList.single {it.id == editedId}.isImportant = importantFlg
             curStatus = "edited"
         }
     }
