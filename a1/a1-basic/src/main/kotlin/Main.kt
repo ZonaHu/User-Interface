@@ -45,16 +45,19 @@ class Main : Application() {
 
     // an id that denotes the current note's id that is clicked
     private var clickedId = 0
+
     //  an id that denotes the last note's id that is edited
     private var editedId = 0
 
     private var numDisplayed = 0
+
     // displayed number of notes
     private var isCleared = false
     private var clearedNum = 0
 
     // the string denotes current status of the status bar
     private var curStatus = ""
+
     // determine the text that status bar should display
     private var statusText = ""
     private var statusText2 = ""
@@ -201,15 +204,15 @@ class Main : Application() {
         setUpFlowPane()
         var numImportant = 0
         var isFiltered = true
-        if (curStatus == "clear" && !isCleared){ // TODO: the number of cleared notes doesn't change when filter changes
+        if (curStatus == "clear" && !isCleared) { // TODO: the number of cleared notes doesn't change when filter changes
             clearedNum = numDisplayed // make sure it's not 0 from filter
             isCleared = true
         }
-        if (curStatus != "clear" ){
+        if (curStatus != "clear") {
             isCleared = false
         }
         numDisplayed = 0
-        if (!selected and (text == "")){
+        if (!selected and (text == "")) {
             numDisplayed = notesList.size
             isFiltered = false
         }
@@ -282,7 +285,7 @@ class Main : Application() {
                 updateStatusBar(numDisplayed, isFiltered)
             }
             deleteButn.isDisable = true // if no note is selected, delete button is false
-            if (isFiltered){
+            if (isFiltered) {
                 numDisplayed++ // increment the displayed counter
 
             }
@@ -303,11 +306,11 @@ class Main : Application() {
 
     private fun updateStatusBar(numDisplayed: Int, isFiltered: Boolean) {
         // the first portion of the status bar
-        statusText = if ((curStatus == "selected") and (!isFiltered)){
+        statusText = if ((curStatus == "selected") and (!isFiltered)) {
             "#$clickedId | " + notesList.size.toString()
-        } else if (isFiltered){
-            "$numDisplayed (of " + notesList.size.toString() +")"
-        } else{
+        } else if (isFiltered) {
+            "$numDisplayed (of " + notesList.size.toString() + ")"
+        } else {
             notesList.size.toString()
         }
 
@@ -315,7 +318,7 @@ class Main : Application() {
         when (curStatus) {
             "add" -> {
                 statusText2 = "Added Note #"
-                val num = noteCounter-1
+                val num = noteCounter - 1
                 statusText2 += num.toString()
             }
             "delete" -> {
