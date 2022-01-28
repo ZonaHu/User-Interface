@@ -312,17 +312,22 @@ class Main : Application() {
         }
 
         // determine the second portion of the text that status bar should display
-        if (curStatus == "add") {
-            statusText2 = "Added Note #"
-            val num = noteCounter-1
-            statusText2 += num.toString()
-        } else if (curStatus == "delete") {
-            statusText2 = "Deleted Note #$clickedId"
-        } else if (curStatus == "clear") {
-            // cleared number displayed notes
-            statusText2 = "Cleared " + clearedNum.toString()+" notes"
-        } else if (curStatus == "edited") {
-            statusText2 = "Edited Note #$editedId"
+        when (curStatus) {
+            "add" -> {
+                statusText2 = "Added Note #"
+                val num = noteCounter-1
+                statusText2 += num.toString()
+            }
+            "delete" -> {
+                statusText2 = "Deleted Note #$clickedId"
+            }
+            "clear" -> {
+                // cleared number displayed notes
+                statusText2 = "Cleared $clearedNum notes"
+            }
+            "edited" -> {
+                statusText2 = "Edited Note #$editedId"
+            }
         }
         updateStatus(statusText, statusText2)
     }
