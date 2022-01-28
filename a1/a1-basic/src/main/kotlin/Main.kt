@@ -23,6 +23,8 @@ class Main : Application() {
     private val stackPane = StackPane(layout)
     // use scroll pane since we want to show a scroll bar when there are too many notes to fit height-wise
     private val scrollPane = ScrollPane(flowPane)
+    // list 存所有notes， 通过size()
+
 
     override fun start(stage: Stage) {
         // ============ set the title =======================
@@ -35,12 +37,14 @@ class Main : Application() {
         addButn.prefWidth = (100.0)
         val randomButn = Button("Random")
         randomButn.prefWidth = (100.0)
-        // TODO: delete is only valid if there is some selected
+        // delete is only valid if there is some selected
         val deleteButn= Button("Delete")
         deleteButn.prefWidth = (100.0)
-        // TODO: clear is only valid if there is at least one note
+        deleteButn.isDisable = true
+        // clear is only valid if there is at least one note
         val clearButn= Button("Clear")
         clearButn.prefWidth = (100.0)
+        clearButn.isDisable = true
         val importantButn = ToggleButton("!")
 
         // TODO: text field can be wider
