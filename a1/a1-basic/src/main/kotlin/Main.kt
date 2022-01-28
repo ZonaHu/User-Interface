@@ -174,7 +174,7 @@ class Main : Application() {
         // set the sizes, padding, and colors
         addRectangle.style = "-fx-background-color:GRAY"
         addRectangle.opacity = 0.5
-        addRectangle.isVisible = true;
+        addRectangle.isVisible = true
         popUp.setMaxSize(400.0, 300.0)
         popUp.style = "-fx-background-color:LIGHTGRAY"
         popUp.vgap = 10.0
@@ -301,7 +301,7 @@ class Main : Application() {
         setUpFlowPane()
         var numImportant = 0
         var isFiltered = true
-        if (curStatus == "clear" && !isCleared) { // TODO: the number of cleared notes doesn't change when filter changes
+        if (curStatus == "clear" && !isCleared) { // the number of cleared notes doesn't change when filter changes
             clearedNum = numDisplayed // make sure it's not 0 from filter
             isCleared = true
         }
