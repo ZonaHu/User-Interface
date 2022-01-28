@@ -331,7 +331,14 @@ class Main : Application() {
             val notes = VBox()
             // set the background colors for the notes
             if (!aNote.isImportant) {
-                notes.style = "-fx-background-color:WHITE"
+                // 1/5 chance to be green and orange
+                if (Random.nextInt(5) == 0){
+                    notes.style =  "-fx-background-color:GREEN"
+                } else if (Random.nextInt(5) == 1){
+                    notes.style =  "-fx-background-color:ORANGE"
+                }else{
+                    notes.style =  "-fx-background-color:WHITE"
+                }
             } else {
                 notes.style = "-fx-background-color:LIGHTYELLOW"
             }
