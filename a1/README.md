@@ -12,3 +12,4 @@ Zuomiao Hu (z228hu 20815304)
 ## Enhancement 
 * added right click also select notes 
 * right click gives red border
+* randomly generate notes background

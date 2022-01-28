@@ -386,19 +386,11 @@ class Main : Application() {
                         selectedIsCleared = false
                         deleteButn.isDisable = false
                         curStatus = "selected"
-                        if (it.button == MouseButton.PRIMARY){
-                            notes.border = Border(
-                                BorderStroke( // from paint
-                                    Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
-                                )
+                        notes.border = Border(
+                            BorderStroke( // from paint
+                                Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
                             )
-                        }else{
-                            notes.border = Border(
-                                BorderStroke( // from paint
-                                    Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
-                                )
-                            )
-                        }
+                        )
                     }
                     // pass in the number of notes we displayed
                     updateStatusBar(numDisplayed, isFiltered)
