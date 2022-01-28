@@ -15,30 +15,49 @@ class Main : Application() {
 
     // 弹出框 VBox 是第二个元素在stack Pane
     private val layout = BorderPane()
+
     // create the toolbar
     private val toolBar = HBox()
+
     // bottom status bar
     private val statusBar = HBox()
+
     // scroll pane + flow pane in the center to display notes since notes flow left to right
     private val flowPane = FlowPane()
     private val stackPane = StackPane(layout)
+
     // use scroll pane since we want to show a scroll bar when there are too many notes to fit height-wise
     private val scrollPane = ScrollPane(flowPane)
 
     // set up the buttons
     private val addButn = Button("Add")
     private val randomButn = Button("Random")
-    private val deleteButn= Button("Delete")
-    private val clearButn= Button("Clear")
+    private val deleteButn = Button("Delete")
+    private val clearButn = Button("Clear")
     private val importantButn = ToggleButton("!")
     private val inputBox = TextField()
 
-    // list 存所有notes， 通过size()
-    private var notesList = mutableListOf<Note> ()
+    // list contains all the notes currently available
+    private var notesList = mutableListOf<Note>()
+
     // counter for the number of notes existed
     private var noteCounter = 0
+
     // an id that denotes the current note's id that is clicked
     private var clickedId = 0
+    //  an id that denotes the last note's id that is edited
+    private var editedId = 0
+
+    private var numDisplayed = 0
+    // displayed number of notes
+    private var isCleared = false
+    private var clearedNum = 0
+
+    // the string denotes current status of the status bar
+    private var curStatus = ""
+    // determine the text that status bar should display
+    private var statusText = ""
+    private var statusText2 = ""
 
     override fun start(stage: Stage) {
         // ============ set the title =======================
@@ -93,12 +112,13 @@ class Main : Application() {
             clearNotes(importantButn.isSelected, inputBox.text)
         }
 
-        importantButn.setOnAction{
+        importantButn.setOnAction {
             refreshDisplay(importantButn.isSelected, inputBox.text)
         }
 
         // immediate text search is case-insensitive according to the description
-        inputBox.textProperty().addListener{ _, _, inputText -> refreshDisplay(importantButn.isSelected, inputText.lowercase())}
+        inputBox.textProperty()
+            .addListener { _, _, inputText -> refreshDisplay(importantButn.isSelected, inputText.lowercase()) }
 
         // ============== handle the click actions with the notes =====================================
 
@@ -107,7 +127,7 @@ class Main : Application() {
         // the text in the status bar is initialized to 0
         statusBar.children.add(Label("0"))
         statusBar.padding = Insets(10.0)
-        statusBar.spacing = 10.0
+        statusBar.spacing = 30.0
 
         // set up the layout and the scene
         layout.top = toolBar
@@ -126,45 +146,50 @@ class Main : Application() {
 
     private fun addNotes(selected: Boolean, text: String) {
 
+
+        curStatus = "add"
         refreshDisplay(selected, text)
     }
 
     // function to add the notes
-    private fun addRandomNotes(importantFlg: Boolean, selected: Boolean, text: String){
+    private fun addRandomNotes(importantFlg: Boolean, selected: Boolean, text: String) {
         val titleStr = genParagraph().first
         val bodyStr = genParagraph().second
         // save current notes to our list for all lists
         noteCounter += 1
         val note = Note(noteCounter, titleStr, bodyStr, importantFlg)
         notesList.add(note)
+        curStatus = "add"
         refreshDisplay(selected, text)
     }
 
     private fun deleteNotes(selected: Boolean, targetId: Int, text: String) {
-        notesList.removeIf{it.id == targetId}
+        notesList.removeIf { it.id == targetId }
+        curStatus = "delete"
         refreshDisplay(selected, text)
     }
 
     private fun clearNotes(selected: Boolean, text: String) {
         //  the “Clear” button is enabled when 1 or more notes are displayed
         //  removes all notes that are displayed (might be under the text filter) according to the filter
-        if (text != ""){
-            notesList.removeIf {it.title.lowercase().contains(text) or it.body.lowercase().contains(text) }
+        if (text != "") {
+            notesList.removeIf { it.title.lowercase().contains(text) or it.body.lowercase().contains(text) }
         }
-        if (selected){ // under important filter, only remove all the important notes
-            if (text == ""){
+        if (selected) { // under important filter, only remove all the important notes
+            if (text == "") {
                 notesList.removeIf { it.isImportant }
             }
-        }else{ //  no filter for importance on
-            if (text == ""){
+        } else { //  no filter for importance on
+            if (text == "") {
                 // remove everything from the list
                 notesList.clear()
             }
         }
+        curStatus = "clear"
         refreshDisplay(selected, text)
     }
 
-    private fun setUpFlowPane(){
+    private fun setUpFlowPane() {
         // clear the current UI and show all the notes exist in the list
         flowPane.children.clear()
         flowPane.padding = Insets(10.0)
@@ -172,37 +197,53 @@ class Main : Application() {
         flowPane.hgap = 10.0
     }
 
-    private fun refreshDisplay(selected: Boolean, text: String){
+    private fun refreshDisplay(selected: Boolean, text: String) {
         setUpFlowPane()
         var numImportant = 0
+        var isFiltered = true
+        if (curStatus == "clear" && !isCleared){ // TODO: the number of cleared notes doesn't change when filter changes
+            clearedNum = numDisplayed // make sure it's not 0 from filter
+            isCleared = true
+        }
+        if (curStatus != "clear" ){
+            isCleared = false
+        }
+        numDisplayed = 0
+        if (!selected and (text == "")){
+            numDisplayed = notesList.size
+            isFiltered = false
+        }
         for (aNote in notesList) {
-            if (text!=""){ // text filter is on
-                if (!aNote.title.lowercase().contains(text) and !aNote.body.lowercase().contains(text)){
+            if (text != "") { // text filter is on
+                if (!aNote.title.lowercase().contains(text) and !aNote.body.lowercase().contains(text)) {
                     continue
                 }
+                isFiltered = true
             }
-            if (selected){
-                if (!aNote.isImportant){
+            if (selected) {
+                if (!aNote.isImportant) {
                     continue
                 }
                 numImportant += 1
+                isFiltered = true
             }
             val notes = VBox()
             // set the background colors for the notes
-            if (!aNote.isImportant){
+            if (!aNote.isImportant) {
                 notes.style = "-fx-background-color:WHITE"
-            }else{
+            } else {
                 notes.style = "-fx-background-color:LIGHTYELLOW"
             }
             val title = Label(aNote.title)
-            val body = Label(aNote.body).apply { this.isWrapText = true}
+            val body = Label(aNote.body).apply { this.isWrapText = true }
             // Filtering does not affect the selected note.
-            if (aNote.id == clickedId){
+            if (aNote.id == clickedId) {
                 deleteButn.isDisable = false
                 notes.border = Border(
                     BorderStroke( // from paint
                         Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
-                    ))
+                    )
+                )
             }
             // set the sizes as 150 by 200 unit rectangular areas
             notes.prefWidth = 150.0
@@ -217,42 +258,79 @@ class Main : Application() {
             //  notes can be selected with a single click
             notes.setOnMouseClicked {
                 // reset the borders for all notes
-                for (tmp in flowPane.children){
+                for (tmp in flowPane.children) {
                     val oneNote = tmp as VBox
                     oneNote.border = null
                 }
-                if (( clickedId == aNote.id)){
+                if ((clickedId == aNote.id)) {
                     // unselect only if the note is already selected in CURRENT filter
                     clickedId = 0
+                    curStatus = "notSelected"
                     deleteButn.isDisable = true // reset the delete button to be disabled
-                }else{
+                } else {
                     // select and add a border
                     clickedId = aNote.id
                     deleteButn.isDisable = false
+                    curStatus = "selected"
                     notes.border = Border(
                         BorderStroke( // from paint
                             Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths(1.0)
-                        ))
+                        )
+                    )
                 }
-                //TODO: update the status bar
+                // pass in the number of notes we displayed
+                updateStatusBar(numDisplayed, isFiltered)
             }
             deleteButn.isDisable = true // if no note is selected, delete button is false
+            if (isFiltered){
+                numDisplayed++ // increment the displayed counter
+
+            }
             flowPane.children.add(notes)
         }
         // clear is only valid if there is at least one note being displayed
-        if (!selected) {clearButn.isDisable = notesList.size < 1} // if important filter is not on
+        if (!selected) {
+            clearButn.isDisable = notesList.size < 1
+        } // if important filter is not on
         // if important filter is on:
         else {
-            //the button is not valid if there is no important note
+            //the button is not valid if important filter is on and there is no important note
             clearButn.isDisable = (numImportant == 0)
         }
+        // pass in the number of notes we displayed
+        updateStatusBar(numDisplayed, isFiltered)
+    }
+
+    private fun updateStatusBar(numDisplayed: Int, isFiltered: Boolean) {
+        // the first portion of the status bar
+        statusText = if ((curStatus == "selected") and (!isFiltered)){
+            "#$clickedId | " + notesList.size.toString()
+        } else if (isFiltered){
+            "$numDisplayed (of " + notesList.size.toString() +")"
+        } else{
+            notesList.size.toString()
+        }
+
+        // determine the second portion of the text that status bar should display
+        if (curStatus == "add") {
+            statusText2 = "Added Note #"
+            val num = noteCounter-1
+            statusText2 += num.toString()
+        } else if (curStatus == "delete") {
+            statusText2 = "Deleted Note #$clickedId"
+        } else if (curStatus == "clear") {
+            // cleared number displayed notes
+            statusText2 = "Cleared " + clearedNum.toString()+" notes"
+        } else if (curStatus == "edited") {
+            statusText2 = "Edited Note #$editedId"
+        }
+        updateStatus(statusText, statusText2)
     }
 
     // function to update the status bar
-    // TODO: 全局变量 onclick 的时候handel
-    private fun updateStatus(statusText: String){
+    private fun updateStatus(statusText: String, statusText2: String) {
         statusBar.children.clear()
-        statusBar.children.add(Label(statusText))
+        statusBar.children.addAll(Label(statusText), Label(statusText2))
     }
 }
 
