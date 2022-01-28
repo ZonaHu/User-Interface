@@ -183,8 +183,6 @@ class Main : Application() {
         val result = notesList.map { it.id == clickedId }
         if (result.isEmpty()){
             selectedIsCleared = true
-        }
-        if (selectedIsCleared){
             clickedId = 0
         }
         curStatus = "clear"
@@ -290,21 +288,14 @@ class Main : Application() {
             flowPane.children.add(notes)
         }
         // if size = 0 deleteButn must be disabled
-        if ((notesList.size == 0)) {
-            clickedId = 0
-        }
+        if ((notesList.size == 0)) { clickedId = 0 }
         // if no note is selected or the selected one is deleted, delete button is disabled
-        if ( (curStatus == "delete") or  (clickedId==0)){
-            deleteButn.isDisable = true
-        }
+        if ( (curStatus == "delete") or  (clickedId==0)){  deleteButn.isDisable = true }
 
         // clear is only valid if there is at least one note being displayed
-        if (!impFilterSelected) {
-            clearButn.isDisable = notesList.size < 1
-        } // if important filter is not on
+        if (!impFilterSelected) { clearButn.isDisable = notesList.size < 1 } // if important filter is not on
         // if important filter is on:
-        else {
-            //the button is not valid if important filter is on and there is no important note
+        else { //the button is not valid if important filter is on and there is no important note
             clearButn.isDisable = (numImportant == 0)
         }
         // pass in the number of notes we displayed
