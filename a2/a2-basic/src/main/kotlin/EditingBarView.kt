@@ -1,9 +1,8 @@
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 
-internal class View1(
+internal class EditingBarView(
     private val model: Model
 ) : VBox(), IView {
 

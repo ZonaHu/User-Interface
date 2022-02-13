@@ -1,8 +1,7 @@
-import javafx.event.EventHandler
 import javafx.scene.control.TextArea
 import javafx.scene.layout.VBox
 
-internal class View2(
+internal class DataTableView(
     private val model: Model
 ) : VBox(), IView {
 

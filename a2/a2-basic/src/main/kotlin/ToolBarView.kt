@@ -30,10 +30,20 @@ class ToolBarView (private val model: Model,
 
         // The toolbar has a ChoiceBox (labelled “Dataset: ”)
         val dropDown = ChoiceBox(dropDownChoices)
+        // initialize to select the "Increasing"
+        dropDown.selectionModel.selectFirst()
         children.add(Label("Dataset: "))
         children.add(dropDown)
+
         // a New button,
-        //
+        val newBtn = Button("New")
+        newBtn.prefWidth = 100.0
+//        newBtn.onAction =
+//            EventHandler { event: ActionEvent ->
+//                controller.newNote()
+//            }
+        children.add(newBtn)
+
         //
         // and a Spinner
 

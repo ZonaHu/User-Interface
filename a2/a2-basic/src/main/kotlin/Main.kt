@@ -1,7 +1,5 @@
 import javafx.application.Application
-import javafx.geometry.Insets
 import javafx.scene.Scene
-import javafx.scene.control.*
 import javafx.scene.layout.*
 import javafx.stage.Stage
 
@@ -26,8 +24,8 @@ class Main : Application() {
 
         // create each view, and tell them about the model
         // the views will register themselves with the model
-        val view1 = View1(model)
-        val view2 = View2(model)
+        val editingBarView = EditingBarView(model)
+        val `dataTableView.kt` = `DataTableView.kt`(model)
 
         // =========== create the scene with initialized size of 800 by 600 units ===============================
         // Add layout to a scene (and the scene to the stage)

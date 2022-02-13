@@ -19,7 +19,7 @@ class StatusBarView (
 
     init {
         // status bar layout
-        alignment = Pos.CENTER_LEFT
+//        alignment = Pos.CENTER_LEFT
         padding = Insets(10.0)
         spacing = 30.0
         style = "-fx-background-color:LIGHTGRAY"
