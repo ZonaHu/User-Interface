@@ -1,14 +1,16 @@
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 
 class GraphView (
     private val model: Model
-) : HBox(), IView {
+) : GridPane(), IView {
 
     override fun updateView() {
 //        ("Not yet implemented")
     }
 
     init{
+//        maxWidth = 250.0
         style = " -fx-background-color:red"
 
 
