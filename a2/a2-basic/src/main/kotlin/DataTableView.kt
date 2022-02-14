@@ -7,7 +7,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 
-fun createRow (text: String): HBox {
+fun createRow (text: String, default: Int): HBox {
     // set label properties
 
     // add label widget to the pane
@@ -15,7 +15,7 @@ fun createRow (text: String): HBox {
     val label = Label()
     label.text = text
 
-    val spinner = Spinner<Int>(1, 100, 1)
+    val spinner = Spinner<Int>(1, 100, default)
     spinner.isEditable = false
     spinner.prefWidth = 70.0
 
@@ -30,14 +30,20 @@ fun createRow (text: String): HBox {
 internal class DataTableView(
     private val model: Model
 ) : ScrollPane(), IView {
+    private val flowPane = FlowPane()
+    private var counter = 0
 
-    private val text = TextArea("")
 
     // When notified by the model that things have changed,
     // update to display the new value
     override fun updateView() {
         println("View2: updateView")
-
+        flowPane.children.clear()
+        counter = 0
+        for (index in model.getDataSets()?.data!!){
+            counter ++
+            flowPane.children.add(createRow("$counter: ", index))
+        }
     }
 
     init {
@@ -49,21 +55,9 @@ internal class DataTableView(
         isFitToWidth = true
         padding = Insets(10.0)
 
-        val flowPane = FlowPane()
         flowPane.alignment = Pos.CENTER_LEFT
         flowPane.hgap = 10.0
         flowPane.prefHeight = 100.0
-
-        flowPane.children.add(createRow("1:"))
-        flowPane.children.add(createRow("2:"))
-        flowPane.children.add(createRow("3:"))
-        flowPane.children.add(createRow("4:"))
-        flowPane.children.add(createRow("5:"))
-        flowPane.children.add(createRow("6:"))
-        flowPane.children.add(createRow("7:"))
-        flowPane.children.add(createRow("8:"))
-        flowPane.children.add(createRow("9:"))
-        flowPane.children.add(createRow("10:"))
 
         content = flowPane
         // register with the model when we're ready to start receiving data

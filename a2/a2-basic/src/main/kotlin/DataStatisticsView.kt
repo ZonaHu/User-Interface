@@ -22,11 +22,6 @@ class DataStatisticsView (
         hgap = 5.0
         vgap = 10.0
 
-//        for(index, data in model.dataset.data.withIndex()){
-//            this.add(Label($index), 0, index, 1, 1)
-//            this.add(Spinner(),1,index,1,1)
-//        }
-
         //  a row counter
         var r = 0
         val numL = Label("Number")
