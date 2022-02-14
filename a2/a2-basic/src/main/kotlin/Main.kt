@@ -28,7 +28,11 @@ class Main : Application() {
         layout.top = ToolBarView(model, this)
         main.top = EditingBarView(model)
 
-//        val scrollPane = ScrollPane(DataTableView(model))
+        val scrollPane = ScrollPane(DataTableView(model))
+        // hide the horizontal scroll bar for smaller size windows
+        scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
+//        // make sure the scroll pane is fit to width
+        scrollPane.isFitToWidth = true
 
         main.left = DataTableView(model)
         main.center = GraphView(model)

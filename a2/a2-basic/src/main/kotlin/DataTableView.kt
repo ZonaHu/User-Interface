@@ -1,12 +1,11 @@
 import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextArea
-import javafx.scene.layout.GridPane
-import javafx.scene.layout.VBox
+import javafx.scene.layout.FlowPane
 
 internal class DataTableView(
     private val model: Model
-) : GridPane(), IView {
+) : FlowPane(), IView {
 
     private val text = TextArea("")
 
@@ -21,7 +20,8 @@ internal class DataTableView(
         // set label properties
 
         // add label widget to the pane
-        children.add(Label("1: "))
+        val title1 = Label("1: ")
+        children.add(title1)
 
         // a Spinner
         val spinner = Spinner<Int>(1, 20, 1)
