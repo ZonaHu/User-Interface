@@ -27,15 +27,18 @@ class EditingBarView(
         children.add(Label("Title: "))
         val titleField = TextField()
         children.add(titleField)
+//        titleField.text =
 
         children.add(Label("X-Axis: "))
         // add text field to the pane
         val xAxisField = TextField()
         children.add(xAxisField)
+//        xAxisField.text =
 
         children.add(Label("Y-Axis: "))
         val yAxisField = TextField()
         children.add(yAxisField)
+//        yAxisField.text =
 
         // register with the model when we're ready to start receiving data
         model.addView(this)
