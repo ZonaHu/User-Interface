@@ -8,13 +8,18 @@ import javafx.scene.layout.HBox
 class EditingBarView(
     private val model: Model
 ) : HBox(), IView {
+    private val titleField = TextField()
+    private val xAxisField = TextField()
+    private val yAxisField = TextField()
 
     // When notified by the model that things have changed,
     // update to display the new value
     override fun updateView() {
         println("View1: updateView model.message")
         // just set the button name to the counter
-
+        titleField.text = model.getDataSets()?.title.toString()
+        xAxisField.text = model.getDataSets()?.xAxis.toString()
+        yAxisField.text =model.getDataSets()?.yAxis.toString()
     }
 
     init {
@@ -24,21 +29,15 @@ class EditingBarView(
         // There are 10 units of spacing around and between all toolbar widgets.
         spacing = 10.0
 
+        // add labels and text fields to the pane
         children.add(Label("Title: "))
-        val titleField = TextField()
         children.add(titleField)
-//        titleField.text =
 
         children.add(Label("X-Axis: "))
-        // add text field to the pane
-        val xAxisField = TextField()
         children.add(xAxisField)
-//        xAxisField.text =
 
         children.add(Label("Y-Axis: "))
-        val yAxisField = TextField()
         children.add(yAxisField)
-//        yAxisField.text =
 
         // register with the model when we're ready to start receiving data
         model.addView(this)

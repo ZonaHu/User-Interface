@@ -1,4 +1,5 @@
 import javafx.collections.FXCollections
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
@@ -9,6 +10,15 @@ class ToolBarView (private val model: Model,
                    private val controller: Main
 ) : HBox(), IView {
 
+    private var dropDownChoices = FXCollections.observableArrayList(
+        "Increasing",
+        "Large",
+        "Middle",
+        "Single",
+        "Range",
+        "Percentage"
+    )
+
     override fun updateView() {
         // nothing
     }
@@ -18,14 +28,6 @@ class ToolBarView (private val model: Model,
         // There are 10 units of spacing around and between all toolbar widgets.
         spacing = 10.0
 
-        val dropDownChoices = FXCollections.observableArrayList(
-            "Increasing",
-            "Large",
-            "Middle",
-            "Single",
-            "Range",
-            "Percentage"
-        )
 
         // The toolbar has a ChoiceBox (labelled “Dataset: ”)
         val dropDown = ChoiceBox(dropDownChoices)
@@ -33,6 +35,10 @@ class ToolBarView (private val model: Model,
 
         // initialize to select the "Increasing"
         dropDown.selectionModel.selectFirst()
+        dropDown.onAction =
+            EventHandler{
+                model.setDataset(dropDown.value)
+        }
         // left-aligned and they do not wrap
         alignment = Pos.CENTER_LEFT
         children.add(Label("Dataset: "))
