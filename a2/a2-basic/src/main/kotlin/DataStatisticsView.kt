@@ -9,9 +9,31 @@ import javafx.scene.layout.VBox
 class DataStatisticsView (
     private val model: Model
 ) : GridPane(), IView {
+    private val numL = Label("Number")
+    private val minL = Label("Minimum")
+    private val maxL = Label("Maximum")
+    private val avgL = Label("Average")
+    private val sumL = Label("Sum")
 
     override fun updateView() {
-//        ("Not yet implemented")
+        // reset the children
+        children.clear()
+        add(numL, 1, 0)
+        add(minL, 1, 1)
+        add(maxL, 1, 2)
+        // The “Average” is accurate to 1 decimal place.
+        add(avgL, 1, 3)
+        add(sumL, 1, 4)
+        val numN = Label("0")
+        val minN = Label("10")
+        val maxN = Label("100")
+        val avgN = Label("0")
+        val sumN = Label("0")
+        add(numN, 3, 0)
+        add(minN, 3, 1)
+        add(maxN, 3, 2)
+        add(avgN, 3, 3)
+        add(sumN, 3, 4)
     }
 
     init{
@@ -21,27 +43,6 @@ class DataStatisticsView (
         padding = Insets(5.0)
         hgap = 5.0
         vgap = 10.0
-
-        //  a row counter
-        var r = 0
-        val numL = Label("Number")
-        add(numL, 1, r)
-        r++
-
-        val minL = Label("Minimum")
-        add(minL, 1, r)
-        r++
-
-        val maxL = Label("Maximum")
-        add(maxL, 1, r)
-        r++
-
-        val avgL = Label("Average")
-        add(avgL, 1, r)
-        r++
-
-        val sumL = Label("Sum")
-        add(sumL, 1, r)
 
         // register with the model when we're ready to start receiving data
         model.addView(this)
