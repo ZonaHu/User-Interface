@@ -20,7 +20,6 @@ class Main : Application() {
 
         // the main interface
         val main = BorderPane()
-
         // set up the border color
         main.style = "-fx-border-color: lightgrey"
         val layout = BorderPane(main)
@@ -138,10 +137,4 @@ class Main : Application() {
 //        stage.minHeight = 400.0
 //        stage.show()
     }
-
-//    // function to update the status bar
-//    private fun updateStatus(statusText: String, statusText2: String) {
-//        statusBar.children.clear()
-//        statusBar.children.addAll(Label(statusText), Label(statusText2))
-//    }
 
