@@ -23,10 +23,6 @@ class Model {
 
     //endregion
 
-    // simple accessor method to fetch the current state
-    // the data in the model, just a counter
-    var counterValue = 0
-        private set
 
     // model's last message describing operation
     var message: String = "datasets"
@@ -35,8 +31,7 @@ class Model {
     // method that the Controller uses to tell the Model to change state
     // in a larger application there would probably be multiple entry points like this
     fun incrementCounter() {
-        println("Model: increment counter to ${counterValue + 1}")
-        counterValue++
+        println("Model: increment counter to.")
         notifyObservers()
     }
 }

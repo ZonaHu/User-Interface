@@ -1,9 +1,8 @@
 import javafx.collections.FXCollections
-import javafx.event.ActionEvent
 import javafx.geometry.Insets
-import javafx.scene.control.Button
-import javafx.scene.control.ChoiceBox
-import javafx.scene.control.Label
+import javafx.geometry.Orientation
+import javafx.geometry.Pos
+import javafx.scene.control.*
 import javafx.scene.layout.HBox
 
 
@@ -17,6 +16,7 @@ class ToolBarView (private val model: Model,
 
     init {
         padding = Insets(10.0)
+        // There are 10 units of spacing around and between all toolbar widgets.
         spacing = 10.0
 
         val dropDownChoices = FXCollections.observableArrayList(
@@ -30,23 +30,32 @@ class ToolBarView (private val model: Model,
 
         // The toolbar has a ChoiceBox (labelled “Dataset: ”)
         val dropDown = ChoiceBox(dropDownChoices)
+        // fix the position of the dropdown menu
+
         // initialize to select the "Increasing"
         dropDown.selectionModel.selectFirst()
+        alignment = Pos.CENTER_LEFT
         children.add(Label("Dataset: "))
         children.add(dropDown)
 
-        // a New button,
+        //  There is a vertical Divider between the ChoiceBox and the New Button.
+        val divider = Separator()
+        divider.orientation = Orientation.VERTICAL
+        children.add(divider)
+
+        // a New button
         val newBtn = Button("New")
-        newBtn.prefWidth = 100.0
+        // width for the new button should be 80 units
+        newBtn.prefWidth = 80.0
 //        newBtn.onAction =
 //            EventHandler { event: ActionEvent ->
 //                controller.newNote()
 //            }
         children.add(newBtn)
 
-        //
-        // and a Spinner
-
+        // a Spinner
+        val spinner = Spinner<Int>(1, 20, 1)
+        children.add(spinner)
 
         model.addView(this)
     }

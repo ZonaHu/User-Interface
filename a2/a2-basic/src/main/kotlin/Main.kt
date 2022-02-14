@@ -25,7 +25,7 @@ class Main : Application() {
         // create each view, and tell them about the model
         // the views will register themselves with the model
         val editingBarView = EditingBarView(model)
-        val `dataTableView.kt` = `DataTableView.kt`(model)
+        val dataTableView = DataTableView(model)
 
         // =========== create the scene with initialized size of 800 by 600 units ===============================
         // Add layout to a scene (and the scene to the stage)

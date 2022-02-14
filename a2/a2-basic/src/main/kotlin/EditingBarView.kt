@@ -12,9 +12,9 @@ internal class EditingBarView(
     // When notified by the model that things have changed,
     // update to display the new value
     override fun updateView() {
-        println("View1: updateView")
+        println("View1: updateView model.message")
         // just set the button name to the counter
-        button.text = model.counterValue.toString()
+
     }
 
     init {

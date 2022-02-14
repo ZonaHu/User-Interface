@@ -14,7 +14,6 @@ internal class DataTableView(
 
         // display an 'X' for each counter value
         val s = StringBuilder()
-        repeat (model.counterValue) { s.append("X") }
         text.text = s.toString()
     }
 
