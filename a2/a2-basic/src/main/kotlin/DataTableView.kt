@@ -1,9 +1,12 @@
+import javafx.scene.control.Label
+import javafx.scene.control.Spinner
 import javafx.scene.control.TextArea
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 
 internal class DataTableView(
     private val model: Model
-) : VBox(), IView {
+) : GridPane(), IView {
 
     private val text = TextArea("")
 
@@ -12,25 +15,20 @@ internal class DataTableView(
     override fun updateView() {
         println("View2: updateView")
 
-        // display an 'X' for each counter value
-        val s = StringBuilder()
-        text.text = s.toString()
     }
 
     init {
         // set label properties
-        text.isWrapText = true
-        text.isEditable = false
-
-        // the previous controller code will just be handled here
-        // we don't need always need a separate controller class!
-        text.setOnMouseClicked {
-            println("Controller: changing Model (actionPerformed)")
-            model.incrementCounter()
-        }
 
         // add label widget to the pane
-        children.add(text)
+        children.add(Label("1: "))
+
+        // a Spinner
+        val spinner = Spinner<Int>(1, 20, 1)
+        spinner.prefWidth = 80.0
+        children.add(spinner)
+
+
 
         // register with the model when we're ready to start receiving data
         model.addView(this)

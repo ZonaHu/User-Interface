@@ -5,7 +5,6 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.layout.HBox
 
-
 class ToolBarView (private val model: Model,
                    private val controller: Main
 ) : HBox(), IView {
@@ -34,6 +33,7 @@ class ToolBarView (private val model: Model,
 
         // initialize to select the "Increasing"
         dropDown.selectionModel.selectFirst()
+        // left-aligned and they do not wrap
         alignment = Pos.CENTER_LEFT
         children.add(Label("Dataset: "))
         children.add(dropDown)
@@ -55,6 +55,7 @@ class ToolBarView (private val model: Model,
 
         // a Spinner
         val spinner = Spinner<Int>(1, 20, 1)
+        spinner.prefWidth = 80.0
         children.add(spinner)
 
         model.addView(this)

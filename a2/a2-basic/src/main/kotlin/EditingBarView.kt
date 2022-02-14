@@ -1,13 +1,13 @@
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
-import javafx.scene.layout.VBox
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import javafx.scene.layout.HBox
 
-internal class EditingBarView(
+class EditingBarView(
     private val model: Model
-) : VBox(), IView {
-
-    // good idea to start button off in unknown state
-    private val button = Button("?")
+) : HBox(), IView {
 
     // When notified by the model that things have changed,
     // update to display the new value
@@ -18,21 +18,24 @@ internal class EditingBarView(
     }
 
     init {
-        // setup the view (i.e. group+widget)
-        this.alignment = Pos.CENTER
-        this.minHeight = 100.0
-        button.setMinSize(75.0, 25.0)
-        button.setMaxSize(100.0, 50.0)
+        // set up the view, a fixed height horizontal interface area for editing the dataset title and axes
+        this.alignment = Pos.CENTER_LEFT
+        padding = Insets(10.0)
+        // There are 10 units of spacing around and between all toolbar widgets.
+        spacing = 10.0
 
-        // the previous controller code will just be handled here
-        // we don't need always need a separate controller class!
-        button.setOnMouseClicked {
-            println("Controller: changing Model (actionPerformed)")
-            model.incrementCounter()
-        }
+        children.add(Label("Title: "))
+        val titleField = TextField()
+        children.add(titleField)
 
-        // add button widget to the pane
-        children.add(button)
+        children.add(Label("X-Axis: "))
+        // add text field to the pane
+        val xAxisField = TextField()
+        children.add(xAxisField)
+
+        children.add(Label("Y-Axis: "))
+        val yAxisField = TextField()
+        children.add(yAxisField)
 
         // register with the model when we're ready to start receiving data
         model.addView(this)

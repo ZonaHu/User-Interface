@@ -1,5 +1,6 @@
 import javafx.application.Application
 import javafx.scene.Scene
+import javafx.scene.control.ScrollPane
 import javafx.scene.layout.*
 import javafx.stage.Stage
 
@@ -8,7 +9,7 @@ import javafx.stage.Stage
 class Main : Application() {
 
     // create and initialize the Model
-    val model = Model()
+    private val model = Model()
 
     override fun start(stage: Stage) {
 
@@ -18,13 +19,24 @@ class Main : Application() {
         stage.isResizable = true
 
         // the main interface
-        val layout = BorderPane()
+        val main = BorderPane()
+
+        // set up the border color
+        main.style = "-fx-border-color: lightgrey"
+        val layout = BorderPane(main)
+
         layout.top = ToolBarView(model, this)
+        main.top = EditingBarView(model)
+
+//        val scrollPane = ScrollPane(DataTableView(model))
+
+        main.left = DataTableView(model)
+        main.center = GraphView(model)
+        main.right = DataStatisticsView(model)
         layout.bottom = StatusBarView(model)
 
         // create each view, and tell them about the model
         // the views will register themselves with the model
-        val editingBarView = EditingBarView(model)
         val dataTableView = DataTableView(model)
 
         // =========== create the scene with initialized size of 800 by 600 units ===============================

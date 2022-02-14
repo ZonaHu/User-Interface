@@ -1,5 +1,4 @@
 import javafx.geometry.Insets
-import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 
@@ -14,10 +13,10 @@ class StatusBarView (
         message.text = "${model.message}"
     }
 
-    val count = Label("")
     val message = Label("")
 
     init {
+        this.minHeight = 40.0
         // status bar layout
 //        alignment = Pos.CENTER_LEFT
         padding = Insets(10.0)
