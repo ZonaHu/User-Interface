@@ -41,6 +41,7 @@ class Main : Application() {
 
         main.left = scrollPane
         main.center = GraphView(model)
+
         main.right = DataStatisticsView(model)
         layout.bottom = StatusBarView(model)
 

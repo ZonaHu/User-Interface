@@ -14,8 +14,6 @@ class GraphView (
         style = " -fx-background-color:red"
 
 
-
-
         // register with the model when we're ready to start receiving data
         model.addView(this)
     }
