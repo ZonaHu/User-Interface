@@ -17,7 +17,7 @@ fun createRow (text: String): HBox {
 
     val spinner = Spinner<Int>(1, 100, 1)
     spinner.isEditable = false
-    spinner.prefWidth = 60.0
+    spinner.prefWidth = 70.0
 
     hBox.spacing = 10.0
     hBox.prefWidth = 100.0
