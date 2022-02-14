@@ -23,10 +23,10 @@ class Model {
 
     //endregion
 
-
     // model's last message describing operation
     var message: String = "datasets"
         private set
+
 
     // method that the Controller uses to tell the Model to change state
     // in a larger application there would probably be multiple entry points like this

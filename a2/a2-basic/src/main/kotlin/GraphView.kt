@@ -9,8 +9,10 @@ class GraphView (
     }
 
     init{
-//        maxWidth = 250.0
+        // set the background color to white
         style = " -fx-background-color:white"
+
+
 
 
         // register with the model when we're ready to start receiving data
