@@ -19,7 +19,7 @@ internal class DataTableView(
     }
 
     init {
-        maxWidth = 150.0
+        width = 150.0
 //        style = " -fx-background-color:black"
         padding = Insets(20.0)
         vgap = 10.0
@@ -32,7 +32,7 @@ internal class DataTableView(
         this.children.add(title1)
 
         // a Spinner
-        val spinner = Spinner<Int>(1, 20, 1)
+        val spinner = Spinner<Int>(1, 100, 1)
         spinner.prefWidth = 80.0
         this.children.add(spinner)
 
@@ -41,7 +41,7 @@ internal class DataTableView(
         this.children.add(title2)
 
         // a Spinner
-        val spinner2 = Spinner<Int>(1, 20, 1)
+        val spinner2 = Spinner<Int>(1, 100, 1)
         spinner2.prefWidth = 80.0
         this.children.add(spinner2)
 

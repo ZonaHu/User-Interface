@@ -9,6 +9,8 @@ class GraphView (
     }
 
     init{
+        style = " -fx-background-color:red"
+
 
 
 

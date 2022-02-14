@@ -28,6 +28,7 @@ class Main : Application() {
         layout.top = ToolBarView(model, this)
         main.top = EditingBarView(model)
 
+        // a 150 unit wide area for the data table
         val scrollPane = ScrollPane(DataTableView(model))
         scrollPane.maxWidth = 150.0
         // hide the horizontal scroll bar for smaller size windows
@@ -35,14 +36,13 @@ class Main : Application() {
 //        // make sure the scroll pane is fit to width
         scrollPane.isFitToWidth = true
 
+        // create each view, and tell them about the model
+        // the views will register themselves with the model
+
         main.left = scrollPane
         main.center = GraphView(model)
         main.right = DataStatisticsView(model)
         layout.bottom = StatusBarView(model)
-
-        // create each view, and tell them about the model
-        // the views will register themselves with the model
-        val dataTableView = DataTableView(model)
 
         // =========== create the scene with initialized size of 800 by 600 units ===============================
         // Add layout to a scene (and the scene to the stage)
