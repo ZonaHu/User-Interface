@@ -32,13 +32,15 @@ class Main : Application() {
 
         // a 150 unit wide area for the data table
         main.left = DataTableView(model)
+        // a centre WHITE area for the graph
         main.center = GraphView(model)
-        // a 125 unit area for data statistics
+        // a 125 unit wide right side area for data statistics
         main.right = DataStatisticsView(model)
+        // lightgrey status bar at the bottom
         layout.bottom = StatusBarView(model)
 
         // =========== create the scene with initialized size of 800 by 600 units ===============================
-        // Add layout to a scene (and the scene to the stage)
+        // Add layout to a scene (and the scene to the stage)， initial size 800 by 600
         val scene = Scene(layout, 800.0, 600.0)
 
         // ============================ show the scene===========================================================
