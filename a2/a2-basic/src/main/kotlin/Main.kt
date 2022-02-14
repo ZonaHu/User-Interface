@@ -28,20 +28,13 @@ class Main : Application() {
         layout.top = ToolBarView(model, this)
         main.top = EditingBarView(model)
 
-        // a 150 unit wide area for the data table
-        val scrollPane = ScrollPane(DataTableView(model))
-        scrollPane.maxWidth = 150.0
-        // hide the horizontal scroll bar for smaller size windows
-        scrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
-//        // make sure the scroll pane is fit to width
-        scrollPane.isFitToWidth = true
-
         // create each view, and tell them about the model
         // the views will register themselves with the model
 
-        main.left = scrollPane
+        // a 150 unit wide area for the data table
+        main.left = DataTableView(model)
         main.center = GraphView(model)
-
+        // a 125 unit area for data statistics
         main.right = DataStatisticsView(model)
         layout.bottom = StatusBarView(model)
 
