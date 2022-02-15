@@ -26,7 +26,7 @@ fun createRow (text: String, default: Int): HBox {
     return hBox;
 }
 
-internal class DataTableView(
+class DataTableView(
     private val model: Model
 ) : ScrollPane(), IView {
     private val flowPane = FlowPane()
@@ -54,7 +54,7 @@ internal class DataTableView(
         isFitToWidth = true
         padding = Insets(10.0)
 
-        flowPane.alignment = Pos.CENTER_LEFT
+        flowPane.alignment = Pos.TOP_LEFT
         flowPane.hgap = 10.0
         flowPane.prefHeight = 100.0
 
