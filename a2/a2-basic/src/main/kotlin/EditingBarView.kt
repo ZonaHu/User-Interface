@@ -1,6 +1,5 @@
 import javafx.geometry.Insets
 import javafx.geometry.Pos
-import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
@@ -17,9 +16,9 @@ class EditingBarView(
     override fun updateView() {
         println("View1: updateView model.message")
         // just set the button name to the counter
-        titleField.text = model.getDataSets()?.title.toString()
-        xAxisField.text = model.getDataSets()?.xAxis.toString()
-        yAxisField.text =model.getDataSets()?.yAxis.toString()
+        titleField.text = model.getDataSet()?.title.toString()
+        xAxisField.text = model.getDataSet()?.xAxis.toString()
+        yAxisField.text =model.getDataSet()?.yAxis.toString()
     }
 
     init {

@@ -9,7 +9,7 @@ class StatusBarView (
 
     override fun updateView() {
         // check if a note is selected
-        count.text = "6" // dataset.size
+        count.text = model.getDataSets().size.toString() // dataset.size
         // the message is super easy, just ask the model
         message.text = model.message
     }

@@ -21,12 +21,12 @@ class DataStatisticsView (
         // The “Average” is accurate to 1 decimal place.
         add(avgL, 1, 3)
         add(sumL, 1, 4)
-        add(Label(model.getDataSets()?.data?.size.toString()), 3, 0)
-        add(Label(model.getDataSets()?.data?.minOrNull().toString()), 3, 1)
-        add(Label(model.getDataSets()?.data?.maxOrNull().toString()), 3, 2)
-        val avg = ((model.getDataSets()?.data?.average()?.times(10))?.roundToInt() ?: 0) /10.0
+        add(Label(model.getDataSet()?.data?.size.toString()), 3, 0)
+        add(Label(model.getDataSet()?.data?.minOrNull().toString()), 3, 1)
+        add(Label(model.getDataSet()?.data?.maxOrNull().toString()), 3, 2)
+        val avg = ((model.getDataSet()?.data?.average()?.times(10))?.roundToInt() ?: 0) /10.0
         add(Label(avg.toString()), 3, 3)
-        add(Label(model.getDataSets()?.data?.sum().toString()), 3, 4)
+        add(Label(model.getDataSet()?.data?.sum().toString()), 3, 4)
     }
 
     init{

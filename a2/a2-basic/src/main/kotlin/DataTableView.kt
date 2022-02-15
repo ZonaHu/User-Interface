@@ -39,7 +39,7 @@ class DataTableView(
         println("View2: updateView")
         flowPane.children.clear()
         counter = 0
-        for (index in model.getDataSets()?.data!!){
+        for (index in model.getDataSet()?.data!!){
             counter ++
             flowPane.children.add(createRow("$counter: ", index))
         }

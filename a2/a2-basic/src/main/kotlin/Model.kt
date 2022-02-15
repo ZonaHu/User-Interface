@@ -42,8 +42,12 @@ class Model {
         notifyObservers()
     }
 
-    fun getDataSets():  DataSet? {
+    fun getDataSet():  DataSet? {
         return datasets[curSelect]
+    }
+
+    fun getDataSets(): MutableMap<String, DataSet?> {
+        return datasets
     }
 
 }
