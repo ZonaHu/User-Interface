@@ -39,6 +39,8 @@ class Model {
     var message: String = "datasets"
         private set
 
+    // method that the Controller uses to tell the Model to change state
+    // in a larger application there would probably be multiple entry points like this
     fun setDataset(selectionModel: String) {
         println("Model: set dataset.")
         curSelect = selectionModel
@@ -47,13 +49,6 @@ class Model {
 
     fun getDataSets():  DataSet? {
         return datasets[curSelect]
-    }
-
-    // method that the Controller uses to tell the Model to change state
-    // in a larger application there would probably be multiple entry points like this
-    fun incrementCounter() {
-        println("Model: increment counter to.")
-        notifyObservers()
     }
 
 }

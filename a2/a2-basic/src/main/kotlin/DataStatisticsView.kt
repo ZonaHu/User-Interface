@@ -1,6 +1,7 @@
 import javafx.geometry.Insets
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
+import kotlin.math.roundToInt
 
 class DataStatisticsView (
     private val model: Model
@@ -20,16 +21,12 @@ class DataStatisticsView (
         // The “Average” is accurate to 1 decimal place.
         add(avgL, 1, 3)
         add(sumL, 1, 4)
-        val numN = Label("0")
-        val minN = Label("10")
-        val maxN = Label("100")
-        val avgN = Label("0")
-        val sumN = Label("0")
-        add(numN, 3, 0)
-        add(minN, 3, 1)
-        add(maxN, 3, 2)
-        add(avgN, 3, 3)
-        add(sumN, 3, 4)
+        add(Label(model.getDataSets()?.data?.size.toString()), 3, 0)
+        add(Label(model.getDataSets()?.data?.minOrNull().toString()), 3, 1)
+        add(Label(model.getDataSets()?.data?.maxOrNull().toString()), 3, 2)
+        val avg = ((model.getDataSets()?.data?.average()?.times(10))?.roundToInt() ?: 0) /10.0
+        add(Label(avg.toString()), 3, 3)
+        add(Label(model.getDataSets()?.data?.sum().toString()), 3, 4)
     }
 
     init{
