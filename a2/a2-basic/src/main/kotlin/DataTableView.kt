@@ -6,32 +6,36 @@ import javafx.scene.control.Spinner
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 
-fun createRow (text: String, default: Int): HBox {
-    // set label properties
-
-    // add label widget to the pane
-    val hBox = HBox();
-    val label = Label()
-    label.text = text
-
-    val spinner = Spinner<Int>(1, 100, default)
-    spinner.isEditable = false
-    spinner.prefWidth = 70.0
-
-    hBox.spacing = 10.0
-    hBox.prefWidth = 100.0
-    hBox.alignment = Pos.CENTER_RIGHT
-
-    hBox.children.addAll(label, spinner);
-    return hBox;
-}
-
 class DataTableView(
     private val model: Model
 ) : ScrollPane(), IView {
     private val flowPane = FlowPane()
     private var counter = 0
 
+    private fun createRow (index: Int, default: Int): HBox {
+        // set label properties
+
+        // add label widget to the pane
+        val hBox = HBox();
+        val label = Label()
+        label.text = "$index: "
+
+        val spinner = Spinner<Int>(1, 100, default)
+        spinner.isEditable = false
+        spinner.prefWidth = 70.0
+        // a listener to monitor new changes to the spinner
+        spinner.valueProperty().addListener { _, _, newValue
+            // modify the dataset value to the new value
+            -> model.modifySpinnerVal(index, newValue)
+        }
+
+        hBox.spacing = 10.0
+        hBox.prefWidth = 100.0
+        hBox.alignment = Pos.CENTER_RIGHT
+
+        hBox.children.addAll(label, spinner);
+        return hBox;
+    }
 
     // When notified by the model that things have changed,
     // update to display the new value
@@ -41,7 +45,7 @@ class DataTableView(
         counter = 0
         for (index in model.getDataSet()?.data!!){
             counter ++
-            flowPane.children.add(createRow("$counter: ", index))
+            flowPane.children.add(createRow(counter, index))
         }
     }
 

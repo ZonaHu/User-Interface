@@ -50,4 +50,15 @@ class Model {
         return datasets
     }
 
+    fun modifySpinnerVal(counter: Int, newValue: Int){
+        for ((index, _) in datasets[curSelect]?.data!!.withIndex()){
+            if ((index+1) == counter){
+                println("index: $index")
+                datasets[curSelect]?.data!![index] = newValue
+            }
+        }
+        println("New value: $newValue")
+        notifyObservers()
+    }
+
 }
