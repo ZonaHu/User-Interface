@@ -11,12 +11,7 @@ class Model {
     var curSelect = "Increasing"
 
     init{
-        datasets["Increasing"] = createTestDataSet("Increasing")
-        datasets["Large"] = createTestDataSet("Large")
-        datasets["Middle"] = createTestDataSet("Middle")
-        datasets["Single"] = createTestDataSet("Single")
-        datasets["Range"] = createTestDataSet("Range")
-        datasets["Percentage"] = createTestDataSet("Percentage")
+        datasets = listOf("Increasing", "Large", "Middle","Single","Range","Percentage").associateWith { createTestDataSet(it) }.toMutableMap()
     }
 
     // method that the views can use to register themselves with the Model
