@@ -15,8 +15,10 @@ class Model {
     // string for the newly added name
     private var name = ""
 
-    init{
-        datasets = listOf("Increasing", "Large", "Middle","Single","Range","Percentage").associateWith { createTestDataSet(it) }.toMutableMap()
+    init {
+        datasets = listOf("Increasing", "Large", "Middle", "Single", "Range", "Percentage").associateWith {
+            createTestDataSet(it)
+        }.toMutableMap()
     }
 
     // method that the views can use to register themselves with the Model
@@ -47,7 +49,7 @@ class Model {
         notifyObservers()
     }
 
-    fun getDataSet():  DataSet? {
+    fun getDataSet(): DataSet? {
         // get current selected dataset
         return datasets[curSelect]
     }
@@ -57,10 +59,10 @@ class Model {
         return datasets
     }
 
-    fun modifySpinnerVal(counter: Int, newValue: Int){
+    fun modifySpinnerVal(counter: Int, newValue: Int) {
         // function to modify the spinners in the left table
-        for ((index, _) in datasets[curSelect]?.data!!.withIndex()){
-            if ((index+1) == counter){
+        for ((index, _) in datasets[curSelect]?.data!!.withIndex()) {
+            if ((index + 1) == counter) {
                 println("index: $index")
                 datasets[curSelect]?.data!![index] = newValue
             }
@@ -76,9 +78,9 @@ class Model {
         val title = getRandomSequence(3)
         val xAxis = getRandomSequence(1).replaceFirstChar { it.uppercase() }
         val yAxis = getRandomSequence(1).replaceFirstChar { it.uppercase() }
-        val newData = MutableList<Int> (0){0}
+        val newData = MutableList<Int>(0) { 0 }
         for (i in 1..dataPoints) {
-            newData.add(Random.nextInt(0,101)) // randomly select from 0 to 100
+            newData.add(Random.nextInt(0, 101)) // randomly select from 0 to 100
         }
         datasets[name] = DataSet(title, xAxis, yAxis, newData)
         curSelect = name
@@ -89,17 +91,17 @@ class Model {
         return name
     }
 
-    fun updateTitle (title: String) {
+    fun updateTitle(title: String) {
         datasets[curSelect]?.title = title
         notifyObservers()
     }
 
-    fun updateX (xAxis: String) {
+    fun updateX(xAxis: String) {
         datasets[curSelect]?.xAxis = xAxis
         notifyObservers()
     }
 
-    fun updateY (yAxis: String) {
+    fun updateY(yAxis: String) {
         datasets[curSelect]?.yAxis = yAxis
         notifyObservers()
     }
