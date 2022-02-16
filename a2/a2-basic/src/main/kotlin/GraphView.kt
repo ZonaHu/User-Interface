@@ -28,10 +28,11 @@ class GraphView (
         gc.strokeLine(50.0, 50.0, 50.0, 50.0 + inHeight)
         gc.strokeLine(50.0, 50.0 + inHeight, 50.0 + inWidth, 50.0 + inHeight)
         gc.textAlign = TextAlignment.CENTER
-        // title for the dataset
-        gc.fillText(model.getDataSet()?.title ?: "", 50.0 + inWidth/2, 25.0 )
-        // x-axis label for the dataset
-        gc.fillText(model.getDataSet()?.xAxis ?: "", 50.0 + inWidth/2, 75.0 + inHeight)
+        // the lineWidth is 5, should be accounted in calculation for the positions
+        // title for the dataset, horizontally centered in the main graph area and vertically centred in the top margin.
+        gc.fillText(model.getDataSet()?.title ?: "", 50.0 + inWidth/2, 30.0 )
+        // x-axis label for the dataset, horizontally centred below the x-axis line and vertically centred in the bottom margi
+        gc.fillText(model.getDataSet()?.xAxis ?: "", 50.0 + inWidth/2, 80.0 + inHeight)
         gc.textAlign = TextAlignment.RIGHT
         // a “0” labelling the bottom point of the y-axis
         gc.fillText("0", 45.0, 55 + inHeight)
@@ -53,7 +54,6 @@ class GraphView (
 
 //        // Create a scene graph with a root node that holds the objects that we want to display on the stage
 //        val root = Group()
-        spacing = 50.0
         // To fix the canvas in the middle
         minWidth = 0.0
         minHeight = 0.0
