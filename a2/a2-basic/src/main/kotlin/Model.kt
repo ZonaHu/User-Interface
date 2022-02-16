@@ -1,4 +1,5 @@
 import RandomGen.Companion.getRandomSequence
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 class Model {
@@ -73,8 +74,8 @@ class Model {
         cnt++
         name = "New$cnt"
         val title = getRandomSequence(3)
-        val xAxis = getRandomSequence(1)
-        val yAxis = getRandomSequence(1)
+        val xAxis = getRandomSequence(1).replaceFirstChar { it.uppercase() }
+        val yAxis = getRandomSequence(1).replaceFirstChar { it.uppercase() }
         val newData = MutableList<Int> (0){0}
         for (i in 1..dataPoints) {
             newData.add(Random.nextInt(0,101)) // randomly select from 0 to 100
