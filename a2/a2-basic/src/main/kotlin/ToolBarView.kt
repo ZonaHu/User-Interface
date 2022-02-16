@@ -9,25 +9,16 @@ import javafx.scene.layout.HBox
 class ToolBarView (private val model: Model
 ) : HBox(), IView {
 
-    private var dropDownChoices = FXCollections.observableArrayList(
-        "Increasing",
-        "Large",
-        "Middle",
-        "Single",
-        "Range",
-        "Percentage"
-    )
-
     // The toolbar has a ChoiceBox (labelled “Dataset: ”)
-    private val dropDown = ChoiceBox(dropDownChoices)
+    private val dropDown = ChoiceBox(FXCollections.observableArrayList(model.getDropDownMenu()))
 
     // a Spinner in the range from 1 to 20, starting from 1
     private val spinner = Spinner<Int>(1, 20, 1)
 
     override fun updateView() {
         // add the newly created name to the list of dropdown options if new names are added from other views
-        if (!dropDownChoices.contains(model.getCurSelect()) && model.getCurSelect() != ""){
-            dropDownChoices.add(model.getCurSelect())
+        if (!dropDown.items.contains(model.getCurSelect()) && model.getCurSelect() != ""){
+            dropDown.items = FXCollections.observableArrayList(model.getDropDownMenu())
             // set the choice-box to select the newly created dataset name
             dropDown.selectionModel.select(model.getCurSelect())
         }

@@ -26,13 +26,17 @@ class Model {
         view.updateView()
     }
 
-    // the model uses this method to notify all of the Views that the data has changed
+    // the model uses this method to notify all the Views that the data has changed
     // the expectation is that the Views will refresh themselves to display new data when appropriate
     private fun notifyObservers() {
         for (view in views) {
             println("Model: notify $view")
             view.updateView()
         }
+    }
+
+    fun getDropDownMenu(): ArrayList<String> {
+        return ArrayList(datasets.keys)
     }
 
     // model's last message describing operation
