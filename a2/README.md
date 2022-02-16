@@ -10,6 +10,5 @@ Zuomiao Hu (z228hu 20815304)
 * JavaFX 17.0.1
 
 ## Enhancement 
-* added right click also select notes 
-* right click gives red border
-* randomly generate notes background
+* added a delete button to delete selected dataset
+* added a choice box to change the background of the canvas
