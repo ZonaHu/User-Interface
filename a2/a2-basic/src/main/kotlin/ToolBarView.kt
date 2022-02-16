@@ -25,6 +25,13 @@ class ToolBarView (private val model: Model
     private val spinner = Spinner<Int>(1, 20, 1)
 
     override fun updateView() {
+        // add the newly created name to the list of dropdown options if new names are added from other views
+        if (!dropDownChoices.contains(model.getCurSelect()) && model.getCurSelect()!=""){
+            dropDownChoices.add(model.getCurSelect())
+            // set the choice-box to select the newly created dataset name
+            dropDown.selectionModel.select(model.getCurSelect())
+        }
+
     }
 
     init {
@@ -56,11 +63,8 @@ class ToolBarView (private val model: Model
         newBtn.prefWidth = 80.0
         newBtn.onAction =
             EventHandler {
+                // add a new dataset to the model
                 model.setNewDataset(spinner.value)
-                // add the newly created name to the list of dropdown options
-                dropDownChoices.add(model.getNewName())
-                // set the choice-box to select the newly created dataset name
-                dropDown.selectionModel.select(model.getNewName())
             }
         children.add(newBtn)
 

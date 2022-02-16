@@ -12,8 +12,6 @@ class Model {
     private var cnt = 0
     // current title default initialized to "Increasing"
     private var curSelect = "Increasing"
-    // string for the newly added name
-    private var name = ""
 
     init {
         datasets = listOf("Increasing", "Large", "Middle", "Single", "Range", "Percentage").associateWith {
@@ -74,7 +72,7 @@ class Model {
     fun setNewDataset(dataPoints: Int) {
         // generates a new random dataset named “NewX”
         cnt++
-        name = "New$cnt"
+        val name = "New$cnt"
         val title = getRandomSequence(3)
         val xAxis = getRandomSequence(1).replaceFirstChar { it.uppercase() }
         val yAxis = getRandomSequence(1).replaceFirstChar { it.uppercase() }
@@ -87,8 +85,8 @@ class Model {
         notifyObservers()
     }
 
-    fun getNewName(): String {
-        return name
+    fun getCurSelect(): String{
+        return curSelect
     }
 
     fun updateTitle(title: String) {
