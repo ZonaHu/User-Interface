@@ -10,5 +10,6 @@ Zuomiao Hu (z228hu 20815304)
 * JavaFX 17.0.1
 
 ## Enhancement 
-* added a delete button to delete selected dataset
-* added a choice box to change the background of the canvas
+* Aded a delete button to delete selected dataset
+* Added a choice box to change the background of the canvas
+* Added an interface to edit the layout of the bar chart: change the margin, bar colours, font size, etc.
