@@ -6,8 +6,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.layout.HBox
 
-class ToolBarView (private val model: Model,
-                   private val controller: Main
+class ToolBarView (private val model: Model
 ) : HBox(), IView {
 
     private var dropDownChoices = FXCollections.observableArrayList(
@@ -18,6 +17,9 @@ class ToolBarView (private val model: Model,
         "Range",
         "Percentage"
     )
+
+    // a Spinner
+    private val spinner = Spinner<Int>(1, 20, 1)
 
     override fun updateView() {
         // nothing
@@ -53,14 +55,12 @@ class ToolBarView (private val model: Model,
         val newBtn = Button("New")
         // width for the new button should be 80 units
         newBtn.prefWidth = 80.0
-//        newBtn.onAction =
-//            EventHandler { event: ActionEvent ->
-//                controller.newNote()
-//            }
+        newBtn.onAction =
+            EventHandler {
+                model.setNewDataset(spinner.value)
+            }
         children.add(newBtn)
 
-        // a Spinner
-        val spinner = Spinner<Int>(1, 20, 1)
         spinner.prefWidth = 80.0
         children.add(spinner)
 

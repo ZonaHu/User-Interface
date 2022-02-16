@@ -1,3 +1,5 @@
+import RandomGen.Companion.getRandomSequence
+import kotlin.random.Random
 
 class Model {
 
@@ -6,7 +8,8 @@ class Model {
     private val views: ArrayList<IView> = ArrayList()
     // store the datasets
     private var datasets: MutableMap<String, DataSet?> = mutableMapOf()
-
+    // counter for new datasets
+    private var cnt = 0
     // current title default initialized to "Increasing"
     var curSelect = "Increasing"
 
@@ -35,22 +38,25 @@ class Model {
         private set
 
     // method that the Controller uses to tell the Model to change state
-    // in a larger application there would probably be multiple entry points like this
     fun setDataset(selectionModel: String) {
+        // set the newly selected dataset
         println("Model: set dataset.")
         curSelect = selectionModel
         notifyObservers()
     }
 
     fun getDataSet():  DataSet? {
+        // get current selected dataset
         return datasets[curSelect]
     }
 
     fun getDataSets(): MutableMap<String, DataSet?> {
+        // get current available datasets
         return datasets
     }
 
     fun modifySpinnerVal(counter: Int, newValue: Int){
+        // function to modify the spinners in the left table
         for ((index, _) in datasets[curSelect]?.data!!.withIndex()){
             if ((index+1) == counter){
                 println("index: $index")
@@ -60,5 +66,22 @@ class Model {
         println("New value: $newValue")
         notifyObservers()
     }
+
+    fun setNewDataset(dataPoints: Int) {
+        // generates a new random dataset named “NewX”
+        cnt++
+        val name = "New$cnt"
+        val title = getRandomSequence(3)
+        val xAxis = getRandomSequence(1)
+        val yAxis = getRandomSequence(1)
+        val newData = MutableList<Int> (0){0}
+        for (i in 1..dataPoints) {
+            newData.add(Random.nextInt(0,101)) // randomly select from 0 to 100
+        }
+        datasets[name] = DataSet(title, xAxis, yAxis, newData)
+        notifyObservers()
+    }
+
+
 
 }

@@ -16,11 +16,11 @@ class DataTableView(
         // set label properties
 
         // add label widget to the pane
-        val hBox = HBox();
+        val hBox = HBox()
         val label = Label()
         label.text = "$index: "
 
-        val spinner = Spinner<Int>(1, 100, default)
+        val spinner = Spinner<Int>(0, 100, default)
         spinner.isEditable = false
         spinner.prefWidth = 70.0
         // a listener to monitor new changes to the spinner
@@ -33,8 +33,8 @@ class DataTableView(
         hBox.prefWidth = 100.0
         hBox.alignment = Pos.CENTER_RIGHT
 
-        hBox.children.addAll(label, spinner);
-        return hBox;
+        hBox.children.addAll(label, spinner)
+        return hBox
     }
 
     // When notified by the model that things have changed,

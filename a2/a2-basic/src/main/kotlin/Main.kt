@@ -23,7 +23,7 @@ class Main : Application() {
         main.style = "-fx-border-color: lightgrey"
         val layout = BorderPane(main)
 
-        layout.top = ToolBarView(model, this)
+        layout.top = ToolBarView(model)
         main.top = EditingBarView(model)
 
         // create each view, and tell them about the model
