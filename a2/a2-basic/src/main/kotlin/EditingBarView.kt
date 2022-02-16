@@ -14,6 +14,7 @@ class EditingBarView(
     // When notified by the model that things have changed,
     // update to display the new value
     override fun updateView() {
+        // the dataset won't be null
         // just set the button name to the counter
         titleField.text = model.getDataSet()?.title.toString()
         xAxisField.text = model.getDataSet()?.xAxis.toString()

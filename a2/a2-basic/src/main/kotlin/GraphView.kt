@@ -28,10 +28,19 @@ class GraphView (
         gc.strokeLine(50.0, 50.0, 50.0, 50.0 + inHeight)
         gc.strokeLine(50.0, 50.0 + inHeight, 50.0 + inWidth, 50.0 + inHeight)
         gc.textAlign = TextAlignment.CENTER
+        // title for the dataset
         gc.fillText(model.getDataSet()?.title ?: "", 50.0 + inWidth/2, 25.0 )
+        // x-axis label for the dataset
         gc.fillText(model.getDataSet()?.xAxis ?: "", 50.0 + inWidth/2, 75.0 + inHeight)
+        gc.textAlign = TextAlignment.RIGHT
+        // a “0” labelling the bottom point of the y-axis
+        gc.fillText("0", 45.0, 55 + inHeight)
+        // the top label on the y-axis is the maximum data point in the dataset.
+        gc.fillText(model.getDataSet()?.data?.maxOrNull().toString(), 45.0, 55.0)
+        gc.textAlign = TextAlignment.CENTER
         // save
         gc.save()
+        // y-axis label for the dataset
         gc.translate(25.0, 50 + inHeight/2)
         gc.rotate(270.0)
         gc.fillText(model.getDataSet()?.yAxis ?: "", 0.0, 0.0)

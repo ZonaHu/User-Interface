@@ -26,7 +26,7 @@ class ToolBarView (private val model: Model
 
     override fun updateView() {
         // add the newly created name to the list of dropdown options if new names are added from other views
-        if (!dropDownChoices.contains(model.getCurSelect()) && model.getCurSelect()!=""){
+        if (!dropDownChoices.contains(model.getCurSelect()) && model.getCurSelect() != ""){
             dropDownChoices.add(model.getCurSelect())
             // set the choice-box to select the newly created dataset name
             dropDown.selectionModel.select(model.getCurSelect())
