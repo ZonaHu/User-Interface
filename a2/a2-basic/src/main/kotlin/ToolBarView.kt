@@ -18,11 +18,14 @@ class ToolBarView (private val model: Model
         "Percentage"
     )
 
-    // a Spinner
+    // The toolbar has a ChoiceBox (labelled “Dataset: ”)
+    private val dropDown = ChoiceBox(dropDownChoices)
+
+    // a Spinner in the range from 1 to 20, starting from 1
     private val spinner = Spinner<Int>(1, 20, 1)
 
     override fun updateView() {
-        // nothing
+        println(model.getDataSet())
     }
 
     init {
@@ -30,11 +33,8 @@ class ToolBarView (private val model: Model
         // There are 10 units of spacing around and between all toolbar widgets.
         spacing = 10.0
 
-
-        // The toolbar has a ChoiceBox (labelled “Dataset: ”)
-        val dropDown = ChoiceBox(dropDownChoices)
         // fix the position of the dropdown menu
-
+        dropDown.prefWidth = 100.0
         // initialize to select the "Increasing"
         dropDown.selectionModel.selectFirst()
         dropDown.onAction =
@@ -58,6 +58,10 @@ class ToolBarView (private val model: Model
         newBtn.onAction =
             EventHandler {
                 model.setNewDataset(spinner.value)
+                // add the newly created name to the list of dropdown options
+                dropDownChoices.add(model.getNewName())
+                // set the choice-box to select the newly created dataset name
+                dropDown.selectionModel.select(model.getNewName())
             }
         children.add(newBtn)
 
@@ -66,6 +70,4 @@ class ToolBarView (private val model: Model
 
         model.addView(this)
     }
-
-
 }

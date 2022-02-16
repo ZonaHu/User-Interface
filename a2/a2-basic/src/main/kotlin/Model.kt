@@ -3,7 +3,6 @@ import kotlin.random.Random
 
 class Model {
 
-    //region View Management
     // all views of this model
     private val views: ArrayList<IView> = ArrayList()
     // store the datasets
@@ -11,7 +10,9 @@ class Model {
     // counter for new datasets
     private var cnt = 0
     // current title default initialized to "Increasing"
-    var curSelect = "Increasing"
+    private var curSelect = "Increasing"
+    // string for the newly added name
+    private var name = ""
 
     init{
         datasets = listOf("Increasing", "Large", "Middle","Single","Range","Percentage").associateWith { createTestDataSet(it) }.toMutableMap()
@@ -70,7 +71,7 @@ class Model {
     fun setNewDataset(dataPoints: Int) {
         // generates a new random dataset named “NewX”
         cnt++
-        val name = "New$cnt"
+        name = "New$cnt"
         val title = getRandomSequence(3)
         val xAxis = getRandomSequence(1)
         val yAxis = getRandomSequence(1)
@@ -79,9 +80,11 @@ class Model {
             newData.add(Random.nextInt(0,101)) // randomly select from 0 to 100
         }
         datasets[name] = DataSet(title, xAxis, yAxis, newData)
+        curSelect = name
         notifyObservers()
     }
 
-
-
+    fun getNewName(): String {
+        return name
+    }
 }
