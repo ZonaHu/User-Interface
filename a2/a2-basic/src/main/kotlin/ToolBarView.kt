@@ -31,7 +31,6 @@ class ToolBarView (private val model: Model
             // set the choice-box to select the newly created dataset name
             dropDown.selectionModel.select(model.getCurSelect())
         }
-
     }
 
     init {
