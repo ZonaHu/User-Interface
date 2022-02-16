@@ -18,7 +18,7 @@ class ToolBarView (private val model: Model
     override fun updateView() {
         // add the newly created name to the list of dropdown options if new names are added from other views
         if (!dropDown.items.contains(model.getCurSelect()) && model.getCurSelect() != ""){
-            dropDown.items = FXCollections.observableArrayList(model.getDropDownMenu())
+            dropDown.items.add(model.getCurSelect())
             // set the choice-box to select the newly created dataset name
             dropDown.selectionModel.select(model.getCurSelect())
         }
@@ -35,7 +35,7 @@ class ToolBarView (private val model: Model
         dropDown.selectionModel.selectFirst()
         dropDown.onAction =
             EventHandler{
-                model.setDataset(dropDown.value)
+                model.setDataset(dropDown.value!!)
         }
         // left-aligned and they do not wrap
         alignment = Pos.CENTER_LEFT
