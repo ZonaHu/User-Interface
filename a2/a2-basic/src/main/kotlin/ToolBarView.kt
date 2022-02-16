@@ -25,7 +25,6 @@ class ToolBarView (private val model: Model
     private val spinner = Spinner<Int>(1, 20, 1)
 
     override fun updateView() {
-        println(model.getDataSet())
     }
 
     init {
