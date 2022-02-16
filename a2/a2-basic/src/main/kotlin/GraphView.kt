@@ -1,6 +1,7 @@
 import javafx.scene.canvas.Canvas
 import javafx.scene.layout.HBox
 import javafx.scene.paint.Color
+import javafx.scene.paint.Color.hsb
 import javafx.scene.text.TextAlignment
 
 class GraphView (
@@ -28,6 +29,7 @@ class GraphView (
         gc.strokeLine(50.0, 50.0, 50.0, 50.0 + inHeight)
         gc.strokeLine(50.0, 50.0 + inHeight, 50.0 + inWidth, 50.0 + inHeight)
         gc.textAlign = TextAlignment.CENTER
+        gc.fill = Color.BLACK
         // the lineWidth is 5, should be accounted in calculation for the positions
         // title for the dataset, horizontally centered in the main graph area and vertically centred in the top margin.
         gc.fillText(model.getDataSet()?.title ?: "", 50.0 + inWidth/2, 30.0 )
@@ -46,14 +48,34 @@ class GraphView (
         gc.rotate(270.0)
         gc.fillText(model.getDataSet()?.yAxis ?: "", 0.0, 0.0)
         gc.restore()
+
+        // adding the bars
+        var color = 0.0
+        val dataPointNums = model.getDataSet()?.data?.size
+        var startXPos = 55.0
+        if (dataPointNums != null && dataPointNums != 0) {
+            val barWidth = (inWidth - 5.0) / dataPointNums - 5.0
+            val colorCnt = 360.0 / dataPointNums
+            // draw each data-points into bars
+            for (data in model.getDataSet()!!.data) {
+                val barHeight = data * (inHeight / model.getDataSet()?.data?.maxOrNull()!!)
+                val verticalPos = 50 + inHeight - barHeight
+                // rainbow bars, saturation and brightness 1.0
+                val hsb = hsb(color, 1.0, 1.0, 1.0)
+                gc.fill = hsb
+                gc.fillRect(startXPos, verticalPos, barWidth, barHeight)
+                // update the color
+                color += colorCnt
+                //  a 5 unit space between the leftmost bar and the y-axis and a 5 unit space from the right-most bar and the right grey borderline
+                startXPos += barWidth + 5.0
+            }
+        }
     }
 
     init{
         // set the background color to white
         style = " -fx-background-color:white"
 
-//        // Create a scene graph with a root node that holds the objects that we want to display on the stage
-//        val root = Group()
         // To fix the canvas in the middle
         minWidth = 0.0
         minHeight = 0.0
@@ -70,13 +92,7 @@ class GraphView (
 
         children.add(canvas)
 
-//        // Add the canvas to the scene
-//        root.children.add(canvas)
-//
-//        children.add(root)
         // register with the model when we're ready to start receiving data
         model.addView(this)
     }
-
-
 }
