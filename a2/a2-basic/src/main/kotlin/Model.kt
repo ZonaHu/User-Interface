@@ -30,7 +30,6 @@ class Model {
     // the expectation is that the Views will refresh themselves to display new data when appropriate
     private fun notifyObservers() {
         for (view in views) {
-            println("Model: notify $view")
             view.updateView()
         }
     }
@@ -46,7 +45,6 @@ class Model {
     // method that the Controller uses to tell the Model to change state
     fun setDataset(selectionModel: String) {
         // set the newly selected dataset
-        println("Model: set dataset.")
         curSelect = selectionModel
         notifyObservers()
     }
@@ -65,11 +63,9 @@ class Model {
         // function to modify the spinners in the left table
         for ((index, _) in datasets[curSelect]?.data!!.withIndex()) {
             if ((index + 1) == counter) {
-                println("index: $index")
                 datasets[curSelect]?.data!![index] = newValue
             }
         }
-        println("New value: $newValue")
         notifyObservers()
     }
 
