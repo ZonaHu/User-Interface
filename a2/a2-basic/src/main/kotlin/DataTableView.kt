@@ -40,7 +40,6 @@ class DataTableView(
     // When notified by the model that things have changed,
     // update to display the new value
     override fun updateView() {
-        println("View2: updateView")
         flowPane.children.clear()
         counter = 0
         for (index in model.getDataSet()?.data!!){
