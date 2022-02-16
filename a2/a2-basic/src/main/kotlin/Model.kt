@@ -88,4 +88,20 @@ class Model {
     fun getNewName(): String {
         return name
     }
+
+    fun updateTitle (title: String) {
+        datasets[curSelect]?.title = title
+        notifyObservers()
+    }
+
+    fun updateX (xAxis: String) {
+        datasets[curSelect]?.xAxis = xAxis
+        notifyObservers()
+    }
+
+    fun updateY (yAxis: String) {
+        datasets[curSelect]?.yAxis = yAxis
+        notifyObservers()
+    }
+
 }

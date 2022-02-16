@@ -38,6 +38,19 @@ class EditingBarView(
         children.add(Label("Y-Axis: "))
         children.add(yAxisField)
 
+        // store text corresponding to the changes
+        titleField.textProperty().addListener{ _,_,_->
+            model.updateTitle(titleField.text)
+        }
+
+        xAxisField.textProperty().addListener{ _,_,_->
+            model.updateX(xAxisField.text)
+        }
+
+        yAxisField.textProperty().addListener{_,_,_->
+            model.updateY(yAxisField.text)
+        }
+
         // register with the model when we're ready to start receiving data
         model.addView(this)
     }
