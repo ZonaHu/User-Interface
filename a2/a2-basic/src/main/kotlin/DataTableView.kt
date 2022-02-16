@@ -60,7 +60,6 @@ class DataTableView(
         flowPane.alignment = Pos.TOP_LEFT
         flowPane.hgap = 10.0
         flowPane.prefHeight = 100.0
-
         content = flowPane
         // register with the model when we're ready to start receiving data
         model.addView(this)
