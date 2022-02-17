@@ -6,7 +6,8 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.layout.HBox
 
-class ToolBarView (private val model: Model
+class ToolBarView(
+    private val model: Model
 ) : HBox(), IView {
 
     // The toolbar has a ChoiceBox (labelled “Dataset: ”)
@@ -17,6 +18,7 @@ class ToolBarView (private val model: Model
 
     // enhancement: a delete button
     private val deleteBtn = Button("Delete")
+
     // enhancement: a checkbox
     private val checkBox = CheckBox()
     private val colorDropDown = ChoiceBox(FXCollections.observableArrayList(model.getColorDropDownMenu()))
@@ -25,14 +27,14 @@ class ToolBarView (private val model: Model
     override fun updateView() {
         deleteBtn.isDisable = false // initialized to not disabled
         // add the newly created name to the list of dropdown options if new names are added from other views
-        if (!dropDown.items.contains(model.getCurSelect()) && model.getCurSelect() != ""){
+        if (!dropDown.items.contains(model.getCurSelect()) && model.getCurSelect() != "") {
             dropDown.items.add(model.getCurSelect())
         }
-        if (dropDown.items.contains(model.getCurRM()) && (model.getCurSelect()!=model.getCurRM()) ){
+        if (dropDown.items.contains(model.getCurRM()) && (model.getCurSelect() != model.getCurRM())) {
             dropDown.items.remove(model.getCurRM())
         }
         // "increasing" is the default dataset, when it's default, delete button is disabled
-        if (model.getCurSelect() == "Increasing"){
+        if (model.getCurSelect() == "Increasing") {
             deleteBtn.isDisable = true
         }
         // if the current selected model is changed
@@ -50,9 +52,9 @@ class ToolBarView (private val model: Model
         // initialize to select the "Increasing"
         dropDown.selectionModel.selectFirst()
         dropDown.onAction =
-            EventHandler{
+            EventHandler {
                 model.setDataset(dropDown.value!!)
-        }
+            }
         // left-aligned and they do not wrap
         alignment = Pos.CENTER_LEFT
         children.add(Label("Dataset: "))
@@ -104,7 +106,7 @@ class ToolBarView (private val model: Model
         // initialize to select the first option
         colorDropDown.selectionModel.selectFirst()
         colorDropDown.onAction =
-            EventHandler{
+            EventHandler {
                 model.setColorset(colorDropDown.value!!)
             }
 

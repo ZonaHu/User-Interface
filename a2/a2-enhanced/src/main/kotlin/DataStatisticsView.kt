@@ -3,7 +3,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import kotlin.math.roundToInt
 
-class DataStatisticsView (
+class DataStatisticsView(
     private val model: Model
 ) : GridPane(), IView {
     private val numL = Label("Number")
@@ -24,12 +24,12 @@ class DataStatisticsView (
         add(Label(model.getDataSet()?.data?.size.toString()), 3, 0)
         add(Label(model.getDataSet()?.data?.minOrNull().toString()), 3, 1)
         add(Label(model.getDataSet()?.data?.maxOrNull().toString()), 3, 2)
-        val avg = ((model.getDataSet()?.data?.average()?.times(10))?.roundToInt() ?: 0) /10.0
+        val avg = ((model.getDataSet()?.data?.average()?.times(10))?.roundToInt() ?: 0) / 10.0
         add(Label(avg.toString()), 3, 3)
         add(Label(model.getDataSet()?.data?.sum().toString()), 3, 4)
     }
 
-    init{
+    init {
         // a 125 unit wide right side area for data statistics
         minWidth = 125.0
         maxWidth = 125.0

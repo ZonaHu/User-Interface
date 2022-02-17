@@ -4,20 +4,21 @@ import javafx.scene.paint.Color
 import javafx.scene.paint.Color.hsb
 import javafx.scene.text.TextAlignment
 
-class GraphView (
+class GraphView(
     private val model: Model
 ) : HBox(), IView {
 
     // Create a canvas as a drawing surface
     private var canvas = Canvas()
+
     // Use the graphics context to draw on a canvas
     private val gc = canvas.graphicsContext2D
 
     override fun updateView() {
-        style = if (!model.getSelectedTheme()){
+        style = if (!model.getSelectedTheme()) {
             // set the background color to white
             "-fx-background-color:white"
-        } else{
+        } else {
             // set to the special theme
             "-fx-background-color:black"
         }
@@ -36,7 +37,7 @@ class GraphView (
         gc.stroke = if (!model.getSelectedTheme()) {
             // x- and y-axis are displayed as black lines by default
             Color.BLACK
-        } else{
+        } else {
             // set to the white
             Color.WHITE
         }
@@ -46,15 +47,15 @@ class GraphView (
         gc.fill = if (!model.getSelectedTheme()) {
             // x- and y-axis are displayed as black lines by default
             Color.BLACK
-        } else{
+        } else {
             // set to the white
             Color.LIGHTYELLOW
         }
         // the lineWidth is 5, should be accounted in calculation for the positions
         // title for the dataset, horizontally centered in the main graph area and vertically centred in the top margin.
-        gc.fillText(model.getDataSet()?.title ?: "", 50.0 + inWidth/2, 30.0 )
+        gc.fillText(model.getDataSet()?.title ?: "", 50.0 + inWidth / 2, 30.0)
         // x-axis label for the dataset, horizontally centred below the x-axis line and vertically centred in the bottom margi
-        gc.fillText(model.getDataSet()?.xAxis ?: "", 50.0 + inWidth/2, 80.0 + inHeight)
+        gc.fillText(model.getDataSet()?.xAxis ?: "", 50.0 + inWidth / 2, 80.0 + inHeight)
         gc.textAlign = TextAlignment.RIGHT
         // a “0” labelling the bottom point of the y-axis
         gc.fillText("0", 45.0, 55 + inHeight)
@@ -64,7 +65,7 @@ class GraphView (
         // save
         gc.save()
         // y-axis label for the dataset
-        gc.translate(25.0, 50 + inHeight/2)
+        gc.translate(25.0, 50 + inHeight / 2)
         gc.rotate(270.0)
         gc.fillText(model.getDataSet()?.yAxis ?: "", 0.0, 0.0)
         gc.restore()
@@ -82,18 +83,18 @@ class GraphView (
                 val barHeight = data * (inHeight / model.getDataSet()?.data?.maxOrNull()!!)
                 val verticalPos = 50 + inHeight - barHeight
                 // if it's set to rainbow color
-                if (curColor == Color.GRAY.toString()){
+                if (curColor == Color.GRAY.toString()) {
                     // rainbow bars, saturation and brightness 1.0
                     gc.fill = hsb(color, 1.0, 1.0, 1.0)
-                } else if (curColor == Color.LIGHTSKYBLUE.toString()){
+                } else if (curColor == Color.LIGHTSKYBLUE.toString()) {
                     gc.fill = Color.LIGHTSKYBLUE
-                } else if (curColor == Color.CHOCOLATE.toString()){
+                } else if (curColor == Color.CHOCOLATE.toString()) {
                     gc.fill = Color.CHOCOLATE
-                } else if (curColor ==  Color.LIGHTPINK.toString()){
+                } else if (curColor == Color.LIGHTPINK.toString()) {
                     gc.fill = Color.LIGHTPINK
-                } else if (curColor == Color.LIGHTSALMON.toString()){
+                } else if (curColor == Color.LIGHTSALMON.toString()) {
                     gc.fill = Color.LIGHTSALMON
-                } else if (curColor ==  Color.LIMEGREEN.toString()){
+                } else if (curColor == Color.LIMEGREEN.toString()) {
                     gc.fill = Color.LIMEGREEN
                 }
                 // the black behaviour doesn't need to be set
@@ -106,18 +107,18 @@ class GraphView (
         }
     }
 
-    init{
+    init {
         // To fix the canvas in the middle
         minWidth = 0.0
         minHeight = 0.0
         canvas.widthProperty().bind(widthProperty())
         canvas.heightProperty().bind(heightProperty())
         // make the canvas resizable
-        canvas.widthProperty().addListener{ _,_, _->
+        canvas.widthProperty().addListener { _, _, _ ->
             updateView()
         }
 
-        canvas.heightProperty().addListener{ _,_, _->
+        canvas.heightProperty().addListener { _, _, _ ->
             updateView()
         }
 
