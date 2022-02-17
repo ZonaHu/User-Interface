@@ -15,16 +15,15 @@ class DataTableView(
     private fun createRow (index: Int, default: Int): HBox {
         // set label and spinners to the pane
         val hBox = HBox()
-        val label = Label()
-        label.text = "$index: "
+        val label = Label("$index: ")
 
         val spinner = Spinner<Int>(0, 100, default)
         spinner.isEditable = false
         spinner.prefWidth = 70.0
         // a listener to monitor new changes to the spinner
-        spinner.valueProperty().addListener { _, _, newValue
+        spinner.valueProperty().addListener { _, _, newValue ->
             // modify the dataset value to the new value
-            -> model.modifySpinnerVal(index, newValue)
+            model.modifySpinnerVal(index, newValue)
         }
 
         hBox.spacing = 10.0
@@ -41,9 +40,9 @@ class DataTableView(
         flowPane.children.clear()
         counter = 0
         // add spinners for each data point
-        for (index in model.getDataSet()?.data!!){
+        for (datapoint in model.getDataSet()?.data!!){
             counter ++
-            flowPane.children.add(createRow(counter, index))
+            flowPane.children.add(createRow(counter, datapoint))
         }
     }
 
