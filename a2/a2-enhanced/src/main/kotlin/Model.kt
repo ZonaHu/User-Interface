@@ -24,7 +24,7 @@ class Model {
         datasets = listOf("Increasing", "Large", "Middle", "Single", "Range", "Percentage").associateWith {
             createTestDataSet(it)
         }.toMutableMap()
-        colorSets = listOf("Rainbow", "Light Sky Blue", "Chocolate", "Light Pink", "Light Salmon", "Lime Green").associateWith {
+        colorSets = listOf("Rainbow", "Light Sky Blue", "Chocolate", "Light Pink", "Light Salmon", "Lime Green", "Black - White").associateWith {
             createColorOption(it)
         }.toMutableMap()
     }

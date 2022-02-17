@@ -48,7 +48,7 @@ class GraphView (
             Color.BLACK
         } else{
             // set to the white
-            Color.WHITE
+            Color.LIGHTYELLOW
         }
         // the lineWidth is 5, should be accounted in calculation for the positions
         // title for the dataset, horizontally centered in the main graph area and vertically centred in the top margin.
@@ -96,6 +96,7 @@ class GraphView (
                 } else if (curColor ==  Color.LIMEGREEN.toString()){
                     gc.fill = Color.LIMEGREEN
                 }
+                // the black behaviour doesn't need to be set
                 gc.fillRect(startXPos, verticalPos, barWidth, barHeight)
                 // update the color
                 color += colorCnt
