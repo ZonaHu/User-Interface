@@ -19,7 +19,6 @@ class GraphView (
             "-fx-background-color:white"
         } else{
             // set to the special theme
-//            "-fx-background-color:lightyellow"
             "-fx-background-color:black"
         }
 
