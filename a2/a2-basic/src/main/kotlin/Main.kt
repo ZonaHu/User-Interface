@@ -21,9 +21,8 @@ class Main : Application() {
         val main = BorderPane()
         // set up the border color
         main.style = "-fx-border-color: lightgrey"
-        val layout = BorderPane(main)
+        val layout = BorderPane()
 
-        layout.top = ToolBarView(model)
         main.top = EditingBarView(model)
 
         // create each view, and tell them about the model
@@ -35,6 +34,9 @@ class Main : Application() {
         main.center = GraphView(model)
         // a 125 unit wide right side area for data statistics
         main.right = DataStatisticsView(model)
+
+        layout.top = ToolBarView(model)
+        layout.center = main
         // lightgrey status bar at the bottom
         layout.bottom = StatusBarView(model)
 
