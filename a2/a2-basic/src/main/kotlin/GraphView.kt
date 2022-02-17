@@ -21,6 +21,7 @@ class GraphView (
         gc.lineWidth = 1.5
         // 50 unit margin around the axes and rectangle.
         // Thus subtract 50*2 from the original width and height of the canvas
+        // the range of the y-axis is 0 to the maximum data point value
         val inWidth = canvas.width - 100
         val inHeight = canvas.height - 100
         gc.strokeRect(50.0, 50.0, inWidth, inHeight)
