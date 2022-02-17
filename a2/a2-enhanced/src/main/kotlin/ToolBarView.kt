@@ -90,7 +90,7 @@ class ToolBarView (private val model: Model
             }
         children.add(deleteBtn)
 
-        children.add(Label("Special Theme: "))
+        children.add(Label("Dark Mode: "))
         checkBox.setOnAction {
             model.setSelectedTheme(checkBox.isSelected)
         }
