@@ -12,6 +12,8 @@ class Model {
     private var cnt = 0
     // current title default initialized to "Increasing"
     private var curSelect = "Increasing"
+    // current removed dataset
+    private var curRM = ""
 
     init {
         datasets = listOf("Increasing", "Large", "Middle", "Single", "Range", "Percentage").associateWith {
@@ -84,6 +86,20 @@ class Model {
         datasets[name] = DataSet(title, xAxis, yAxis, newData)
         curSelect = name
         notifyObservers()
+    }
+
+    fun deleteSelectedDataSet() {
+        if (curSelect != "Increasing"){
+            curRM = curSelect
+            datasets.remove(curSelect)
+            // also need to be removed from the dropdown menu
+        }
+        curSelect = "Increasing"
+        notifyObservers()
+    }
+
+    fun getCurRM(): String {
+        return curRM
     }
 
     // function to get the current selected dataset name

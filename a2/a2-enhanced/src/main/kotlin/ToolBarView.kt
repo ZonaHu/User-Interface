@@ -15,13 +15,25 @@ class ToolBarView (private val model: Model
     // a Spinner in the range from 1 to 20, starting from 1
     private val spinner = Spinner<Int>(1, 20, 1)
 
+    // enhancement: a delete button
+    private val deleteBtn = Button("Delete")
+
     override fun updateView() {
+        deleteBtn.isDisable = false // initialized to not disabled
         // add the newly created name to the list of dropdown options if new names are added from other views
         if (!dropDown.items.contains(model.getCurSelect()) && model.getCurSelect() != ""){
             dropDown.items.add(model.getCurSelect())
-            // set the choice-box to select the newly created dataset name
-            dropDown.selectionModel.select(model.getCurSelect())
         }
+        if (dropDown.items.contains(model.getCurRM()) && (model.getCurSelect()!=model.getCurRM()) ){
+            dropDown.items.remove(model.getCurRM())
+        }
+        // "increasing" is the default dataset, when it's default, delete button is disabled
+        if (model.getCurSelect() == "Increasing"){
+            deleteBtn.isDisable = true
+        }
+        // if the current selected model is changed
+        // set the choice-box to select the newly selected dataset name
+        dropDown.selectionModel.select(model.getCurSelect())
     }
 
     init {
@@ -60,6 +72,15 @@ class ToolBarView (private val model: Model
         // add the spinner
         spinner.prefWidth = 80.0
         children.add(spinner)
+
+        // width for the new button should be 80 units
+        deleteBtn.prefWidth = 80.0
+        deleteBtn.onAction =
+            EventHandler {
+                // delete the selected dataset from the model
+                model.deleteSelectedDataSet()
+            }
+        children.add(deleteBtn)
 
         model.addView(this)
     }
