@@ -17,6 +17,8 @@ class ToolBarView (private val model: Model
 
     // enhancement: a delete button
     private val deleteBtn = Button("Delete")
+    // enhancement: a checkbox
+    private val checkBox = CheckBox()
 
     override fun updateView() {
         deleteBtn.isDisable = false // initialized to not disabled
@@ -82,6 +84,16 @@ class ToolBarView (private val model: Model
             }
         children.add(deleteBtn)
 
+        //  There is another vertical Divider
+        val divider2 = Separator()
+        divider2.orientation = Orientation.VERTICAL
+        children.add(divider2)
+
+        children.add(Label("Theme: "))
+        checkBox.setOnAction {
+            model.setSelectedTheme(checkBox.isSelected)
+        }
+        children.add(checkBox)
         model.addView(this)
     }
 }

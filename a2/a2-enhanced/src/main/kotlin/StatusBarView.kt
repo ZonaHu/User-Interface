@@ -10,11 +10,7 @@ class StatusBarView (
     override fun updateView() {
         // count is dataset.size
         count.text = model.getDataSets().size.toString()
-        // ask the model for the message ("datasets)
-        message.text = model.message
     }
-
-    private val message = Label("")
     private val count = Label("")
 
     init {
@@ -25,7 +21,7 @@ class StatusBarView (
         spacing = 5.0
         style = "-fx-background-color:LIGHTGRAY"
 
-        children.addAll(count, message)
+        children.addAll(count, Label("dataset(s)"))
 
         // add to the model when we're ready to start receiving data
         model.addView(this)

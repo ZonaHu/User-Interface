@@ -10,6 +10,6 @@ Zuomiao Hu (z228hu 20815304)
 * JavaFX 17.0.1
 
 ## Enhancement 
-* Aded a delete button to delete selected dataset
-* Added a choice box to change the background of the canvas
+* Aded a delete button to delete selected dataset, after deletion, the dataset will be default to "increasing". The "increasing" dataset will be the default dataset and is not allowed to be deleted. All the other ones can be deleted.
+* Added a choice box so that user can choose to change the background color of the canvas
 * Added an interface to edit the layout of the bar chart: change the margin, bar colours, font size, etc.

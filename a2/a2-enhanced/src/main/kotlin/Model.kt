@@ -14,7 +14,8 @@ class Model {
     private var curSelect = "Increasing"
     // current removed dataset
     private var curRM = ""
-
+    // boolean variable denotes if the special theme is selected
+    private var isSelectedTheme = false
     init {
         datasets = listOf("Increasing", "Large", "Middle", "Single", "Range", "Percentage").associateWith {
             createTestDataSet(it)
@@ -36,14 +37,21 @@ class Model {
         }
     }
 
+    // function to set theme selected boolean
+    fun setSelectedTheme(isSelected: Boolean) {
+        isSelectedTheme =  isSelected
+        notifyObservers()
+    }
+
+    // function to return theme selected boolean
+    fun getSelectedTheme(): Boolean {
+        return isSelectedTheme
+    }
+
     // function to get the current available dropdown menu
     fun getDropDownMenu(): ArrayList<String> {
         return ArrayList(datasets.keys)
     }
-
-    // model's message about datasets
-    var message: String = "datasets"
-        private set
 
     // method that the Controller uses to tell the Model to change state
     fun setDataset(selectionModel: String) {

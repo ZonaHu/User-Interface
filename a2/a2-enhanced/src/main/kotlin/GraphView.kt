@@ -14,6 +14,14 @@ class GraphView (
     private val gc = canvas.graphicsContext2D
 
     override fun updateView() {
+        style = if (!model.getSelectedTheme()){
+            // set the background color to white
+            " -fx-background-color:white"
+        }else{
+            // set to the special theme
+            " -fx-background-color:lightyellow"
+        }
+
         gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
         gc.lineWidth = 5.0
         // a rectangle with LIGHTGRAY stroke (only the top and right lines are visible)
@@ -74,9 +82,6 @@ class GraphView (
     }
 
     init{
-        // set the background color to white
-        style = " -fx-background-color:white"
-
         // To fix the canvas in the middle
         minWidth = 0.0
         minHeight = 0.0
