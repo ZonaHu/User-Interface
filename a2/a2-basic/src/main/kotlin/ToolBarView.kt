@@ -57,7 +57,7 @@ class ToolBarView (private val model: Model
                 model.setNewDataset(spinner.value)
             }
         children.add(newBtn)
-
+        // add the spinner
         spinner.prefWidth = 80.0
         children.add(spinner)
 

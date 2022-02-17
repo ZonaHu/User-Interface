@@ -13,7 +13,7 @@ class DataStatisticsView (
     private val sumL = Label("Sum")
 
     override fun updateView() {
-        // reset the children
+        // reset the children to update the statistics
         children.clear()
         add(numL, 1, 0)
         add(minL, 1, 1)

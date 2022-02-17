@@ -4,7 +4,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 
-class EditingBarView(
+internal class EditingBarView(
     private val model: Model
 ) : HBox(), IView {
     private val titleField = TextField()

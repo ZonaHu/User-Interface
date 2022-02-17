@@ -34,11 +34,12 @@ class Model {
         }
     }
 
+    // function to get the current available dropdown menu
     fun getDropDownMenu(): ArrayList<String> {
         return ArrayList(datasets.keys)
     }
 
-    // model's last message describing operation
+    // model's message about datasets
     var message: String = "datasets"
         private set
 
@@ -85,20 +86,24 @@ class Model {
         notifyObservers()
     }
 
+    // function to get the current selected dataset name
     fun getCurSelect(): String{
         return curSelect
     }
 
+    // function to update a given dataset's title
     fun updateTitle(title: String) {
         datasets[curSelect]?.title = title
         notifyObservers()
     }
 
+    // function to update a given dataset's x axis label
     fun updateX(xAxis: String) {
         datasets[curSelect]?.xAxis = xAxis
         notifyObservers()
     }
 
+    // function to update a given dataset's y axis label
     fun updateY(yAxis: String) {
         datasets[curSelect]?.yAxis = yAxis
         notifyObservers()

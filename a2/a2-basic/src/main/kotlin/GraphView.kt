@@ -81,7 +81,7 @@ class GraphView (
         minHeight = 0.0
         canvas.widthProperty().bind(widthProperty())
         canvas.heightProperty().bind(heightProperty())
-
+        // make the canvas resizable
         canvas.widthProperty().addListener{ _,_, _->
             updateView()
         }

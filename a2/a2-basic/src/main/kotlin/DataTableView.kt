@@ -13,9 +13,7 @@ class DataTableView(
     private var counter = 0
 
     private fun createRow (index: Int, default: Int): HBox {
-        // set label properties
-
-        // add label widget to the pane
+        // set label and spinners to the pane
         val hBox = HBox()
         val label = Label()
         label.text = "$index: "
@@ -42,6 +40,7 @@ class DataTableView(
     override fun updateView() {
         flowPane.children.clear()
         counter = 0
+        // add spinners for each data point
         for (index in model.getDataSet()?.data!!){
             counter ++
             flowPane.children.add(createRow(counter, index))

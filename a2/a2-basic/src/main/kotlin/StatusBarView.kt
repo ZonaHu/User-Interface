@@ -8,9 +8,9 @@ class StatusBarView (
 ): HBox(), IView {
 
     override fun updateView() {
-        // check if a note is selected
-        count.text = model.getDataSets().size.toString() // dataset.size
-        // the message is super easy, just ask the model
+        // count is dataset.size
+        count.text = model.getDataSets().size.toString()
+        // ask the model for the message ("datasets)
         message.text = model.message
     }
 
