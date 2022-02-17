@@ -76,7 +76,7 @@ class ToolBarView (private val model: Model
         children.add(spinner)
 
         // width for the new button should be 80 units
-        deleteBtn.prefWidth = 80.0
+        deleteBtn.prefWidth = 60.0
         deleteBtn.onAction =
             EventHandler {
                 // delete the selected dataset from the model
@@ -89,7 +89,7 @@ class ToolBarView (private val model: Model
         divider2.orientation = Orientation.VERTICAL
         children.add(divider2)
 
-        children.add(Label("Theme: "))
+        children.add(Label("Special Theme: "))
         checkBox.setOnAction {
             model.setSelectedTheme(checkBox.isSelected)
         }
