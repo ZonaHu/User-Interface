@@ -11,5 +11,5 @@ Zuomiao Hu (z228hu 20815304)
 
 ## Enhancement 
 * Aded a delete button to delete selected dataset, after deletion, the dataset will be default to "increasing". The "increasing" dataset will be the default dataset and is not allowed to be deleted. All the other ones can be deleted.
-* Added a choice box so that user can choose to change the background color of the canvas
-* Added an interface to edit the layout of the bar chart: change the margin, bar colours, font size, etc.
+* Added a choice box so that user can choose to change the background color of the canvas 
+* Added a dropdown to allow the users to change the bar colours of the bar chart.

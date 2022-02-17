@@ -10,7 +10,7 @@ class ToolBarView (private val model: Model
 ) : HBox(), IView {
 
     // The toolbar has a ChoiceBox (labelled “Dataset: ”)
-    private val dropDown = ChoiceBox(FXCollections.observableArrayList(model.getDropDownMenu()))
+    private val dropDown = ChoiceBox(FXCollections.observableArrayList(model.getDataDropDownMenu()))
 
     // a Spinner in the range from 1 to 20, starting from 1
     private val spinner = Spinner<Int>(1, 20, 1)
@@ -19,6 +19,8 @@ class ToolBarView (private val model: Model
     private val deleteBtn = Button("Delete")
     // enhancement: a checkbox
     private val checkBox = CheckBox()
+    private val colorDropDown = ChoiceBox(FXCollections.observableArrayList(model.getColorDropDownMenu()))
+
 
     override fun updateView() {
         deleteBtn.isDisable = false // initialized to not disabled
@@ -75,6 +77,10 @@ class ToolBarView (private val model: Model
         spinner.prefWidth = 80.0
         children.add(spinner)
 
+        //  There is another vertical Divider
+        val divider2 = Separator()
+        divider2.orientation = Orientation.VERTICAL
+        children.add(divider2)
         // width for the new button should be 80 units
         deleteBtn.prefWidth = 60.0
         deleteBtn.onAction =
@@ -84,16 +90,27 @@ class ToolBarView (private val model: Model
             }
         children.add(deleteBtn)
 
-        //  There is another vertical Divider
-        val divider2 = Separator()
-        divider2.orientation = Orientation.VERTICAL
-        children.add(divider2)
-
         children.add(Label("Special Theme: "))
         checkBox.setOnAction {
             model.setSelectedTheme(checkBox.isSelected)
         }
         children.add(checkBox)
+
+        //  another vertical Divider
+        val divider3 = Separator()
+        divider3.orientation = Orientation.VERTICAL
+        children.add(divider3)
+
+        // initialize to select the first option
+        colorDropDown.selectionModel.selectFirst()
+        colorDropDown.onAction =
+            EventHandler{
+                model.setColorset(colorDropDown.value!!)
+            }
+
+        children.add(Label("Color: "))
+        children.add(colorDropDown)
+
         model.addView(this)
     }
 }

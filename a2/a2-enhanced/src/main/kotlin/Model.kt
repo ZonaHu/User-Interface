@@ -8,6 +8,10 @@ class Model {
     private val views: ArrayList<IView> = ArrayList()
     // store the datasets
     private var datasets: MutableMap<String, DataSet?> = mutableMapOf()
+    // store the color sets
+    private var colorSets: MutableMap<String, String?> = mutableMapOf()
+    // current bar color, initialized to rainbow
+    private var curColor = "Rainbow"
     // counter for new datasets
     private var cnt = 0
     // current title default initialized to "Increasing"
@@ -19,6 +23,9 @@ class Model {
     init {
         datasets = listOf("Increasing", "Large", "Middle", "Single", "Range", "Percentage").associateWith {
             createTestDataSet(it)
+        }.toMutableMap()
+        colorSets = listOf("Rainbow", "Light Sky Blue", "Chocolate", "Light Pink", "Light Salmon", "Lime Green").associateWith {
+            createColorOption(it)
         }.toMutableMap()
     }
 
@@ -48,9 +55,14 @@ class Model {
         return isSelectedTheme
     }
 
-    // function to get the current available dropdown menu
-    fun getDropDownMenu(): ArrayList<String> {
+    // function to get the current available dataset dropdown menu
+    fun getDataDropDownMenu(): ArrayList<String> {
         return ArrayList(datasets.keys)
+    }
+
+    // function to get the current available color dropdown menu
+    fun getColorDropDownMenu(): ArrayList<String> {
+        return ArrayList(colorSets.keys)
     }
 
     // method that the Controller uses to tell the Model to change state
@@ -58,6 +70,17 @@ class Model {
         // set the newly selected dataset
         curSelect = selectionModel
         notifyObservers()
+    }
+
+    fun setColorset(selectionModel: String) {
+        // set the newly selected color
+        curColor = selectionModel
+        notifyObservers()
+    }
+
+    fun getCurColor(): String? {
+        // get current selected color
+        return colorSets[curColor]
     }
 
     fun getDataSet(): DataSet? {
@@ -132,5 +155,4 @@ class Model {
         datasets[curSelect]?.yAxis = yAxis
         notifyObservers()
     }
-
 }

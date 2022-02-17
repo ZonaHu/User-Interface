@@ -16,10 +16,10 @@ class GraphView (
     override fun updateView() {
         style = if (!model.getSelectedTheme()){
             // set the background color to white
-            " -fx-background-color:white"
+            "-fx-background-color:white"
         }else{
             // set to the special theme
-            " -fx-background-color:lightyellow"
+            "-fx-background-color:lightyellow"
         }
 
         gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
@@ -58,6 +58,7 @@ class GraphView (
         gc.fillText(model.getDataSet()?.yAxis ?: "", 0.0, 0.0)
         gc.restore()
 
+        val curColor = model.getCurColor()
         // adding the bars
         var color = 0.0
         val dataPointNums = model.getDataSet()?.data?.size
@@ -69,9 +70,21 @@ class GraphView (
             for (data in model.getDataSet()!!.data) {
                 val barHeight = data * (inHeight / model.getDataSet()?.data?.maxOrNull()!!)
                 val verticalPos = 50 + inHeight - barHeight
-                // rainbow bars, saturation and brightness 1.0
-                val hsb = hsb(color, 1.0, 1.0, 1.0)
-                gc.fill = hsb
+                // if it's set to rainbow color
+                if (curColor == Color.GRAY.toString()){
+                    // rainbow bars, saturation and brightness 1.0
+                    gc.fill = hsb(color, 1.0, 1.0, 1.0)
+                } else if (curColor == Color.LIGHTSKYBLUE.toString()){
+                    gc.fill = Color.LIGHTSKYBLUE
+                } else if (curColor == Color.CHOCOLATE.toString()){
+                    gc.fill = Color.CHOCOLATE
+                } else if (curColor ==  Color.LIGHTPINK.toString()){
+                    gc.fill = Color.LIGHTPINK
+                } else if (curColor == Color.LIGHTSALMON.toString()){
+                    gc.fill = Color.LIGHTSALMON
+                } else if (curColor ==  Color.LIMEGREEN.toString()){
+                    gc.fill = Color.LIMEGREEN
+                }
                 gc.fillRect(startXPos, verticalPos, barWidth, barHeight)
                 // update the color
                 color += colorCnt
