@@ -3,14 +3,15 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 
-class StatusBarView (
+class StatusBarView(
     private val model: Model
-): HBox(), IView {
+) : HBox(), IView {
 
     override fun updateView() {
         // count is dataset.size
         count.text = model.getDataSets().size.toString()
     }
+
     private val count = Label("")
 
     init {

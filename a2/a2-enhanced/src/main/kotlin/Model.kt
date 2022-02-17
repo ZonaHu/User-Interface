@@ -6,25 +6,41 @@ class Model {
 
     // all views of this model
     private val views: ArrayList<IView> = ArrayList()
+
     // store the datasets
     private var datasets: MutableMap<String, DataSet?> = mutableMapOf()
+
     // store the color sets
     private var colorSets: MutableMap<String, String?> = mutableMapOf()
+
     // current bar color, initialized to rainbow
     private var curColor = "Rainbow"
+
     // counter for new datasets
     private var cnt = 0
+
     // current title default initialized to "Increasing"
     private var curSelect = "Increasing"
+
     // current removed dataset
     private var curRM = ""
+
     // boolean variable denotes if the special theme is selected
     private var isSelectedTheme = false
+
     init {
         datasets = listOf("Increasing", "Large", "Middle", "Single", "Range", "Percentage").associateWith {
             createTestDataSet(it)
         }.toMutableMap()
-        colorSets = listOf("Rainbow", "Light Sky Blue", "Chocolate", "Light Pink", "Light Salmon", "Lime Green").associateWith {
+        colorSets = listOf(
+            "Rainbow",
+            "Light Sky Blue",
+            "Chocolate",
+            "Light Pink",
+            "Light Salmon",
+            "Lime Green",
+            "Black - White"
+        ).associateWith {
             createColorOption(it)
         }.toMutableMap()
     }
@@ -46,7 +62,7 @@ class Model {
 
     // function to set theme selected boolean
     fun setSelectedTheme(isSelected: Boolean) {
-        isSelectedTheme =  isSelected
+        isSelectedTheme = isSelected
         notifyObservers()
     }
 
@@ -120,7 +136,7 @@ class Model {
     }
 
     fun deleteSelectedDataSet() {
-        if (curSelect != "Increasing"){
+        if (curSelect != "Increasing") {
             curRM = curSelect
             datasets.remove(curSelect)
             // also need to be removed from the dropdown menu
@@ -134,7 +150,7 @@ class Model {
     }
 
     // function to get the current selected dataset name
-    fun getCurSelect(): String{
+    fun getCurSelect(): String {
         return curSelect
     }
 

@@ -17,7 +17,7 @@ internal class EditingBarView(
         // the dataset won't be null
         titleField.text = model.getDataSet()?.title.toString()
         xAxisField.text = model.getDataSet()?.xAxis.toString()
-        yAxisField.text =model.getDataSet()?.yAxis.toString()
+        yAxisField.text = model.getDataSet()?.yAxis.toString()
     }
 
     init {
@@ -38,15 +38,15 @@ internal class EditingBarView(
         children.add(yAxisField)
 
         // store text corresponding to the changes
-        titleField.textProperty().addListener{ _,_,_->
+        titleField.textProperty().addListener { _, _, _ ->
             model.updateTitle(titleField.text)
         }
 
-        xAxisField.textProperty().addListener{ _,_,_->
+        xAxisField.textProperty().addListener { _, _, _ ->
             model.updateX(xAxisField.text)
         }
 
-        yAxisField.textProperty().addListener{_,_,_->
+        yAxisField.textProperty().addListener { _, _, _ ->
             model.updateY(yAxisField.text)
         }
 
