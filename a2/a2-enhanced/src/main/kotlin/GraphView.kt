@@ -17,9 +17,10 @@ class GraphView (
         style = if (!model.getSelectedTheme()){
             // set the background color to white
             "-fx-background-color:white"
-        }else{
+        } else{
             // set to the special theme
-            "-fx-background-color:lightyellow"
+//            "-fx-background-color:lightyellow"
+            "-fx-background-color:black"
         }
 
         gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
@@ -33,12 +34,23 @@ class GraphView (
         val inWidth = canvas.width - 100
         val inHeight = canvas.height - 100
         gc.strokeRect(50.0, 50.0, inWidth, inHeight)
-        // x- and y-axis are displayed as black lines
-        gc.stroke = Color.BLACK
+        gc.stroke = if (!model.getSelectedTheme()) {
+            // x- and y-axis are displayed as black lines by default
+            Color.BLACK
+        } else{
+            // set to the white
+            Color.WHITE
+        }
         gc.strokeLine(50.0, 50.0, 50.0, 50.0 + inHeight)
         gc.strokeLine(50.0, 50.0 + inHeight, 50.0 + inWidth, 50.0 + inHeight)
         gc.textAlign = TextAlignment.CENTER
-        gc.fill = Color.BLACK
+        gc.fill = if (!model.getSelectedTheme()) {
+            // x- and y-axis are displayed as black lines by default
+            Color.BLACK
+        } else{
+            // set to the white
+            Color.WHITE
+        }
         // the lineWidth is 5, should be accounted in calculation for the positions
         // title for the dataset, horizontally centered in the main graph area and vertically centred in the top margin.
         gc.fillText(model.getDataSet()?.title ?: "", 50.0 + inWidth/2, 30.0 )
