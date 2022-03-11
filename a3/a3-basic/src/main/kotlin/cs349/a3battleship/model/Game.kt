@@ -130,6 +130,17 @@ class Game (var dimension : Int, private var debug : Boolean) {
         return ShipType.values().toList()
     }
 
+    // function that map ship type to lengths
+    fun getShipLength(shipType: ShipType): Int {
+        return when (shipType) {
+            ShipType.Destroyer -> 2
+            ShipType.Cruiser -> 3
+            ShipType.Submarine -> 3
+            ShipType.Battleship -> 4
+            ShipType.Carrier -> 5
+        }
+    }
+
     /**
      * Returns the number of ships that player has currently placed.
      */

@@ -7,6 +7,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 
 class ShipAreaView(private val model: Game): VBox(), IView {
@@ -20,7 +21,19 @@ class ShipAreaView(private val model: Game): VBox(), IView {
     private val exitButn = Button("Exit Game")
 
     override fun updateView() {
-        children.addAll(hbox,shipArea,startButn,exitButn )
+        shipArea.children.clear()
+        // update the position of the ships
+        // add spinners for each data point
+        for (ship in model.getShipsToPlace()){
+            // draw rectangles with length corresponding to the shiptype
+            val width = 25.0
+            val height = 20.0 * model.getShipLength(ship)
+            val rect = Rectangle(width, height)
+            rect.style = "-fx-fill: lightyellow; -fx-stroke: black; -fx-stroke-width: 1;"
+            shipArea.children.add(rect)
+        }
+
+        children.addAll(hbox,shipArea,startButn,exitButn)
 
         println("update ship area")
     }
@@ -37,12 +50,14 @@ class ShipAreaView(private val model: Game): VBox(), IView {
         title.style = "-fx-font-weight: bold"
         title.alignment = Pos.CENTER
 
-        shipArea.style =  "-fx-background-color:WHITE"
-
-
+        shipArea.padding = Insets(5.0)
+        shipArea.spacing = 5.0
         shipArea.prefHeight = 280.0
+
         startButn.prefWidth = 165.0
-        startButn.isDisable = true // at the beginning, start is disabled as requirement 16 states
+        // at the beginning, start is disabled as requirement 16 states,
+        // will be enabled when all ships are placed on the board
+        startButn.isDisable = true
         exitButn.prefWidth = 165.0
 
         // add to the model when we're ready to start receiving data
