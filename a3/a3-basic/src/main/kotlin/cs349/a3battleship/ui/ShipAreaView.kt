@@ -10,8 +10,6 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
-import javafx.event.EventHandler
-import javafx.scene.Node
 
 class ShipAreaView(private val model: Game, private val mover: Movable): VBox(), IView {
     // the player fleet
@@ -29,8 +27,8 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         // update the position of the ships
         for (ship in model.getShipsToPlace()){
             // draw rectangles with length corresponding to the shiptype
-            val width = 25.0
-            val height = 20.0 * model.getShipLength(ship)
+            val width = 23.0
+            val height = 28.0 * model.getShipLength(ship)
             val rect = Rectangle(width, height)
             rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
             rect.fill = palette[cnt]
