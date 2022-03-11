@@ -11,6 +11,9 @@ class Movable(parent: Node) {
     // the offset captured at start of drag
     private var offsetX = 0.0
     private var offsetY = 0.0
+    // save the coordinates at the start
+    private var startX = 0.0
+    private var startY = 0.0
 
     init {
 
@@ -19,6 +22,14 @@ class Movable(parent: Node) {
             val node = movingNode
             if (node != null) {
                 println("drop '$node'")
+                // req 13: if the ship is placed partially or fully outside of the Player Board
+                // or overlaps another ship,
+                // it will return to its original positoin in the Player Navy.
+//                if (){
+//
+//                }
+                node.translateX = startX
+                node.translateY = startY
                 movingNode = null
             }
         }
@@ -40,6 +51,8 @@ class Movable(parent: Node) {
             if (movingNode == null) {
                 println("click '$node'")
                 this.movingNode = node
+                startX = node.translateX
+                startY = node.translateY
                 offsetX = node.translateX - e.sceneX
                 offsetY = node.translateY - e.sceneY
                 // we don't want to drag the background too
