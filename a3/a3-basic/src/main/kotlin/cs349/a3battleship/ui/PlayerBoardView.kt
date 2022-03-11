@@ -81,17 +81,18 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         maxWidth = 350.0
         // the label is 25 units high
         hbox.prefHeight = 25.0
+
+        // set up the font for board label, bold and size is 16
+        title.font = Font("Arial", 16.0)
+        title.style = "-fx-font-weight: bold"
+        hbox.alignment = Pos.CENTER
+
         //  The size of the Player Board must be 300 x 300 units
         // and 2 board coords = 2 * 25  = 50 units
         grid.minWidth = 350.0
         grid.minHeight = 350.0
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
-
-        // set up the font for board label, bold and size is 16
-        title.font = Font("Arial", 16.0)
-        title.style = "-fx-font-weight: bold"
-        hbox.alignment = Pos.CENTER
 
         // add to the model when we're ready to start receiving data
         model.addView(this)

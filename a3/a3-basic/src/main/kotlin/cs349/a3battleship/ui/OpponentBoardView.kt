@@ -80,18 +80,20 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         // 300(board) + 25(board coords) + 25(board coords) = 350 units
         minWidth = 350.0
         maxWidth = 350.0
-        hbox.prefHeight = 25.0 // label is 25 units high
+        // label is 25 units high
+        hbox.prefHeight = 25.0
+
+        // set up the font for board label, size 16 and bold
+        title.font = Font("Arial", 16.0)
+        title.style = "-fx-font-weight: bold"
+        hbox.alignment = Pos.CENTER
+
         //  The size of the Player Board must be 300 x 300 units
         // and 2 board coords = 2 * 25  = 50 units
         grid.minWidth = 350.0
         grid.minHeight = 350.0
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
-
-        // set up the font for board label, size 16 and bold
-        title.font = Font("Arial", 16.0)
-        title.style = "-fx-font-weight: bold"
-        hbox.alignment = Pos.CENTER
 
         // add to the model when we're ready to start receiving data
         model.addView(this)
