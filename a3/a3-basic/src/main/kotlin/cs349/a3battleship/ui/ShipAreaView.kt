@@ -37,6 +37,9 @@ class ShipAreaView(private val model: Game): VBox(), IView {
         title.style = "-fx-font-weight: bold"
         title.alignment = Pos.CENTER
 
+        shipArea.style =  "-fx-background-color:WHITE"
+
+
         shipArea.prefHeight = 280.0
         startButn.prefWidth = 165.0
         startButn.isDisable = true // at the beginning, start is disabled as requirement 16 states
