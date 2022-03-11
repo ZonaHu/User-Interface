@@ -1,11 +1,11 @@
 package cs349.a3battleship.ui
+import cs349.a3battleship.model.Game
 import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 
 // code from 349 public repo
-class Movable(parent: Node) {
-
+class Movable(private val model: Game, parent: Node) {
     private var movingNode: Node? = null
 
     // the offset captured at start of drag
@@ -25,7 +25,7 @@ class Movable(parent: Node) {
                 // req 13: if the ship is placed partially or fully outside of the Player Board
                 // or overlaps another ship,
                 // it will return to its original positoin in the Player Navy.
-//                if (){
+//                if (model.placeShip){
 //
 //                }
                 node.translateX = startX
@@ -46,7 +46,6 @@ class Movable(parent: Node) {
     }
 
     fun makeMovable(node: Node) {
-
         node.onMouseClicked = EventHandler { e ->
             if (movingNode == null) {
                 println("click '$node'")

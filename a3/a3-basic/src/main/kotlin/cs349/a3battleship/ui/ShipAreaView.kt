@@ -1,6 +1,7 @@
 package cs349.a3battleship.ui
 
 import cs349.a3battleship.model.Game
+import cs349.a3battleship.model.Player
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
@@ -43,8 +44,12 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         shipArea.children.clear()
         cnt = 0
         createShips()
-        children.addAll(hbox,shipArea,startButn,exitButn)
 
+        // will be enabled when all ships are placed on the board
+        if (model.getShipsPlacedCount(Player.Human) == 5){
+            startButn.isDisable = false
+        }
+        children.addAll(hbox,shipArea,startButn,exitButn)
         println("update ship area")
     }
 
@@ -66,8 +71,8 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
 
         startButn.prefWidth = 165.0
         // at the beginning, start is disabled as requirement 16 states,
-        // will be enabled when all ships are placed on the board
         startButn.isDisable = true
+
         exitButn.prefWidth = 165.0
 
         // add to the model when we're ready to start receiving data

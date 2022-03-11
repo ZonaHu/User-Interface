@@ -24,7 +24,7 @@ class Battleship : Application() {
 
         val layout = BorderPane()
         // moving node manager
-        val mover = Movable(layout)
+        val mover = Movable(game, layout)
         layout.left = PlayerBoardView(game)
         layout.right = OpponentBoardView(game)
         layout.center = ShipAreaView(game, mover)
