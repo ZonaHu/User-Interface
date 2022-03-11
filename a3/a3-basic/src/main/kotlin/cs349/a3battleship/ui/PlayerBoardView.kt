@@ -1,13 +1,13 @@
 package cs349.a3battleship.ui
 
 import cs349.a3battleship.model.Game
+import javafx.geometry.HPos
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 
@@ -23,7 +23,6 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         children.add(hbox)
         children.add(grid)
         var rStart = 'A'
-        var cnt = 0
         // reference: https://git.uwaterloo.ca/j2avery/cs349-public/-/blob/master/03.JavaFX/04.gridpane/src/main/kotlin/Main.kt
         for (i in 0..11) {
             for (j in 0..11) {
@@ -31,8 +30,8 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                     if ((i!=0)&&(i!=11)){
                         // add Column label
                         val cNum = Label(i.toString())
-                        cNum.alignment = Pos.CENTER
                         grid.add(cNum, i, j)
+                        GridPane.setHalignment(cNum, HPos.CENTER)
                     }
                 }else if ((i == 0) || (i == 11)){
                         // add row label
@@ -40,13 +39,13 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                             rStart = 'A'
                         }
                         val rNum = Label(rStart.toString())
-                        rNum.alignment = Pos.CENTER
                         grid.add(rNum, i, j)
+                        GridPane.setHalignment(rNum, HPos.CENTER)
                         rStart++
                 }
                 else{
                     val rect = Rectangle(30.0, 30.0)
-                    rect.style = "-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;";
+                    rect.style = "-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;"
                     // use (x,y) to store the grid position of each rectangle
                     // we're taking advantage of the fact that these fields aren't being otherwise used
                     rect.x = i.toDouble()
@@ -60,7 +59,6 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
     }
 
     init{
-//        style = "-fx-background-color:LIGHTYELLOW"
         // 300(board) + 25(board coords) + 25(board coords) = 350 units
         minWidth = 350.0
         maxWidth = 350.0
@@ -76,7 +74,6 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         title.font = Font("Arial", 16.0)
         title.style = "-fx-font-weight: bold"
         hbox.alignment = Pos.CENTER
-//        grid.style =    "-fx-background-color:BLACK"
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }
