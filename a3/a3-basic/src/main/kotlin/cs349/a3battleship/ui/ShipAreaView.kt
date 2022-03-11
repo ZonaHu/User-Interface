@@ -34,7 +34,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
             rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
             rect.fill = palette[cnt]
             // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
-            mover.makeMovable(rect)
+            mover.makeMovable(rect, ship)
             cnt++
             shipArea.children.add(rect)
         }
@@ -42,10 +42,11 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
 
     override fun updateView() {
         shipArea.children.clear()
+        children.clear()
         cnt = 0
         createShips()
 
-        // will be enabled when all ships are placed on the board
+        // req 17, start game will be enabled when all ships are placed on the board
         if (model.getShipsPlacedCount(Player.Human) == 5){
             startButn.isDisable = false
         }
@@ -74,6 +75,18 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         startButn.isDisable = true
 
         exitButn.prefWidth = 165.0
+        // exit the game, req 22
+        exitButn.setOnAction {
+            updateView()
+            // clear board
+
+        }
+
+//        // req 18, start game now can be clicked to start the game,
+//        // After this, the location and orientation of ships cannot be altered anymore.
+//        startButn.setOnAction {
+//            model.startGame()
+//        }
 
         // add to the model when we're ready to start receiving data
         model.addView(this)

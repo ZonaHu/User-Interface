@@ -10,4 +10,4 @@ Zuomiao Hu (z228hu 20815304)
 * JavaFX 17.0.1
 
 ## Enhancement 
-* Added a delete button to delete selected dataset. After deletion, the dataset will be default to "increasing". The "increasing" dataset will be the default dataset and is not allowed to be deleted. All the other ones can be deleted.
+* 
