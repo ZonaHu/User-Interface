@@ -2,6 +2,7 @@ package cs349.a3battleship.model
 
 import cs349.a3battleship.model.ships.Ship
 import cs349.a3battleship.model.ships.ShipType
+import cs349.a3battleship.ui.IView
 
 /**
  * Game manages the rules of the game Battleship.
@@ -26,6 +27,9 @@ class Game (var dimension : Int, private var debug : Boolean) {
 
     private var activePlayer = Player.Human
     private var gameState = GameState.Init
+    // all views of this model
+    private val views: ArrayList<IView> = ArrayList()
+
 
     /**
      * Invoked if Player can begin setting up
@@ -198,6 +202,21 @@ class Game (var dimension : Int, private var debug : Boolean) {
                 }
             }
             println("")
+        }
+    }
+
+    // method that the views can use to register themselves with the Model
+    // once added, they are told to update and get state from the Model
+    fun addView(view: IView) {
+        views.add(view)
+        view.updateView()
+    }
+
+    // the model uses this method to notify all the Views that the data has changed
+    // the expectation is that the Views will refresh themselves to display new data when appropriate
+    private fun notifyObservers() {
+        for (view in views) {
+            view.updateView()
         }
     }
 }
