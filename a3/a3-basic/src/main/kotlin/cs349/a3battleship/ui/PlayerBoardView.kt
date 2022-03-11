@@ -18,21 +18,26 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
     private var rStart = 'A'
 
     private fun createLabel(char: Char, i: Int, j: Int){
+        // On the left and right of both Player and Opponent Board are row-labels, which run from “A” to “J”.
         var label = Label(rStart.toString()) // row label
         if (char == 'c'){ // column label
-           label = Label(i.toString())
+            // On the top and bottom of both Player and Opponent Board are column-labels, which run from “1” to “10”.
+            label = Label(i.toString())
         }
-        // set the default width and height
+        // set the default width and height to 25 units
         label.prefWidth = 25.0
         label.prefHeight = 25.0
+        // font size is 12
+        label.font = Font("Arial", 12.0)
         grid.add(label, i, j)
-        // horizontal alignment of the label in the grid
+        // horizontal alignment of the label in the grid: centered
         GridPane.setFillWidth(label, true)
         label.maxWidth = Double.MAX_VALUE
         label.alignment = Pos.CENTER
         // vertical alignment of the label in the grid
         GridPane.setValignment(label, VPos.CENTER)
     }
+
     override fun updateView() {
         // reset the children to update the statistics
         children.clear()
@@ -74,6 +79,7 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         // 300(board) + 25(board coords) + 25(board coords) = 350 units
         minWidth = 350.0
         maxWidth = 350.0
+        // the label is 25 units high
         hbox.prefHeight = 25.0
         //  The size of the Player Board must be 300 x 300 units
         // and 2 board coords = 2 * 25  = 50 units
@@ -82,7 +88,7 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
 
-        // set up the font for board label
+        // set up the font for board label, bold and size is 16
         title.font = Font("Arial", 16.0)
         title.style = "-fx-font-weight: bold"
         hbox.alignment = Pos.CENTER

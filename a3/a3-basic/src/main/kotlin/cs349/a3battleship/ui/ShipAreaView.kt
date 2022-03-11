@@ -1,13 +1,14 @@
 package cs349.a3battleship.ui
 
 import cs349.a3battleship.model.Game
-import javafx.geometry.Insets
-import javafx.geometry.Pos
+import javafx.scene.control.Label
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font
 
 class ShipAreaView(private val model: Game): VBox(), IView {
 
+    private val title = Label("My Formation")
+    private val hbox = HBox(title)
 
     override fun updateView() {
         println("update ship area")
