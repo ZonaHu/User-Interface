@@ -13,7 +13,7 @@ import javafx.scene.text.Font
 import javafx.event.EventHandler
 import javafx.scene.Node
 
-class ShipAreaView(private val model: Game): VBox(), IView {
+class ShipAreaView(private val model: Game, private val mover: Movable): VBox(), IView {
     // the player fleet
 
     private val title = Label("My Fleet")
@@ -24,9 +24,6 @@ class ShipAreaView(private val model: Game): VBox(), IView {
     private val exitButn = Button("Exit Game")
     private val palette: Array<Color> = arrayOf<Color>(Color.RED, Color.PINK, Color.ORANGE, Color.GREEN, Color.BLUE)
     private var cnt = 0
-    // moving node manager
-    val mover = Movable(this)
-
 
     private fun createShips(){
         // update the position of the ships

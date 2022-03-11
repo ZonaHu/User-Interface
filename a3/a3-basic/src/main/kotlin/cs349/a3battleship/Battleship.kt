@@ -1,6 +1,7 @@
 package cs349.a3battleship
 
 import cs349.a3battleship.model.Game
+import cs349.a3battleship.ui.Movable
 import cs349.a3battleship.ui.OpponentBoardView
 import cs349.a3battleship.ui.PlayerBoardView
 import cs349.a3battleship.ui.ShipAreaView
@@ -22,9 +23,11 @@ class Battleship : Application() {
         game.startGame()
 
         val layout = BorderPane()
+        // moving node manager
+        val mover = Movable(layout)
         layout.left = PlayerBoardView(game)
-        layout.center = ShipAreaView(game)
         layout.right = OpponentBoardView(game)
+        layout.center = ShipAreaView(game, mover)
 
 
         // =========== create the scene with initialized size of 875 by 375 units ===============================
