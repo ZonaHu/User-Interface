@@ -1,9 +1,8 @@
 package cs349.a3battleship.ui
 
 import cs349.a3battleship.model.Game
-import javafx.geometry.HPos
-import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
@@ -16,31 +15,44 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
     private val title = Label("My Formation")
     private val grid = GridPane()
     private val hbox = HBox(title)
+    private var rStart = 'A'
 
+    private fun createLabel(char: Char, i: Int, j: Int){
+        var label = Label(rStart.toString()) // row label
+        if (char == 'c'){ // column label
+           label = Label(i.toString())
+        }
+        // set the default width and height
+        label.prefWidth = 25.0
+        label.prefHeight = 25.0
+        grid.add(label, i, j)
+        // horizontal alignment of the label in the grid
+        GridPane.setFillWidth(label, true)
+        label.maxWidth = Double.MAX_VALUE
+        label.alignment = Pos.CENTER
+        // vertical alignment of the label in the grid
+        GridPane.setValignment(label, VPos.CENTER)
+    }
     override fun updateView() {
         // reset the children to update the statistics
         children.clear()
         children.add(hbox)
         children.add(grid)
-        var rStart = 'A'
+
         // reference: https://git.uwaterloo.ca/j2avery/cs349-public/-/blob/master/03.JavaFX/04.gridpane/src/main/kotlin/Main.kt
         for (i in 0..11) {
             for (j in 0..11) {
                 if ((j == 0) || (j == 11)){
                     if ((i!=0)&&(i!=11)){
                         // add Column label
-                        val cNum = Label(i.toString())
-                        grid.add(cNum, i, j)
-                        GridPane.setHalignment(cNum, HPos.CENTER)
+                        createLabel('c', i,j)
                     }
                 }else if ((i == 0) || (i == 11)){
                         // add row label
                         if (rStart == 'K'){ // reset row label to A for the last column
                             rStart = 'A'
                         }
-                        val rNum = Label(rStart.toString())
-                        grid.add(rNum, i, j)
-                        GridPane.setHalignment(rNum, HPos.CENTER)
+                    createLabel('r', i,j)
                         rStart++
                 }
                 else{
@@ -62,7 +74,7 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         // 300(board) + 25(board coords) + 25(board coords) = 350 units
         minWidth = 350.0
         maxWidth = 350.0
-        padding = Insets(5.0, 0.0, 0.0,0.0)
+        hbox.prefHeight = 25.0
         //  The size of the Player Board must be 300 x 300 units
         // and 2 board coords = 2 * 25  = 50 units
         grid.minWidth = 350.0
@@ -74,6 +86,7 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         title.font = Font("Arial", 16.0)
         title.style = "-fx-font-weight: bold"
         hbox.alignment = Pos.CENTER
+
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }
