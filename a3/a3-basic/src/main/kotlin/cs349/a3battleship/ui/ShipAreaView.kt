@@ -34,7 +34,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
             rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
             rect.fill = palette[cnt]
             // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
-            mover.makeMovable(rect, ship)
+            mover.makeMovable(rect, ship, cnt)
             cnt++
             shipArea.children.add(rect)
         }
