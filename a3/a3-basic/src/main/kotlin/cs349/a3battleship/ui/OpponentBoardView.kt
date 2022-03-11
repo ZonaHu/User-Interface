@@ -73,7 +73,7 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
             }
         }
 
-        println("update player board")
+        println("update opponent's board")
     }
 
     init{

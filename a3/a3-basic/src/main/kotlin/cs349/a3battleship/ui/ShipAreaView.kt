@@ -7,6 +7,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 
@@ -19,20 +20,30 @@ class ShipAreaView(private val model: Game): VBox(), IView {
     // game controls: two buttons at the bottom
     private val startButn = Button("Start Game")
     private val exitButn = Button("Exit Game")
+    private val palette: Array<Color> = arrayOf<Color>(Color.RED, Color.PINK, Color.ORANGE, Color.GREEN, Color.BLUE)
+    private var cnt = 0
 
-    override fun updateView() {
-        shipArea.children.clear()
+    private fun createShips(){
         // update the position of the ships
-        // add spinners for each data point
         for (ship in model.getShipsToPlace()){
             // draw rectangles with length corresponding to the shiptype
             val width = 25.0
             val height = 20.0 * model.getShipLength(ship)
             val rect = Rectangle(width, height)
-            rect.style = "-fx-fill: lightyellow; -fx-stroke: black; -fx-stroke-width: 1;"
+            rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
+            rect.fill = palette[cnt]
+            cnt++
             shipArea.children.add(rect)
-        }
+            // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
 
+        }
+    }
+
+
+    override fun updateView() {
+        shipArea.children.clear()
+        cnt = 0
+        createShips()
         children.addAll(hbox,shipArea,startButn,exitButn)
 
         println("update ship area")
