@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
+import javafx.event.EventHandler
+import javafx.scene.Node
 
 class ShipAreaView(private val model: Game): VBox(), IView {
     // the player fleet
@@ -22,6 +24,9 @@ class ShipAreaView(private val model: Game): VBox(), IView {
     private val exitButn = Button("Exit Game")
     private val palette: Array<Color> = arrayOf<Color>(Color.RED, Color.PINK, Color.ORANGE, Color.GREEN, Color.BLUE)
     private var cnt = 0
+    // moving node manager
+    val mover = Movable(this)
+
 
     private fun createShips(){
         // update the position of the ships
@@ -32,13 +37,12 @@ class ShipAreaView(private val model: Game): VBox(), IView {
             val rect = Rectangle(width, height)
             rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
             rect.fill = palette[cnt]
+            // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
+            mover.makeMovable(rect)
             cnt++
             shipArea.children.add(rect)
-            // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
-
         }
     }
-
 
     override fun updateView() {
         shipArea.children.clear()
@@ -74,5 +78,4 @@ class ShipAreaView(private val model: Game): VBox(), IView {
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }
-
 }
