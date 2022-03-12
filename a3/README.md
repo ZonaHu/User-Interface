@@ -12,5 +12,5 @@ Zuomiao Hu (z228hu 20815304)
 ## Enhancement 
 * Added colors to ships with (Color.CHOCOLATE, Color.PINK, Color.ORANGE,  Color.LIMEGREEN, Color.BLUE)
 * Added an area to show the opponent's available fleets:
-  - Colored rectangles means ships that are still available
-  - Rectangles in dark grey means the ships are sunk
+  - Transparent rectangles means ships that are still available
+  - Rectangles in dark gray means the ships are sunk

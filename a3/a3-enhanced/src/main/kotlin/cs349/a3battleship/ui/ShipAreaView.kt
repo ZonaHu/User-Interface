@@ -17,13 +17,18 @@ import javafx.stage.Window
 class ShipAreaView(private val model: Game, private val mover: Movable): VBox(), IView {
     // the player fleet
     private val title = Label("My Fleet")
-    private val hbox = HBox(title)
-    private val shipArea = HBox()
+    private val titleHBox = HBox(title)
+    private val myShipArea = HBox()
+    private val opFleet = Label("Opponent's Fleet")
+    private val opFleetHBox = HBox(opFleet)
+    private val opShipArea = HBox()
     // game controls: two buttons at the bottom
     private val startButn = Button("Start Game")
     private val exitButn = Button("Exit Game")
     private var cnt = 0
     var shipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
+    var opShipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
+
     private val palette: Array<Color> = arrayOf<Color>(Color.CHOCOLATE, Color.PINK, Color.ORANGE,  Color.LIMEGREEN, Color.BLUE)
 
     private fun createShips(){
@@ -40,16 +45,39 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
             mover.makeMovable(rect, ship, cnt)
             shipMap[ship] = rect
             cnt++
-            shipArea.children.add(rect)
+            myShipArea.children.add(rect)
+        }
+    }
+
+    private fun getOpShips(){
+        // update the position of the ships
+        for (ship in model.getShipsToPlace()){
+            // draw rectangles with length corresponding to the shiptype
+            val width = 23.0
+            val height = 20.0 * model.getShipLength(ship)
+            val rect = Rectangle(width, height)
+            rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
+            // if the ship is sunk
+            rect.fill = Color.TRANSPARENT
+            opShipMap[ship] = rect
+            opShipArea.children.add(rect)
+        }
+        model.getShipsIsSunk(Player.AI).forEach() { ship->
+            opShipMap[ship.shipType]?.let {
+                // if the ship is sunk, set to dark gray
+                it.fill = Color.DARKGRAY
+            }
         }
     }
 
     private fun resetShips(){
-        shipArea.children.clear()
+        myShipArea.children.clear()
+        opShipArea.children.clear()
         children.clear()
         cnt = 0
         createShips()
-        children.addAll(hbox,shipArea,startButn,exitButn)
+        getOpShips()
+        children.addAll(titleHBox,myShipArea,opFleetHBox, opShipArea, startButn,exitButn)
     }
 
     override fun updateView() {
@@ -68,6 +96,8 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
                 shipMap[ship.shipType]?.let { mover.newPlacement(it) }
             }
         }
+        opShipArea.children.clear()
+        getOpShips()
     }
 
     init{
@@ -80,12 +110,22 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         title.style = "-fx-font-weight: bold"
         title.alignment = Pos.CENTER
 
-        hbox.prefHeight = 25.0
-        hbox.alignment = Pos.CENTER
+        titleHBox.prefHeight = 25.0
+        titleHBox.alignment = Pos.CENTER
 
-        shipArea.padding = Insets(5.0)
-        shipArea.spacing = 5.0
-        shipArea.prefHeight = 280.0
+        myShipArea.padding = Insets(5.0)
+        myShipArea.spacing = 5.0
+        myShipArea.prefHeight = 150.0
+
+        opFleet.font = Font("Arial", 14.0)
+        opFleet.style = "-fx-font-weight: bold"
+        opFleetHBox.prefHeight = 20.0
+        opFleetHBox.alignment = Pos.CENTER
+
+        // add ships to op's fleet area
+        opShipArea.padding = Insets(5.0)
+        opShipArea.spacing = 8.0
+        opShipArea.prefHeight = 100.0
 
         startButn.prefWidth = 165.0
         // at the beginning, start is disabled as requirement 16 states,
