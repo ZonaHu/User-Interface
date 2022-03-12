@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
+import javafx.stage.Window
 
 class ShipAreaView(private val model: Game, private val mover: Movable): VBox(), IView {
     // the player fleet
@@ -97,9 +98,10 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         exitButn.prefWidth = 165.0
         // exit the game, req 22
         exitButn.setOnAction {
-            // TODO: close the window and exit the program
+            // piazza @437: close the window and exit the program
             // only need to support single round of the game
-            resetShips()
+            val stage: Window = this.scene.window
+            stage.hide()
         }
 
         // req 18, start game now can be clicked to start the game,
