@@ -77,9 +77,9 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         exitButn.prefWidth = 165.0
         // exit the game, req 22
         exitButn.setOnAction {
-            updateView()
             // clear board
-
+            // only need to support single round of the game
+            updateView()
         }
 
 //        // req 18, start game now can be clicked to start the game,

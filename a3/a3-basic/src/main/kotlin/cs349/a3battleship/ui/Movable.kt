@@ -32,16 +32,18 @@ class Movable(private val model: Game, parent: Node) {
 //                 req 13: if the ship is placed partially or fully outside of the Player Board
 //                 or overlaps another ship,
 //                 it will return to its original position in the Player Navy.
-                val cell = Cell(9-(-(node.translateX+55.0+counter*30.0)/30.0).roundToInt(), ((node.translateY-20.0)/30.0).roundToInt())
+                val cell = Cell(9-(-(node.translateX+65.0+counter*30.0)/30.0).roundToInt(), ((node.translateY-20.0)/30.0).roundToInt())
                 println(node.translateX)
                 println(node.translateY)
-                println(9-(-(node.translateX+55.0+counter*30.0)/30.0))
+                println(9-(-(node.translateX+65.0+counter*30.0)/30.0))
                 println((((node.translateY-20.0)/30.0)))
                 model.removeShip(Player.Human, cell)
                 if ((model.placeShip(Player.Human, shiptype, orientation, cell) == null)){
                     node.translateX = startX
                     node.translateY = startY
-                    println("done!")
+                    println("return!")
+                    println(startX)
+                    println(startY)
                 }
                 movingNode = null
             }
@@ -65,8 +67,8 @@ class Movable(private val model: Game, parent: Node) {
                 this.movingNode = node
                 shiptype = ship
                 counter = cnt
-                startX = node.translateX
-                startY = node.translateY
+//                startX = node.translateX
+//                startY = node.translateY
                 offsetX = node.translateX - e.sceneX
                 offsetY = node.translateY - e.sceneY
                 // we don't want to drag the background too
