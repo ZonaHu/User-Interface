@@ -48,11 +48,6 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
     }
 
     override fun updateView() {
-//        shipArea.children.clear()
-//        children.clear()
-//        cnt = 0
-//        createShips()
-
         //  req 17, start game will be enabled when all ships are placed on the board
         if (model.getShipsPlacedCount(Player.Human) == 5){
             startButn.isDisable = false
