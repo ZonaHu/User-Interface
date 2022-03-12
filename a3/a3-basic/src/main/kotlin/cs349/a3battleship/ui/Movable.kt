@@ -50,14 +50,15 @@ class Movable(private val model: Game, parent: Node) {
                     } else {
                         println("place the rectangle")
                         println((topLeftCoord.x-25)/30.0)
-                        println(y)
+                        println((topLeftCoord.y-50)/30.0)
                         // snap to grid
                         if (orientation == Orientation.HORIZONTAL){
-                            node.translateX += x * 30.0 + 25.0 - node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x
+                            node.translateX += x * 30.0 + 23.5 - node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x
+                            node.translateY += y * 30.0 + 52.0 - node.localToScene(0.0, 0.0).y
                         }else{
                             node.translateX += x * 30.0 + 28.0 - node.localToScene(0.0, 0.0).x
+                            node.translateY += y * 30.0 + 50.0 - node.localToScene(0.0, 0.0).y
                         }
-                        node.translateY += y * 30.0 + 50.0 - node.localToScene(0.0, 0.0).y
                     }
                     movingNode = null
                     shipType = null
