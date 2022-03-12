@@ -67,8 +67,6 @@ class Movable(private val model: Game, parent: Node) {
                 this.movingNode = node
                 shiptype = ship
                 counter = cnt
-//                startX = node.translateX
-//                startY = node.translateY
                 offsetX = node.translateX - e.sceneX
                 offsetY = node.translateY - e.sceneY
                 // we don't want to drag the background too
