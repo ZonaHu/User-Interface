@@ -1,4 +1,5 @@
 package cs349.a3battleship.ui
+
 import cs349.a3battleship.model.Cell
 import cs349.a3battleship.model.Game
 import cs349.a3battleship.model.Orientation
@@ -8,9 +9,10 @@ import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.scene.transform.Transform
 import kotlin.math.roundToInt
 
-// code from 349 public repo
+// starter code from 349 public repo
 class Movable(private val model: Game, parent: Node) {
     private var movingNode: Node? = null
 
@@ -26,24 +28,54 @@ class Movable(private val model: Game, parent: Node) {
         parent.addEventHandler(MouseEvent.MOUSE_CLICKED) { e ->
             val node = movingNode
             if (node != null) {
-                val x = (9-(-(node.translateX+58.0+counter*30.0)/30.0)).roundToInt()
-                val y = ((node.translateY-20.0)/30.0).roundToInt()
-                val cell = Cell(x, y)
-
-                if ((model.placeShip(Player.Human, shipType!!, orientation, cell) == null)){
+                if (e.button == MouseButton.PRIMARY) {
+                    val topLeftCoord = node.localToScene(0.0, 0.0)
+                    var x = ((topLeftCoord.x-25)/30.0).roundToInt()
+                    val y = ((topLeftCoord.y-50)/30.0).roundToInt()
+                    if (!node.transforms.isEmpty()){
+                        // modify x
+                        x = ((node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x-25.0)/30.0).roundToInt()
+                        println("x: $x")
+                    }
+                    val cell = Cell(x, y)
+                    if ((model.placeShip(Player.Human, shipType!!, orientation, cell) == null)) {
 //                 req 13: if the ship is placed partially or fully outside the Player Board
 //                 or overlaps another ship,
 //                 it will return to its original position in the Player Navy.
-                    node.translateX = 0.0
-                    node.translateY = 0.0
+                        node.translateX = 0.0
+                        node.translateY = 0.0
+                        node.transforms.clear()
+                        println("null")
+                        println(x)
+                        println(y)
+                    } else {
+                        println("place the rectangle")
+                        println((topLeftCoord.x-25)/30.0)
+                        println(y)
+                        // snap to grid
+                        if (orientation == Orientation.HORIZONTAL){
+                            node.translateX += x * 30.0 + 25.0 - node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x
+                        }else{
+                            node.translateX += x * 30.0 + 28.0 - node.localToScene(0.0, 0.0).x
+                        }
+                        node.translateY += y * 30.0 + 50.0 - node.localToScene(0.0, 0.0).y
+                    }
+                    movingNode = null
+                    shipType = null
+                } else if (e.button == MouseButton.SECONDARY) {
+                    orientation = if (orientation == Orientation.HORIZONTAL){
+                        Orientation.VERTICAL
+                    }else{
+                        Orientation.HORIZONTAL
+                    }
+                    // Pressing the right mouse button while a ship is selected, rotation
+                    val pos = node.sceneToLocal(e.sceneX, e.sceneY)
+                    if (node.transforms.isEmpty()){
+                        node.transforms.add(Transform.rotate(90.0, pos.x, pos.y))
+                    }else{
+                        node.transforms.clear()
+                    }
                 }
-                else{
-                    // snap to grid
-                    node.translateX += x*30.0 + 28.0 - node.localToScene(0.0, 0.0).x
-                    node.translateY += y*30.0 + 50.0 - node.localToScene(0.0, 0.0).y
-                }
-                movingNode = null
-                shipType = null
             }
         }
 
@@ -60,17 +92,27 @@ class Movable(private val model: Game, parent: Node) {
 
     fun makeMovable(node: Node, ship: ShipType, cnt: Int) {
         node.onMouseClicked = EventHandler { e ->
-            if (e.button == MouseButton.PRIMARY){
+            if (e.button == MouseButton.PRIMARY) {
                 if (movingNode == null) {
                     println("click '$node'")
                     this.movingNode = node
                     shipType = ship
                     counter = cnt
+                    orientation = Orientation.VERTICAL // the default orientation
                     // if it has been placed, we can place it again somewhere valid
                     // so, we first remove from placed ships
-                    val x = 9-(-(node.translateX+58.0+counter*30.0)/30.0)
-                    val y = (node.translateY-20.0)/30.0
-                    val cell = Cell(x.roundToInt(), y.roundToInt())
+//                    val x = 9 - (-(node.translateX + 58.0 + counter * 30.0) / 30.0)
+//                    val y = (node.translateY - 20.0) / 30.0
+                    val topLeftCoord = node.localToScene(0.0, 0.0)
+                    var x = ((topLeftCoord.x-25)/30.0).roundToInt()
+                    val y = ((topLeftCoord.y-50)/30.0).roundToInt()
+                    if (!node.transforms.isEmpty()){
+                        // modify x
+                        x = ((node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x-25.0)/30.0).roundToInt()
+                        println("x: $x")
+                        orientation = Orientation.HORIZONTAL
+                    }
+                    val cell = Cell(x, y)
                     model.removeShip(Player.Human, cell)
                     offsetX = node.translateX - e.sceneX
                     offsetY = node.translateY - e.sceneY
