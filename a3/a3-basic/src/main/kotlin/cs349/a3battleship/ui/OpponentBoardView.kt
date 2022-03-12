@@ -70,8 +70,13 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
                     rect.x = i.toDouble()
                     rect.y = j.toDouble()
                     rect.setOnMouseClicked {
-                        rect.fill = Color.LIGHTGRAY
+                        if (model.getGameState()!=Game.GameState.Init && model.getGameState()!= Game.GameState.SetupHuman) {
+                            // if not the target
+                            rect.fill = Color.LIGHTGRAY
+
+                        }
                     }
+
                     grid.add(rect, i, j)
                 }
             }
