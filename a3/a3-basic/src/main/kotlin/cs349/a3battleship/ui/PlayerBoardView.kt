@@ -38,7 +38,7 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         GridPane.setValignment(label, VPos.CENTER)
     }
 
-    override fun updateView() {
+    private fun setBoard(){
         // reset the children to update the statistics
         children.clear()
         children.add(hbox)
@@ -53,12 +53,12 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                         createLabel('c', i,j)
                     }
                 }else if ((i == 0) || (i == 11)){
-                        // add row label
-                        if (rStart == 'K'){ // reset row label to A for the last column
-                            rStart = 'A'
-                        }
+                    // add row label
+                    if (rStart == 'K'){ // reset row label to A for the last column
+                        rStart = 'A'
+                    }
                     createLabel('r', i,j)
-                        rStart++
+                    rStart++
                 }
                 else{
                     val rect = Rectangle(30.0, 30.0)
@@ -71,6 +71,9 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                 }
             }
         }
+    }
+
+    override fun updateView() {
 
         println("update player board")
     }
@@ -94,6 +97,7 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
 
+        setBoard()
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }

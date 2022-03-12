@@ -7,6 +7,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 
@@ -39,7 +40,7 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         GridPane.setValignment(label, VPos.CENTER)
     }
 
-    override fun updateView() {
+    private fun setBoard(){
         // reset the children to update the statistics
         children.clear()
         children.add(hbox)
@@ -68,10 +69,16 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
                     // we're taking advantage of the fact that these fields aren't being otherwise used
                     rect.x = i.toDouble()
                     rect.y = j.toDouble()
+                    rect.setOnMouseClicked {
+                        rect.fill = Color.LIGHTGRAY
+                    }
                     grid.add(rect, i, j)
                 }
             }
         }
+    }
+
+    override fun updateView() {
 
         println("update opponent's board")
     }
@@ -95,6 +102,7 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
 
+        setBoard()
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }
