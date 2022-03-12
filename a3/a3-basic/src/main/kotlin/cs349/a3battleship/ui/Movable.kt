@@ -28,8 +28,6 @@ class Movable(private val model: Game, parent: Node) {
                 val x = 9-(-(node.translateX+58.0+counter*30.0)/30.0)
                 val y = (node.translateY-20.0)/30.0
                 val cell = Cell(x.roundToInt(), y.roundToInt())
-                // TODO: if it has been placed, we can place it again somewhere valid
-
                 // debug statements
                 println(x)
                 println(y)
@@ -63,6 +61,12 @@ class Movable(private val model: Game, parent: Node) {
                 this.movingNode = node
                 shiptype = ship
                 counter = cnt
+                // if it has been placed, we can place it again somewhere valid
+                // so, we first remove from placed ships
+                val x = 9-(-(node.translateX+58.0+counter*30.0)/30.0)
+                val y = (node.translateY-20.0)/30.0
+                val cell = Cell(x.roundToInt(), y.roundToInt())
+                model.removeShip(Player.Human, cell)
                 offsetX = node.translateX - e.sceneX
                 offsetY = node.translateY - e.sceneY
                 // we don't want to drag the background too
