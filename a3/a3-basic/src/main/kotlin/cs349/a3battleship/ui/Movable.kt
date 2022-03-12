@@ -21,6 +21,7 @@ class Movable(private val model: Game, parent: Node) {
     private var startY = 0.0
     private var shiptype = ShipType.Battleship // the default ship type
     private var orientation = Orientation.VERTICAL // the default orientation
+    private var counter = 0
 
     init {
         // important that this is in bubble phase, not capture phase
@@ -28,24 +29,18 @@ class Movable(private val model: Game, parent: Node) {
             val node = movingNode
             if (node != null) {
                 println("drop '$node'")
-                // req 13: if the ship is placed partially or fully outside of the Player Board
-                // or overlaps another ship,
-                // it will return to its original position in the Player Navy.
+//                 req 13: if the ship is placed partially or fully outside of the Player Board
+//                 or overlaps another ship,
+//                 it will return to its original position in the Player Navy.
+                val cell = Cell(9-(-(node.translateX+55.0+counter*30.0)/30.0).roundToInt(), ((node.translateY-10.0)/30.0).roundToInt())
                 println(node.translateX)
                 println(node.translateY)
-                println(9-(-(node.translateX+55.0)/30.0).roundToInt())
+                println(9-(-(node.translateX+55.0+counter*30.0)/30.0))
                 println((((node.translateY-10.0)/30.0).roundToInt()))
                 println("done!")
-                // defualt cell
-                var cell = Cell(9-(-(node.translateX+55.0)/30.0).roundToInt(), ((node.translateY-10.0)/30.0).roundToInt())
-                if (model.placeShip(Player.Human, shiptype, orientation, cell) == null){
-//                    node.translateX = startX
-//                    node.translateY = startY
-                    println(node.translateX)
-                    println(node.translateY)
-                    println(9-(-(node.translateX+55.0)/30.0).roundToInt())
-                    println((((node.translateY-10.0)/30.0).roundToInt()))
-                    println("done!")
+                if ((model.placeShip(Player.Human, shiptype, orientation, cell) == null)){
+                    node.translateX = startX
+                    node.translateY = startY
                 }
                 movingNode = null
             }
@@ -62,12 +57,13 @@ class Movable(private val model: Game, parent: Node) {
         }
     }
 
-    fun makeMovable(node: Node, ship: ShipType) {
+    fun makeMovable(node: Node, ship: ShipType, cnt: Int) {
         node.onMouseClicked = EventHandler { e ->
             if (movingNode == null) {
                 println("click '$node'")
                 this.movingNode = node
                 shiptype = ship
+                counter = cnt
                 startX = node.translateX
                 startY = node.translateY
                 offsetX = node.translateX - e.sceneX
