@@ -11,7 +11,7 @@ import cs349.a3battleship.ui.IView
  */
 class Game (var dimension : Int, private var debug : Boolean) {
 
-    private enum class GameState {
+    enum class GameState {
         Init,
         SetupHuman,
         SetupAI,
@@ -80,6 +80,10 @@ class Game (var dimension : Int, private var debug : Boolean) {
             }
             onPlayerAttackBegin.forEach { it(activePlayer) }
         }
+    }
+
+    fun getGameState(): GameState {
+        return gameState
     }
 
     /**

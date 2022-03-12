@@ -91,7 +91,7 @@ class Movable(private val model: Game, parent: Node) {
 
     fun makeMovable(node: Node, ship: ShipType, cnt: Int) {
         node.onMouseClicked = EventHandler { e ->
-            if (e.button == MouseButton.PRIMARY) {
+            if (e.button == MouseButton.PRIMARY &&(model.getGameState()==Game.GameState.Init || model.getGameState() == Game.GameState.SetupHuman)) {
                 if (movingNode == null) {
                     println("click '$node'")
                     this.movingNode = node
