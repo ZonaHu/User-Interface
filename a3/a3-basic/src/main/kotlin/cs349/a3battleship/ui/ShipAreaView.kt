@@ -86,7 +86,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         // req 18, start game now can be clicked to start the game,
         startButn.setOnAction {
             model.startGame()
-            startButn.isDisable = false
+            startButn.isDisable = true
             // After this, the location and orientation of ships cannot be altered anymore.
             // now gameState now becomes Game.GameState.SetupAI
         }
