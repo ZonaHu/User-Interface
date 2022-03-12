@@ -11,7 +11,7 @@ import cs349.a3battleship.ui.IView
  */
 class Game (var dimension : Int, private var debug : Boolean) {
 
-    private enum class GameState {
+    enum class GameState {
         Init,
         SetupHuman,
         SetupAI,
@@ -80,6 +80,15 @@ class Game (var dimension : Int, private var debug : Boolean) {
             }
             onPlayerAttackBegin.forEach { it(activePlayer) }
         }
+        notifyObservers()
+    }
+
+    fun getGameState(): GameState {
+        return gameState
+    }
+
+    fun getShipsIsNotSunk(player: Player): List<Ship> {
+        return boards[player]!!.placedShips.filter { ship -> !ship.isSunk() }
     }
 
     /**
@@ -101,6 +110,7 @@ class Game (var dimension : Int, private var debug : Boolean) {
         if (debug) {
             debugPrintBoard(player)
         }
+        notifyObservers() // update views
         return newShip
     }
 

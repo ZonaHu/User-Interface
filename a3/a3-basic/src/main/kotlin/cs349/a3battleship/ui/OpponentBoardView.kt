@@ -1,12 +1,16 @@
 package cs349.a3battleship.ui
 
+import cs349.a3battleship.model.Cell
+import cs349.a3battleship.model.CellState
 import cs349.a3battleship.model.Game
+import cs349.a3battleship.model.Player
 import javafx.geometry.Pos
 import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 
@@ -40,40 +44,46 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
     }
 
     override fun updateView() {
+        // update rectangle colors, the ones that are attacked should be changing color
+
         // reset the children to update the statistics
         children.clear()
         children.add(hbox)
         children.add(grid)
 
         // reference: https://git.uwaterloo.ca/j2avery/cs349-public/-/blob/master/03.JavaFX/04.gridpane/src/main/kotlin/Main.kt
-        for (i in 0..11) {
-            for (j in 0..11) {
-                if ((j == 0) || (j == 11)){
-                    if ((i!=0)&&(i!=11)){
-                        // add Column label
-                        createLabel('c', i,j)
-                    }
-                }else if ((i == 0) || (i == 11)){
-                    // add row label
-                    if (rStart == 'K'){ // reset row label to A for the last column
-                        rStart = 'A'
-                    }
-                    createLabel('r', i,j)
-                    rStart++
-                }
-                else{
+        for (i in 0..10) {
+            for (j in 0..10) {
+                if ((j != 0) && (i != 0)) {
                     val rect = Rectangle(30.0, 30.0)
-                    rect.style = "-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;"
-                    // use (x,y) to store the grid position of each rectangle
-                    // we're taking advantage of the fact that these fields aren't being otherwise used
-                    rect.x = i.toDouble()
-                    rect.y = j.toDouble()
+                    // set color according to state，  CellState.Ocean is light blue
+                    rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
+                    // LIGHTGRAY -> CellState.Attacked
+                    // CORAL -> CellState.ShipHit
+                    // DARKGRAY -> CellState.ShipSunk
+                    val board = model.getBoard(Player.AI)
+                    when (board[j-1][i-1]) {
+                        CellState.Attacked -> {
+                            // if not the target:
+                            rect.fill = Color.LIGHTGRAY
+                        }
+                        CellState.ShipHit -> {
+                            rect.fill = Color.CORAL
+                        }
+                        CellState.ShipSunk -> {
+                            rect.fill = Color.DARKGRAY
+                        }
+                        else -> { rect.fill = Color.LIGHTBLUE}
+                    }
+                    rect.setOnMouseClicked {
+                        if (model.getGameState()== Game.GameState.FireHuman) {
+                            model.attackCell(Cell(i - 1, j - 1))
+                        }
+                    }
                     grid.add(rect, i, j)
                 }
             }
         }
-
-        println("update opponent's board")
     }
 
     init{
@@ -95,6 +105,24 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
 
+        // draw the labels
+        for (i in 0..11) {
+            for (j in 0..11) {
+                if ((j == 0) || (j == 11)){
+                    if ((i!=0)&&(i!=11)){
+                        // add Column label
+                        createLabel('c', i,j)
+                    }
+                }else if ((i == 0) || (i == 11)){
+                    // add row label
+                    if (rStart == 'K'){ // reset row label to A for the last column
+                        rStart = 'A'
+                    }
+                    createLabel('r', i,j)
+                    rStart++
+                }
+            }
+        }
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }

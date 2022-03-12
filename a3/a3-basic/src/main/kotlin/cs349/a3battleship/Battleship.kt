@@ -19,8 +19,8 @@ class Battleship : Application() {
 
         var game = Game(10, true)
         var computer = AI(game)
-        // var player = ...
-        game.startGame()
+//         var player = ...
+        game.startGame() // set the game state
 
         val layout = BorderPane()
         // moving node manager

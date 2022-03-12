@@ -10,4 +10,5 @@ Zuomiao Hu (z228hu 20815304)
 * JavaFX 17.0.1
 
 ## Enhancement 
-* 
+* Adding colors to ships
+* Enable dragging ships with left mouse press
