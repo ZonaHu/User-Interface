@@ -16,9 +16,6 @@ class Movable(private val model: Game, parent: Node) {
     // the offset captured at start of drag
     private var offsetX = 0.0
     private var offsetY = 0.0
-    // save the coordinates at the start
-    private var startX = 0.0
-    private var startY = 0.0
     private var shiptype = ShipType.Battleship // the default ship type
     private var orientation = Orientation.VERTICAL // the default orientation
     private var counter = 0
@@ -28,22 +25,21 @@ class Movable(private val model: Game, parent: Node) {
         parent.addEventHandler(MouseEvent.MOUSE_CLICKED) { e ->
             val node = movingNode
             if (node != null) {
-//                println("drop '$node'")
-//                 req 13: if the ship is placed partially or fully outside of the Player Board
+                val x = 9-(-(node.translateX+58.0+counter*30.0)/30.0)
+                val y = (node.translateY-20.0)/30.0
+                val cell = Cell(x.roundToInt(), y.roundToInt())
+                // TODO: if it has been placed, we can place it again somewhere valid
+
+                // debug statements
+                println(x)
+                println(y)
+                println("Here!")
+                if ((model.placeShip(Player.Human, shiptype, orientation, cell) == null)){
+//                 req 13: if the ship is placed partially or fully outside the Player Board
 //                 or overlaps another ship,
 //                 it will return to its original position in the Player Navy.
-                val cell = Cell(9-(-(node.translateX+65.0+counter*30.0)/30.0).roundToInt(), ((node.translateY-20.0)/30.0).roundToInt())
-                println(node.translateX)
-                println(node.translateY)
-                println(9-(-(node.translateX+65.0+counter*30.0)/30.0))
-                println((((node.translateY-20.0)/30.0)))
-                model.removeShip(Player.Human, cell)
-                if ((model.placeShip(Player.Human, shiptype, orientation, cell) == null)){
-                    node.translateX = startX
-                    node.translateY = startY
-                    println("return!")
-                    println(startX)
-                    println(startY)
+                    node.translateX = 0.0
+                    node.translateY = 0.0
                 }
                 movingNode = null
             }

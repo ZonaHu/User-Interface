@@ -21,7 +21,6 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
     // game controls: two buttons at the bottom
     private val startButn = Button("Start Game")
     private val exitButn = Button("Exit Game")
-    private val palette: Array<Color> = arrayOf<Color>(Color.RED, Color.PINK, Color.ORANGE, Color.GREEN, Color.BLUE)
     private var cnt = 0
 
     private fun createShips(){
@@ -31,8 +30,8 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
             val width = 23.0
             val height = 30.0 * model.getShipLength(ship)
             val rect = Rectangle(width, height)
-            rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
-            rect.fill = palette[cnt]
+            rect.style = "-fx-stroke: black; -fx-stroke-width: 2;"
+            rect.fill = Color.TRANSPARENT
             // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
             mover.makeMovable(rect, ship, cnt)
             cnt++
