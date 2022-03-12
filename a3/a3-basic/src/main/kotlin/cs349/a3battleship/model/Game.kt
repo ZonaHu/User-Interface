@@ -101,6 +101,7 @@ class Game (var dimension : Int, private var debug : Boolean) {
         if (debug) {
             debugPrintBoard(player)
         }
+        notifyObservers()
         return newShip
     }
 

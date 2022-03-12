@@ -40,17 +40,24 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         }
     }
 
-    override fun updateView() {
+    private fun resetShips(){
         shipArea.children.clear()
         children.clear()
         cnt = 0
         createShips()
+        children.addAll(hbox,shipArea,startButn,exitButn)
+    }
 
-        // req 17, start game will be enabled when all ships are placed on the board
+    override fun updateView() {
+//        shipArea.children.clear()
+//        children.clear()
+//        cnt = 0
+//        createShips()
+
+        //  req 17, start game will be enabled when all ships are placed on the board
         if (model.getShipsPlacedCount(Player.Human) == 5){
             startButn.isDisable = false
         }
-        children.addAll(hbox,shipArea,startButn,exitButn)
         println("update ship area")
     }
 
@@ -79,15 +86,15 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         exitButn.setOnAction {
             // clear board
             // only need to support single round of the game
-            updateView()
+            resetShips()
         }
 
-//        // req 18, start game now can be clicked to start the game,
-//        // After this, the location and orientation of ships cannot be altered anymore.
-//        startButn.setOnAction {
+        // req 18, start game now can be clicked to start the game,
+        // After this, the location and orientation of ships cannot be altered anymore.
+        startButn.setOnAction {
 //            model.startGame()
-//        }
-
+        }
+        resetShips()
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }
