@@ -1,5 +1,6 @@
 package cs349.a3battleship.ui
 
+import cs349.a3battleship.model.Cell
 import cs349.a3battleship.model.Game
 import javafx.geometry.Pos
 import javafx.geometry.VPos
@@ -7,6 +8,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 
@@ -38,7 +40,9 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         GridPane.setValignment(label, VPos.CENTER)
     }
 
-    private fun setBoard(){
+    override fun updateView() {
+        // update rectangle colors, the ones that are attacked should be changing color
+
         // reset the children to update the statistics
         children.clear()
         children.add(hbox)
@@ -62,19 +66,21 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                 }
                 else{
                     val rect = Rectangle(30.0, 30.0)
+                    // set color according to state，  CellState.Ocean is light blue
                     rect.style = "-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;"
                     // use (x,y) to store the grid position of each rectangle
                     // we're taking advantage of the fact that these fields aren't being otherwise used
                     rect.x = i.toDouble()
                     rect.y = j.toDouble()
+
+                    // LIGHTGRAY -> CellState.Attacked
+                    // CORAL -> CellState.ShipHit
+                    // DARKGRAY -> CellState.ShipSunk
+
                     grid.add(rect, i, j)
                 }
             }
         }
-    }
-
-    override fun updateView() {
-
         println("update player board")
     }
 
@@ -97,7 +103,6 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
 
-        setBoard()
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }

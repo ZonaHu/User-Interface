@@ -15,8 +15,7 @@ import javafx.scene.text.Font
 class ShipAreaView(private val model: Game, private val mover: Movable): VBox(), IView {
     // the player fleet
 
-    private val title = Label("My Fleet")
-    private val hbox = HBox(title)
+    private val hbox = HBox()
     private val shipArea = HBox()
     // game controls: two buttons at the bottom
     private val startButn = Button("Start Game")
@@ -61,11 +60,19 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         maxWidth = 175.0
         padding = Insets(0.0, 5.0, 0.0, 5.0 )
 
-        hbox.prefHeight = 25.0
-        hbox.alignment = Pos.CENTER
+        var title = Label("My Fleet")
+        if (model.getGameState()== Game.GameState.WonAI){
+             title = Label("You were defeated!")
+        }else if (model.getGameState()== Game.GameState.WonHuman){
+            title = Label("You Won!")
+        }
         title.font = Font("Arial", 16.0)
         title.style = "-fx-font-weight: bold"
         title.alignment = Pos.CENTER
+
+        hbox.prefHeight = 25.0
+        hbox.alignment = Pos.CENTER
+        hbox.children.add(title)
 
         shipArea.padding = Insets(5.0)
         shipArea.spacing = 5.0

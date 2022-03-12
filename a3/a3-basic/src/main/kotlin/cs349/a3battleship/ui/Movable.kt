@@ -44,13 +44,7 @@ class Movable(private val model: Game, parent: Node) {
                         node.translateX = 0.0
                         node.translateY = 0.0
                         node.transforms.clear()
-                        println("null: ")
-                        println(x)
-                        println(y)
                     } else {
-                        println("place the rectangle")
-                        println((topLeftCoord.x-25)/30.0)
-                        println((topLeftCoord.y-50)/30.0)
                         // snap to grid
                         if (orientation == Orientation.HORIZONTAL){
                             node.translateX += x * 30.0 + 23.5 - node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x
@@ -94,7 +88,6 @@ class Movable(private val model: Game, parent: Node) {
         node.onMouseClicked = EventHandler { e ->
             if (e.button == MouseButton.PRIMARY &&(model.getGameState()==Game.GameState.Init || model.getGameState() == Game.GameState.SetupHuman)) {
                 if (movingNode == null) {
-                    println("click '$node'")
                     this.movingNode = node
                     shipType = ship
                     counter = cnt

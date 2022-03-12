@@ -1,5 +1,6 @@
 package cs349.a3battleship.ui
 
+import cs349.a3battleship.model.Cell
 import cs349.a3battleship.model.Game
 import javafx.geometry.Pos
 import javafx.geometry.VPos
@@ -71,9 +72,15 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
                     rect.y = j.toDouble()
                     rect.setOnMouseClicked {
                         if (model.getGameState()!=Game.GameState.Init && model.getGameState()!= Game.GameState.SetupHuman) {
-                            // if not the target
-                            rect.fill = Color.LIGHTGRAY
+                            model.attackCell(Cell(i-1,j-1))
+                            // LIGHTGRAY -> CellState.Attacked
+                            // CORAL -> CellState.ShipHit
+                            // DARKGRAY -> CellState.ShipSunk
 
+                            // if not the target:
+                            rect.fill = Color.LIGHTGRAY
+                            println(i-1)
+                            println(j-1)
                         }
                     }
 
