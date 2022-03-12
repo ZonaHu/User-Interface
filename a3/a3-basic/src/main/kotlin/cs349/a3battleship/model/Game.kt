@@ -80,6 +80,7 @@ class Game (var dimension : Int, private var debug : Boolean) {
             }
             onPlayerAttackBegin.forEach { it(activePlayer) }
         }
+        notifyObservers()
     }
 
     fun getGameState(): GameState {
