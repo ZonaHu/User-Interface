@@ -10,5 +10,7 @@ Zuomiao Hu (z228hu 20815304)
 * JavaFX 17.0.1
 
 ## Enhancement 
-* Adding colors to ships
-* Enable dragging ships with left mouse press
+* Added colors to ships with (Color.CHOCOLATE, Color.PINK, Color.ORANGE,  Color.LIMEGREEN, Color.BLUE)
+* Added an area to show the opponent's available fleets:
+  - Colored rectangles means ships that are still available
+  - Rectangles in dark grey means the ships are sunk
