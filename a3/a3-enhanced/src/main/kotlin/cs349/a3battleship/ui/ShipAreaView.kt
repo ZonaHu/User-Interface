@@ -24,6 +24,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
     private val exitButn = Button("Exit Game")
     private var cnt = 0
     var shipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
+    private val palette: Array<Color> = arrayOf<Color>(Color.CHOCOLATE, Color.PINK, Color.ORANGE,  Color.LIMEGREEN, Color.BLUE)
 
     private fun createShips(){
         // update the position of the ships
@@ -33,7 +34,8 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
             val height = 30.0 * model.getShipLength(ship)
             val rect = Rectangle(width, height)
             rect.style = "-fx-stroke: black; -fx-stroke-width: 3;"
-            rect.fill = Color.TRANSPARENT
+            rect.fill = palette[cnt]
+            rect.opacity = 0.5
             // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
             mover.makeMovable(rect, ship, cnt)
             shipMap[ship] = rect
