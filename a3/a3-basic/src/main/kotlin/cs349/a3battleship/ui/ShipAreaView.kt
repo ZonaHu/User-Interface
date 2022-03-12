@@ -51,6 +51,24 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         if (model.getShipsPlacedCount(Player.Human) == 5 && (model.getGameState()==Game.GameState.Init || model.getGameState() == Game.GameState.SetupHuman)){
             startButn.isDisable = false
         }
+        if (model.getGameState() == Game.GameState.WonAI || model.getGameState() == Game.GameState.WonHuman){
+            hbox.children.clear()
+            shipArea.children.clear()
+            children.clear()
+            cnt = 0
+            val title = if (model.getGameState()== Game.GameState.WonAI){
+                Label("You were defeated!")
+            }else {
+                Label("You Won!")
+            }
+            title.font = Font("Arial", 16.0)
+            title.style = "-fx-font-weight: bold"
+            title.alignment = Pos.CENTER
+            hbox.children.add(title)
+            //
+            createShips()
+            children.addAll(hbox,shipArea,startButn,exitButn)
+        }
     }
 
     init{
@@ -59,12 +77,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         maxWidth = 175.0
         padding = Insets(0.0, 5.0, 0.0, 5.0 )
 
-        var title = Label("My Fleet")
-        if (model.getGameState()== Game.GameState.WonAI){
-             title = Label("You were defeated!")
-        }else if (model.getGameState()== Game.GameState.WonHuman){
-            title = Label("You Won!")
-        }
+        val title = Label("My Fleet")
         title.font = Font("Arial", 16.0)
         title.style = "-fx-font-weight: bold"
         title.alignment = Pos.CENTER
@@ -84,7 +97,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         exitButn.prefWidth = 165.0
         // exit the game, req 22
         exitButn.setOnAction {
-            // clear board
+            // TODO: close the window and exit the program
             // only need to support single round of the game
             resetShips()
         }
