@@ -96,6 +96,13 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
                 shipMap[ship.shipType]?.let { mover.newPlacement(it) }
             }
         }
+        // set player's ships that are sunk to dark gray to show more clear
+        model.getShipsIsSunk(Player.Human).forEach() { ship->
+            shipMap[ship.shipType]?.let {
+                // if the ship is sunk, set to dark gray
+                it.fill = Color.DARKGRAY
+            }
+        }
         opShipArea.children.clear()
         getOpShips()
     }
