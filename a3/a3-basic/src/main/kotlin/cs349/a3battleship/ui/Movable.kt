@@ -6,6 +6,7 @@ import cs349.a3battleship.model.Player
 import cs349.a3battleship.model.ships.ShipType
 import javafx.event.EventHandler
 import javafx.scene.Node
+import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import kotlin.math.roundToInt
 
@@ -16,7 +17,7 @@ class Movable(private val model: Game, parent: Node) {
     // the offset captured at start of drag
     private var offsetX = 0.0
     private var offsetY = 0.0
-    private var shiptype = ShipType.Battleship // the default ship type
+    private var shipType: ShipType? = null // the default ship type
     private var orientation = Orientation.VERTICAL // the default orientation
     private var counter = 0
 
@@ -25,21 +26,24 @@ class Movable(private val model: Game, parent: Node) {
         parent.addEventHandler(MouseEvent.MOUSE_CLICKED) { e ->
             val node = movingNode
             if (node != null) {
-                val x = 9-(-(node.translateX+58.0+counter*30.0)/30.0)
-                val y = (node.translateY-20.0)/30.0
-                val cell = Cell(x.roundToInt(), y.roundToInt())
-                // debug statements
-                println(x)
-                println(y)
-                println("Here!")
-                if ((model.placeShip(Player.Human, shiptype, orientation, cell) == null)){
+                val x = (9-(-(node.translateX+58.0+counter*30.0)/30.0)).roundToInt()
+                val y = ((node.translateY-20.0)/30.0).roundToInt()
+                val cell = Cell(x, y)
+
+                if ((model.placeShip(Player.Human, shipType!!, orientation, cell) == null)){
 //                 req 13: if the ship is placed partially or fully outside the Player Board
 //                 or overlaps another ship,
 //                 it will return to its original position in the Player Navy.
                     node.translateX = 0.0
                     node.translateY = 0.0
                 }
+                else{
+                    // snap to grid
+                    node.translateX += x*30.0 + 28.0 - node.localToScene(0.0, 0.0).x
+                    node.translateY += y*30.0 + 50.0 - node.localToScene(0.0, 0.0).y
+                }
                 movingNode = null
+                shipType = null
             }
         }
 
@@ -56,21 +60,23 @@ class Movable(private val model: Game, parent: Node) {
 
     fun makeMovable(node: Node, ship: ShipType, cnt: Int) {
         node.onMouseClicked = EventHandler { e ->
-            if (movingNode == null) {
-                println("click '$node'")
-                this.movingNode = node
-                shiptype = ship
-                counter = cnt
-                // if it has been placed, we can place it again somewhere valid
-                // so, we first remove from placed ships
-                val x = 9-(-(node.translateX+58.0+counter*30.0)/30.0)
-                val y = (node.translateY-20.0)/30.0
-                val cell = Cell(x.roundToInt(), y.roundToInt())
-                model.removeShip(Player.Human, cell)
-                offsetX = node.translateX - e.sceneX
-                offsetY = node.translateY - e.sceneY
-                // we don't want to drag the background too
-                e.consume()
+            if (e.button == MouseButton.PRIMARY){
+                if (movingNode == null) {
+                    println("click '$node'")
+                    this.movingNode = node
+                    shipType = ship
+                    counter = cnt
+                    // if it has been placed, we can place it again somewhere valid
+                    // so, we first remove from placed ships
+                    val x = 9-(-(node.translateX+58.0+counter*30.0)/30.0)
+                    val y = (node.translateY-20.0)/30.0
+                    val cell = Cell(x.roundToInt(), y.roundToInt())
+                    model.removeShip(Player.Human, cell)
+                    offsetX = node.translateX - e.sceneX
+                    offsetY = node.translateY - e.sceneY
+                    // we don't want to drag the background too
+                    e.consume()
+                }
             }
         }
     }
