@@ -52,36 +52,16 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         children.add(grid)
 
         // reference: https://git.uwaterloo.ca/j2avery/cs349-public/-/blob/master/03.JavaFX/04.gridpane/src/main/kotlin/Main.kt
-        for (i in 0..11) {
-            for (j in 0..11) {
-                if ((j == 0) || (j == 11)){
-                    if ((i!=0)&&(i!=11)){
-                        // add Column label
-                        createLabel('c', i,j)
-                    }
-                }else if ((i == 0) || (i == 11)){
-                    // add row label
-                    if (rStart == 'K'){ // reset row label to A for the last column
-                        rStart = 'A'
-                    }
-                    createLabel('r', i,j)
-                    rStart++
-                }
-                else{
+        for (i in 0..10) {
+            for (j in 0..10) {
+                if ((j != 0) && (i != 0)) {
                     val rect = Rectangle(30.0, 30.0)
                     // set color according to state，  CellState.Ocean is light blue
                     rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
-                    // use (x,y) to store the grid position of each rectangle
-                    // we're taking advantage of the fact that these fields aren't being otherwise used
-                    rect.x = i.toDouble()
-                    rect.y = j.toDouble()
                     // LIGHTGRAY -> CellState.Attacked
                     // CORAL -> CellState.ShipHit
                     // DARKGRAY -> CellState.ShipSunk
                     val board = model.getBoard(Player.AI)
-                    // LIGHTGRAY -> CellState.Attacked
-                    // CORAL -> CellState.ShipHit
-                    // DARKGRAY -> CellState.ShipSunk
                     when (board[j-1][i-1]) {
                         CellState.Attacked -> {
                             // if not the target:
@@ -104,7 +84,6 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
                 }
             }
         }
-        println("update player board")
     }
 
     init{
@@ -126,6 +105,24 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
 
+        // draw the labels
+        for (i in 0..11) {
+            for (j in 0..11) {
+                if ((j == 0) || (j == 11)){
+                    if ((i!=0)&&(i!=11)){
+                        // add Column label
+                        createLabel('c', i,j)
+                    }
+                }else if ((i == 0) || (i == 11)){
+                    // add row label
+                    if (rStart == 'K'){ // reset row label to A for the last column
+                        rStart = 'A'
+                    }
+                    createLabel('r', i,j)
+                    rStart++
+                }
+            }
+        }
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }
