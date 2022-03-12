@@ -29,7 +29,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         for (ship in model.getShipsToPlace()){
             // draw rectangles with length corresponding to the shiptype
             val width = 23.0
-            val height = 28.0 * model.getShipLength(ship)
+            val height = 30.0 * model.getShipLength(ship)
             val rect = Rectangle(width, height)
             rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
             rect.fill = palette[cnt]
