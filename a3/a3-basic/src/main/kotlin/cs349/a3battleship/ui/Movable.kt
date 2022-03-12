@@ -33,9 +33,8 @@ class Movable(private val model: Game, parent: Node) {
                     var x = ((topLeftCoord.x-25)/30.0).roundToInt()
                     val y = ((topLeftCoord.y-50)/30.0).roundToInt()
                     if (!node.transforms.isEmpty()){
-                        // modify x
+                        // modify x when it's horizontal
                         x = ((node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x-25.0)/30.0).roundToInt()
-                        println("x: $x")
                     }
                     val cell = Cell(x, y)
                     if ((model.placeShip(Player.Human, shipType!!, orientation, cell) == null)) {
@@ -45,7 +44,7 @@ class Movable(private val model: Game, parent: Node) {
                         node.translateX = 0.0
                         node.translateY = 0.0
                         node.transforms.clear()
-                        println("null")
+                        println("null: ")
                         println(x)
                         println(y)
                     } else {
@@ -101,15 +100,12 @@ class Movable(private val model: Game, parent: Node) {
                     orientation = Orientation.VERTICAL // the default orientation
                     // if it has been placed, we can place it again somewhere valid
                     // so, we first remove from placed ships
-//                    val x = 9 - (-(node.translateX + 58.0 + counter * 30.0) / 30.0)
-//                    val y = (node.translateY - 20.0) / 30.0
                     val topLeftCoord = node.localToScene(0.0, 0.0)
                     var x = ((topLeftCoord.x-25)/30.0).roundToInt()
                     val y = ((topLeftCoord.y-50)/30.0).roundToInt()
                     if (!node.transforms.isEmpty()){
                         // modify x
                         x = ((node.localToScene(node.layoutBounds.maxX, node.layoutBounds.maxY).x-25.0)/30.0).roundToInt()
-                        println("x: $x")
                         orientation = Orientation.HORIZONTAL
                     }
                     val cell = Cell(x, y)
