@@ -1,7 +1,9 @@
 package cs349.a3battleship.ui
 
 import cs349.a3battleship.model.Cell
+import cs349.a3battleship.model.CellState
 import cs349.a3battleship.model.Game
+import cs349.a3battleship.model.Player
 import javafx.geometry.Pos
 import javafx.geometry.VPos
 import javafx.scene.control.Label
@@ -41,7 +43,9 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         GridPane.setValignment(label, VPos.CENTER)
     }
 
-    private fun setBoard(){
+    override fun updateView() {
+        // update rectangle colors, the ones that are attacked should be changing color
+
         // reset the children to update the statistics
         children.clear()
         children.add(hbox)
@@ -65,34 +69,42 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
                 }
                 else{
                     val rect = Rectangle(30.0, 30.0)
-                    rect.style = "-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;"
+                    // set color according to state，  CellState.Ocean is light blue
+                    rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
                     // use (x,y) to store the grid position of each rectangle
                     // we're taking advantage of the fact that these fields aren't being otherwise used
                     rect.x = i.toDouble()
                     rect.y = j.toDouble()
-                    rect.setOnMouseClicked {
-                        if (model.getGameState()!=Game.GameState.Init && model.getGameState()!= Game.GameState.SetupHuman) {
-                            model.attackCell(Cell(i-1,j-1))
-                            // LIGHTGRAY -> CellState.Attacked
-                            // CORAL -> CellState.ShipHit
-                            // DARKGRAY -> CellState.ShipSunk
-
+                    // LIGHTGRAY -> CellState.Attacked
+                    // CORAL -> CellState.ShipHit
+                    // DARKGRAY -> CellState.ShipSunk
+                    val board = model.getBoard(Player.AI)
+                    // LIGHTGRAY -> CellState.Attacked
+                    // CORAL -> CellState.ShipHit
+                    // DARKGRAY -> CellState.ShipSunk
+                    when (board[j-1][i-1]) {
+                        CellState.Attacked -> {
                             // if not the target:
                             rect.fill = Color.LIGHTGRAY
-                            println(i-1)
-                            println(j-1)
+                        }
+                        CellState.ShipHit -> {
+                            rect.fill = Color.CORAL
+                        }
+                        CellState.ShipSunk -> {
+                            rect.fill = Color.DARKGRAY
+                        }
+                        else -> { rect.fill = Color.LIGHTBLUE}
+                    }
+                    rect.setOnMouseClicked {
+                        if (model.getGameState()== Game.GameState.FireHuman) {
+                            model.attackCell(Cell(i - 1, j - 1))
                         }
                     }
-
                     grid.add(rect, i, j)
                 }
             }
         }
-    }
-
-    override fun updateView() {
-
-        println("update opponent's board")
+        println("update player board")
     }
 
     init{
@@ -114,7 +126,6 @@ class OpponentBoardView (private val model: Game): VBox(), IView {
         grid.maxWidth = 350.0
         grid.maxHeight = 350.0
 
-        setBoard()
         // add to the model when we're ready to start receiving data
         model.addView(this)
     }

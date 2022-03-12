@@ -1,7 +1,8 @@
 package cs349.a3battleship.ui
 
-import cs349.a3battleship.model.Cell
+import cs349.a3battleship.model.CellState
 import cs349.a3battleship.model.Game
+import cs349.a3battleship.model.Player
 import javafx.geometry.Pos
 import javafx.geometry.VPos
 import javafx.scene.control.Label
@@ -67,16 +68,31 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                 else{
                     val rect = Rectangle(30.0, 30.0)
                     // set color according to state，  CellState.Ocean is light blue
-                    rect.style = "-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;"
+                    rect.style = "-fx-stroke: black; -fx-stroke-width: 1;"
                     // use (x,y) to store the grid position of each rectangle
                     // we're taking advantage of the fact that these fields aren't being otherwise used
                     rect.x = i.toDouble()
                     rect.y = j.toDouble()
-
                     // LIGHTGRAY -> CellState.Attacked
                     // CORAL -> CellState.ShipHit
                     // DARKGRAY -> CellState.ShipSunk
-
+                    val board = model.getBoard(Player.Human)
+                    // LIGHTGRAY -> CellState.Attacked
+                    // CORAL -> CellState.ShipHit
+                    // DARKGRAY -> CellState.ShipSunk
+                    when (board[j-1][i-1]) {
+                        CellState.Attacked -> {
+                            // if not the target:
+                            rect.fill = Color.LIGHTGRAY
+                        }
+                        CellState.ShipHit -> {
+                            rect.fill = Color.CORAL
+                        }
+                        CellState.ShipSunk -> {
+                            rect.fill = Color.DARKGRAY
+                        }
+                        else -> { rect.fill = Color.LIGHTBLUE}
+                    }
                     grid.add(rect, i, j)
                 }
             }
