@@ -101,9 +101,11 @@ class Game (var dimension : Int, private var debug : Boolean) {
      */
     fun placeShip(player : Player, shipType : ShipType, orientation : Orientation, bowCell : Cell) : Ship? {
         if (gameState != GameState.SetupAI && gameState != GameState.SetupHuman) {
+            notifyObservers()
             return null
         }
         if ((getShipsToPlace() - boards[player]!!.placedShips.map { ship -> ship.shipType}).contains(shipType).not()) {
+            notifyObservers()
             return null
         }
         var newShip = boards[player]!!.placeShip(shipType, orientation, bowCell)
@@ -122,6 +124,7 @@ class Game (var dimension : Int, private var debug : Boolean) {
             boards[player]!!.placedShips.find { it.getCells().contains(cell) }?.let { boards[player]!!.removeShip(it) }
             println(boards[player]!!.placedShips.find { it.getCells().contains(cell) })
         }
+        notifyObservers()
     }
 
     /**

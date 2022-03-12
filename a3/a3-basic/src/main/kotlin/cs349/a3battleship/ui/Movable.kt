@@ -51,6 +51,7 @@ class Movable(private val model: Game, parent: Node) {
                         node.translateX = 0.0
                         node.translateY = 0.0
                         node.transforms.clear()
+                        // update place ships
                     } else {
                         // snap to grid
                         if (orientation == Orientation.HORIZONTAL){
