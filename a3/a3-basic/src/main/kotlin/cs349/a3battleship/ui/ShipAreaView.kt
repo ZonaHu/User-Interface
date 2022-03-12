@@ -2,6 +2,7 @@ package cs349.a3battleship.ui
 
 import cs349.a3battleship.model.Game
 import cs349.a3battleship.model.Player
+import cs349.a3battleship.model.ships.ShipType
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
@@ -15,13 +16,14 @@ import javafx.stage.Window
 
 class ShipAreaView(private val model: Game, private val mover: Movable): VBox(), IView {
     // the player fleet
-
-    private val hbox = HBox()
+    private val title = Label("My Fleet")
+    private val hbox = HBox(title)
     private val shipArea = HBox()
     // game controls: two buttons at the bottom
     private val startButn = Button("Start Game")
     private val exitButn = Button("Exit Game")
     private var cnt = 0
+    var shipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
 
     private fun createShips(){
         // update the position of the ships
@@ -34,6 +36,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
             rect.fill = Color.TRANSPARENT
             // req.12, Clicking on a ship in the Player Fleet with the left mouse button selects it.
             mover.makeMovable(rect, ship, cnt)
+            shipMap[ship] = rect
             cnt++
             shipArea.children.add(rect)
         }
@@ -53,22 +56,16 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
             startButn.isDisable = false
         }
         if (model.getGameState() == Game.GameState.WonAI || model.getGameState() == Game.GameState.WonHuman){
-            hbox.children.clear()
-            shipArea.children.clear()
-            children.clear()
             cnt = 0
-            val title = if (model.getGameState()== Game.GameState.WonAI){
-                Label("You were defeated!")
+            if (model.getGameState()== Game.GameState.WonAI){
+                title.text = "You were defeated!"
             }else {
-                Label("You Won!")
+                title.text = "You Won!"
             }
-            title.font = Font("Arial", 16.0)
-            title.style = "-fx-font-weight: bold"
-            title.alignment = Pos.CENTER
-            hbox.children.add(title)
-            //
-            createShips()
-            children.addAll(hbox,shipArea,startButn,exitButn)
+            // All ships of the player that have been sunk remain on the Player Board, all other ships return to their original location in the Player Fleet
+            model.getShipsIsNotSunk(Player.Human).forEach() { ship->
+                shipMap[ship.shipType]?.let { mover.newPlacement(it) }
+            }
         }
     }
 
@@ -78,14 +75,12 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         maxWidth = 175.0
         padding = Insets(0.0, 5.0, 0.0, 5.0 )
 
-        val title = Label("My Fleet")
         title.font = Font("Arial", 16.0)
         title.style = "-fx-font-weight: bold"
         title.alignment = Pos.CENTER
 
         hbox.prefHeight = 25.0
         hbox.alignment = Pos.CENTER
-        hbox.children.add(title)
 
         shipArea.padding = Insets(5.0)
         shipArea.spacing = 5.0

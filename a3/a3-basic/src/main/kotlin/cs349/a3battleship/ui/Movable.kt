@@ -9,6 +9,7 @@ import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.scene.shape.Rectangle
 import javafx.scene.transform.Transform
 import kotlin.math.roundToInt
 
@@ -22,6 +23,12 @@ class Movable(private val model: Game, parent: Node) {
     private var shipType: ShipType? = null // the default ship type
     private var orientation = Orientation.VERTICAL // the default orientation
     private var counter = 0
+
+    fun newPlacement(ship: Rectangle) {
+        ship.translateX = 0.0
+        ship.translateY = 0.0
+        ship.transforms.clear()
+    }
 
     init {
         // important that this is in bubble phase, not capture phase

@@ -60,7 +60,8 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                     // CORAL -> CellState.ShipHit
                     // DARKGRAY -> CellState.ShipSunk
                     val board = model.getBoard(Player.Human)
-                    when (board[j - 1][i - 1]) {
+                    if (!(model.getGameState() == Game.GameState.WonAI || model.getGameState() == Game.GameState.WonHuman)){
+                        when (board[j - 1][i - 1]) {
                         CellState.Attacked -> {
                             // if not the target:
                             rect.fill = Color.LIGHTGRAY
@@ -73,6 +74,12 @@ class PlayerBoardView (private val model: Game): VBox(), IView {
                         }
                         else -> {
                             rect.fill = Color.LIGHTBLUE
+                        }
+                        }
+                    }else{
+                        rect.fill = Color.LIGHTBLUE
+                        if (board[j - 1][i - 1] == CellState.ShipSunk){
+                            rect.fill = Color.DARKGRAY
                         }
                     }
                     grid.add(rect, i, j)

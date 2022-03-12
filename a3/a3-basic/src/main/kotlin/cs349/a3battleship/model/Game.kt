@@ -87,6 +87,10 @@ class Game (var dimension : Int, private var debug : Boolean) {
         return gameState
     }
 
+    fun getShipsIsNotSunk(player: Player): List<Ship> {
+        return boards[player]!!.placedShips.filter { ship -> !ship.isSunk() }
+    }
+
     /**
      * Places a ship of shipType for player.
      * @param player the player for which to place the ship for
