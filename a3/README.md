@@ -16,4 +16,4 @@ Zuomiao Hu (z228hu 20815304)
   - Transparent rectangles means ships that are still available
   - Rectangles in dark gray means the ships are sunk
   - Helpful for the users to make guesses
-* Enhanced game controls, added a button to toggle styles
+* Enhanced game controls, modified layouts and added a button to attack randomly for the human player
