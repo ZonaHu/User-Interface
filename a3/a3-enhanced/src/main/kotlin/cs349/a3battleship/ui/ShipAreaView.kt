@@ -7,6 +7,7 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.control.ToggleButton
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
@@ -22,9 +23,12 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
     private val opFleet = Label("Opponent's Fleet")
     private val opFleetHBox = HBox(opFleet)
     private val opShipArea = HBox()
-    // game controls: two buttons at the bottom
-    private val startButn = Button("Start Game")
-    private val exitButn = Button("Exit Game")
+    private val changeStyleBox = HBox()
+    private val buttonBox = HBox()
+    // game controls:  buttons at the bottom
+    private val startButn = Button("Start")
+    private val exitButn = Button("Exit")
+    private val styleChangeButn = ToggleButton("Switch Mode")
     private var cnt = 0
     var shipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
     var opShipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
@@ -77,7 +81,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         cnt = 0
         createShips()
         getOpShips()
-        children.addAll(titleHBox,myShipArea,opFleetHBox, opShipArea, startButn,exitButn)
+        children.addAll(titleHBox,myShipArea,opFleetHBox, opShipArea, changeStyleBox, buttonBox)
     }
 
     override fun updateView() {
@@ -134,11 +138,17 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         opShipArea.spacing = 8.0
         opShipArea.prefHeight = 100.0
 
-        startButn.prefWidth = 165.0
+        styleChangeButn.prefWidth = 200.0
+        changeStyleBox.alignment = Pos.CENTER
+        changeStyleBox.children.add(styleChangeButn)
+
+        startButn.prefWidth = 100.0
         // at the beginning, start is disabled as requirement 16 states,
         startButn.isDisable = true
+        exitButn.prefWidth = 100.0
+        buttonBox.spacing = 5.0
+        buttonBox.children.addAll(startButn,exitButn)
 
-        exitButn.prefWidth = 165.0
         // exit the game, req 22
         exitButn.setOnAction {
             // piazza @437: close the window and exit the program
