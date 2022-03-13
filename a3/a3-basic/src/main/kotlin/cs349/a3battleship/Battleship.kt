@@ -19,7 +19,6 @@ class Battleship : Application() {
 
         var game = Game(10, true)
         var computer = AI(game)
-//         var player = ...
         game.startGame() // set the game state
 
         val layout = BorderPane()
@@ -28,7 +27,6 @@ class Battleship : Application() {
         layout.left = PlayerBoardView(game)
         layout.right = OpponentBoardView(game)
         layout.center = ShipAreaView(game, mover)
-
 
         // =========== create the scene with initialized size of 875 by 375 units ===============================
         // Add layout to a scene (and the scene to the stage)， initial size 875 by 375
