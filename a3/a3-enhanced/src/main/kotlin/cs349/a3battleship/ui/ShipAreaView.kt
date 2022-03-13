@@ -1,5 +1,6 @@
 package cs349.a3battleship.ui
 
+import cs349.a3battleship.model.Cell
 import cs349.a3battleship.model.Game
 import cs349.a3battleship.model.Player
 import cs349.a3battleship.model.ships.ShipType
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 import javafx.stage.Window
+import kotlin.random.Random
 
 class ShipAreaView(private val model: Game, private val mover: Movable): VBox(), IView {
     // the player fleet
@@ -22,9 +24,12 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
     private val opFleet = Label("Opponent's Fleet")
     private val opFleetHBox = HBox(opFleet)
     private val opShipArea = HBox()
-    // game controls: two buttons at the bottom
-    private val startButn = Button("Start Game")
-    private val exitButn = Button("Exit Game")
+    private val randomAttackBox = HBox()
+    private val buttonBox = HBox()
+    // game controls:  buttons at the bottom
+    private val startButn = Button("Start")
+    private val exitButn = Button("Exit")
+    private val randomAttackButn = Button("Random Attack")
     private var cnt = 0
     var shipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
     var opShipMap: MutableMap<ShipType, Rectangle> = mutableMapOf()
@@ -77,13 +82,15 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         cnt = 0
         createShips()
         getOpShips()
-        children.addAll(titleHBox,myShipArea,opFleetHBox, opShipArea, startButn,exitButn)
+        children.addAll(titleHBox,myShipArea,opFleetHBox, opShipArea, randomAttackBox, buttonBox)
     }
 
     override fun updateView() {
         //  req 17, start game will be enabled when all ships are placed on the board
         startButn.isDisable =
             !(model.getShipsPlacedCount(Player.Human) == 5 && (model.getGameState()==Game.GameState.Init || model.getGameState() == Game.GameState.SetupHuman))
+        randomAttackButn.isDisable =
+            !(model.getGameState() == Game.GameState.FireHuman || model.getGameState() == Game.GameState.SetupAI || model.getGameState() == Game.GameState.FireAI)
         if (model.getGameState() == Game.GameState.WonAI || model.getGameState() == Game.GameState.WonHuman){
             cnt = 0
             if (model.getGameState()== Game.GameState.WonAI){
@@ -134,11 +141,26 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         opShipArea.spacing = 8.0
         opShipArea.prefHeight = 100.0
 
-        startButn.prefWidth = 165.0
+        randomAttackButn.prefWidth = 200.0
+        randomAttackBox.alignment = Pos.CENTER
+        randomAttackBox.children.add(randomAttackButn)
+        randomAttackButn.isDisable = true // disable in beginning
+        randomAttackButn.setOnAction {
+            if (model.getGameState()== Game.GameState.FireHuman) {
+                val x = Random.nextInt(0,9)
+                val y = Random.nextInt(0,9)
+                // attack randomly for the user
+                model.attackCell(Cell(x, y))
+            }
+        }
+
+        startButn.prefWidth = 100.0
         // at the beginning, start is disabled as requirement 16 states,
         startButn.isDisable = true
+        exitButn.prefWidth = 100.0
+        buttonBox.spacing = 5.0
+        buttonBox.children.addAll(startButn,exitButn)
 
-        exitButn.prefWidth = 165.0
         // exit the game, req 22
         exitButn.setOnAction {
             // piazza @437: close the window and exit the program
@@ -151,6 +173,7 @@ class ShipAreaView(private val model: Game, private val mover: Movable): VBox(),
         startButn.setOnAction {
             model.startGame()
             startButn.isDisable = true
+            randomAttackButn.isDisable = false
             // After this, the location and orientation of ships cannot be altered anymore.
             // now gameState now becomes Game.GameState.SetupAI
         }
