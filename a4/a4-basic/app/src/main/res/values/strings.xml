@@ -2,4 +2,9 @@
     <string name="app_name">A4 Notes (z228hu)</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="redImp">❗</string>
+    <string name="search">Search</string>
+    <string name="clear">CLEAR</string>
+    <string name="random">RANDOM</string>
+    <string name="add">ADD</string>
 </resources>
